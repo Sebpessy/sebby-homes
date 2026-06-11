@@ -48,7 +48,9 @@ h2 em{font-style:normal;color:var(--gold)}
 nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;transition:background .4s ease,border-color .4s ease;border-bottom:1px solid transparent}
 nav.scrolled{background:rgba(11,11,11,.92);backdrop-filter:blur(10px);border-bottom-color:var(--gold-faint)}
 nav .brand{display:flex;align-items:center;gap:14px}
-nav .brand img{height:46px;width:auto}
+nav .brand img{height:66px;width:auto;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
+nav.scrolled .brand img{height:52px}
+nav .brand img{transition:height .35s ease}
 nav .brand span{font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:.3em;color:var(--white);font-size:.82rem}
 nav .links{display:flex;gap:30px;align-items:center}
 nav .links a{color:var(--muted);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;transition:color .3s}
@@ -175,7 +177,7 @@ nav .links a.cta:hover{background:var(--gold);color:var(--black)}
 .contact .ways{margin-top:10px;color:var(--gold);font-size:.86rem;letter-spacing:.08em}
 .contact .ways a{color:var(--gold)}
 .contact .ways a:hover{color:var(--gold-bright)}
-.contact img.crest{height:130px;width:auto}
+.contact img.wordmark{width:340px;max-width:80vw;height:auto;border:1px solid var(--gold-faint);box-shadow:0 24px 60px rgba(0,0,0,.5)}
 
 /* footer */
 footer{border-top:1px solid rgba(201,162,75,.18);padding:26px 0}
@@ -481,7 +483,7 @@ footer span.gold{color:var(--gold-dim)}
           &nbsp;·&nbsp; <a href="mailto:seb@sebby.homes">seb@sebby.homes</a>
         </div>
       </div>
-      <img class="crest" src="assets/logo.png" alt="Sebby Homes crest">
+      <img class="wordmark" src="assets/wordmark.jpg" alt="Sebby Home Builder wordmark">
     </div>
   </div>
 </section>
