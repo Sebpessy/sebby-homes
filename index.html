@@ -43,6 +43,11 @@ h2 em{font-style:normal;color:var(--gold)}
 /* reveal */
 .rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease}
 .rv.in{opacity:1;transform:none}
+html.gsapon .rv{opacity:1;transform:none;transition:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .hero .scroll::after{animation:none}
+}
 
 /* nav */
 nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;transition:background .4s ease,border-color .4s ease;border-bottom:1px solid transparent}
@@ -57,11 +62,37 @@ nav .links a{color:var(--muted);font-size:.68rem;letter-spacing:.22em;text-trans
 nav .links a:hover{color:var(--gold-bright)}
 nav .links a.cta{border:1px solid var(--gold-dim);color:var(--gold);padding:9px 18px;transition:all .3s}
 nav .links a.cta:hover{background:var(--gold);color:var(--black)}
-@media(max-width:860px){nav .links a:not(.cta){display:none}}
+
+/* hamburger + mobile menu */
+.burger{display:none;background:none;border:1px solid var(--gold-dim);width:46px;height:46px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:160;position:relative}
+.burger span{display:block;width:20px;height:1.5px;background:var(--gold);transition:transform .35s ease,opacity .3s ease}
+.burger.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+.mmenu{position:fixed;inset:0;background:#080808;z-index:45;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:118px 24px 40px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s}
+.mmenu.open{opacity:1;visibility:visible}
+.mmenu a{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--white);padding:8px 0;letter-spacing:.04em;transition:color .3s}
+.mmenu a:hover{color:var(--gold-bright)}
+.mmenu a.cta{font-family:'Inter',sans-serif;font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:14px 28px;margin-top:26px}
+.mmenu .mrule{width:38px;height:1px;background:var(--gold-dim);margin:18px 0}
+.mmenu .mtag{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted-dim);margin-top:30px}
+@media(max-width:860px){
+  nav .links{display:none}
+  .burger{display:flex}
+  nav .brand img{height:96px}
+  nav.scrolled .brand img{height:72px}
+}
+@media(max-width:1180px) and (min-width:861px){
+  nav .brand img{height:140px}
+  nav.scrolled .brand img{height:104px}
+}
 
 /* hero */
-.hero{position:relative;min-height:100svh;display:flex;align-items:center}
-.hero .bg{position:absolute;inset:0;background:url('assets/photos/kenwell_00.jpg') center/cover no-repeat}
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+.hero .bg{position:absolute;inset:-8% 0;background:url('assets/photos/kenwell_00.jpg') center/cover no-repeat;will-change:transform}
+.hero canvas.dust{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.hero h1 .wd{display:inline-block;white-space:nowrap}
+.hero h1 .ch{display:inline-block}
 .hero .shade{position:absolute;inset:0;background:
   linear-gradient(90deg,rgba(11,11,11,.94) 0%,rgba(11,11,11,.72) 38%,rgba(11,11,11,.25) 70%,rgba(11,11,11,.45) 100%),
   linear-gradient(0deg,rgba(11,11,11,1) 0%,rgba(11,11,11,.25) 32%,rgba(11,11,11,.35) 100%)}
@@ -115,7 +146,7 @@ nav .links a.cta:hover{background:var(--gold);color:var(--black)}
 .pillar h3 em{font-style:normal;color:var(--gold)}
 .pillar p{margin-top:16px;font-size:.95rem;max-width:430px}
 .pillar blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;color:var(--gold);margin-top:18px;max-width:430px;line-height:1.4}
-.media{position:relative}
+.media{position:relative;overflow:hidden}
 .media img{width:100%;height:100%;object-fit:cover;border:1px solid var(--gold-dim);filter:brightness(.92) saturate(.92)}
 .media .cap{position:absolute;left:16px;bottom:12px;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-bright);text-shadow:0 1px 8px rgba(0,0,0,.9)}
 .media.tall img{aspect-ratio:3/4}
@@ -253,11 +284,27 @@ footer span.gold{color:var(--gold-dim)}
     <a href="#portal">Portal</a>
     <a href="#contact" class="cta">Start a Conversation</a>
   </div>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mmenu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <a href="#who">Who We Are</a>
+  <a href="#partnership">Partnership</a>
+  <a href="#design">Design</a>
+  <a href="#proof">Portfolio</a>
+  <a href="#process">Process</a>
+  <a href="#portal">Portal</a>
+  <div class="mrule"></div>
+  <a href="#contact" class="cta">Start a Conversation</a>
+  <div class="mtag">Dallas · Fort Worth</div>
+</div>
 
 <header class="hero">
   <div class="bg"></div>
   <div class="shade"></div>
+  <canvas class="dust" id="dust" aria-hidden="true"></canvas>
   <div class="inner wrap">
     <div class="heroRule"></div>
     <h1>SEBBY HOMES</h1>
@@ -596,13 +643,139 @@ footer span.gold{color:var(--gold-dim)}
   <div class="lcount" id="lcount"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script>
 const nav = document.getElementById('nav');
 addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
-const io = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-}), {threshold:.12});
-document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ---------- mobile menu ---------- */
+const burger = document.getElementById('burger'),
+      mmenu = document.getElementById('mmenu');
+function setMenu(open) {
+  burger.classList.toggle('open', open);
+  mmenu.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+  if (open && window.gsap) {
+    gsap.fromTo('#mmenu a, #mmenu .mrule, #mmenu .mtag',
+      {y: 26, autoAlpha: 0},
+      {y: 0, autoAlpha: 1, duration: .65, stagger: .06, ease: 'power3.out', overwrite: true});
+  }
+}
+burger.addEventListener('click', () => setMenu(!mmenu.classList.contains('open')));
+mmenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+/* ---------- motion: GSAP if available, IO fallback ---------- */
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (window.gsap && window.ScrollTrigger && !reduceMotion) {
+  gsap.registerPlugin(ScrollTrigger);
+  document.documentElement.classList.add('gsapon');
+
+  /* hero entrance — letters rise, rule draws, tag fades */
+  const h1 = document.querySelector('.hero h1');
+  h1.innerHTML = h1.textContent.split(' ').map(w =>
+    `<span class="wd">${w.split('').map(c => `<span class="ch">${c}</span>`).join('')}</span>`
+  ).join(' ');
+  gsap.timeline({defaults: {ease: 'power3.out'}})
+    .fromTo('.hero .bg', {scale: 1.12}, {scale: 1, duration: 2.6, ease: 'power2.out'}, 0)
+    .fromTo('.heroRule', {scaleX: 0, transformOrigin: 'left'}, {scaleX: 1, duration: .9}, .3)
+    .from('.hero h1 .ch', {yPercent: 110, autoAlpha: 0, duration: .9, stagger: .035}, .45)
+    .from('.hero .tag', {y: 24, autoAlpha: 0, duration: .9}, '-=.45')
+    .from('.hero .loc', {y: 18, autoAlpha: 0, duration: .8}, '-=.55')
+    .from('.hero .scroll', {autoAlpha: 0, duration: 1}, '-=.3')
+    .from('#nav', {y: -20, autoAlpha: 0, duration: .8}, .2);
+
+  /* hero parallax on scroll */
+  gsap.to('.hero .bg', {yPercent: 14, ease: 'none',
+    scrollTrigger: {trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true}});
+  gsap.to('.hero .inner', {yPercent: -10, autoAlpha: 0, ease: 'none',
+    scrollTrigger: {trigger: '.hero', start: 'top top', end: '70% top', scrub: true}});
+
+  /* section reveals */
+  document.querySelectorAll('.rv').forEach(el => {
+    gsap.from(el, {y: 44, autoAlpha: 0, duration: 1.1, ease: 'power3.out',
+      scrollTrigger: {trigger: el, start: 'top 86%', once: true}});
+  });
+
+  /* gold rules draw in */
+  document.querySelectorAll('hr.rule').forEach(el => {
+    gsap.from(el, {scaleX: 0, transformOrigin: 'left', duration: 1, ease: 'power2.out',
+      scrollTrigger: {trigger: el, start: 'top 88%', once: true}});
+  });
+
+  /* imagery drifts — subtle parallax inside frames */
+  document.querySelectorAll('.pillar .media img').forEach(img => {
+    gsap.fromTo(img, {yPercent: -5, scale: 1.1}, {yPercent: 5, scale: 1.1, ease: 'none',
+      scrollTrigger: {trigger: img, start: 'top bottom', end: 'bottom top', scrub: true}});
+  });
+
+  /* portal screenshots float apart slightly */
+  gsap.from('.shots .shot.over', {y: 60, ease: 'none',
+    scrollTrigger: {trigger: '.shots', start: 'top 90%', end: 'bottom 40%', scrub: true}});
+
+  /* process dots pop in sequence */
+  document.querySelectorAll('.step .dot').forEach((d, i) => {
+    gsap.from(d, {scale: 0, duration: .5, ease: 'back.out(2.5)', delay: i * .12,
+      scrollTrigger: {trigger: '.steps', start: 'top 80%', once: true}});
+  });
+
+  /* contact bg parallax */
+  gsap.fromTo('.contact .bg', {yPercent: -8}, {yPercent: 8, ease: 'none',
+    scrollTrigger: {trigger: '.contact', start: 'top bottom', end: 'bottom top', scrub: true}});
+} else {
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), {threshold:.12});
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+}
+
+/* ---------- gold dust particle field (hero) ---------- */
+if (!reduceMotion) (() => {
+  const cv = document.getElementById('dust'), cx = cv.getContext('2d');
+  let W, H, parts = [], run = true;
+  const N = innerWidth < 700 ? 38 : 80;
+  function size() {
+    W = cv.width = cv.offsetWidth * devicePixelRatio;
+    H = cv.height = cv.offsetHeight * devicePixelRatio;
+  }
+  function spawn(init) {
+    return {
+      x: Math.random() * W,
+      y: init ? Math.random() * H : H + 10,
+      r: (Math.random() * 1.6 + .5) * devicePixelRatio,
+      vy: -(Math.random() * .22 + .08) * devicePixelRatio,
+      vx: (Math.random() - .5) * .12 * devicePixelRatio,
+      a: Math.random() * Math.PI * 2,
+      tw: Math.random() * .02 + .006
+    };
+  }
+  function tick() {
+    if (!run) return;
+    cx.clearRect(0, 0, W, H);
+    for (const p of parts) {
+      p.y += p.vy; p.x += p.vx; p.a += p.tw;
+      const alpha = .14 + Math.abs(Math.sin(p.a)) * .4;
+      cx.beginPath();
+      cx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      cx.fillStyle = `rgba(229,199,107,${alpha})`;
+      cx.shadowColor = 'rgba(201,162,75,.8)';
+      cx.shadowBlur = 6 * devicePixelRatio;
+      cx.fill();
+      if (p.y < -12) Object.assign(p, spawn(false));
+    }
+    requestAnimationFrame(tick);
+  }
+  size();
+  parts = Array.from({length: N}, () => spawn(true));
+  addEventListener('resize', size, {passive: true});
+  new IntersectionObserver(es => {
+    const vis = es[0].isIntersecting;
+    if (vis && !run) { run = true; tick(); }
+    run = vis;
+  }).observe(cv);
+  tick();
+})();
 
 /* ---------- property galleries ---------- */
 const GALLERIES = {
