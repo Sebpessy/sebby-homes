@@ -14,4 +14,4 @@ FROM_EMAIL = "Sebby Homes <gallery@sebby.homes>"
 
 [[kv_namespaces]]
 binding = "GATE"
-id = "PLACEHOLDER"
+id = "7a900c306a5d4276a36ddc56b31483dc"
