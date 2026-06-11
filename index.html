@@ -138,6 +138,27 @@ nav .links a.cta:hover{background:var(--gold);color:var(--black)}
 .viewAll{display:inline-block;margin-top:16px;border:1px solid var(--gold-dim);color:var(--gold);font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;transition:background .3s,color .3s}
 .prop[data-gallery]:hover .viewAll{background:var(--gold);color:var(--black)}
 
+/* access request modal */
+.amodal{position:fixed;inset:0;background:rgba(6,6,6,.92);z-index:120;display:none;align-items:center;justify-content:center;padding:20px}
+.amodal.open{display:flex}
+.abox{background:#121110;border:1px solid var(--gold-dim);max-width:480px;width:100%;padding:40px 38px;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+.abox .ahead{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--white)}
+.abox .ahead em{font-style:normal;color:var(--gold)}
+.abox .asub{font-size:.85rem;color:var(--muted-dim);margin-top:10px;line-height:1.6}
+.abox .aprop{margin-top:16px;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.abox form{margin-top:24px;display:flex;flex-direction:column;gap:14px}
+.abox label{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-dim)}
+.abox input{background:#0B0B0B;border:1px solid #2c2a26;color:var(--white);padding:13px 14px;font-family:'Inter',sans-serif;font-size:.92rem;width:100%;outline:none;transition:border-color .3s}
+.abox input:focus{border-color:var(--gold)}
+.abox .asubmit{margin-top:8px;background:var(--gold);color:var(--black);border:0;padding:14px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .3s}
+.abox .asubmit:hover{background:var(--gold-bright)}
+.abox .asubmit:disabled{opacity:.5;cursor:wait}
+.abox .acancel{background:none;border:0;color:var(--muted-dim);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;margin-top:14px;font-family:'Inter',sans-serif}
+.abox .amsg{margin-top:18px;font-size:.86rem;line-height:1.6;display:none}
+.abox .amsg.ok{display:block;color:var(--gold-bright)}
+.abox .amsg.err{display:block;color:#d27a6a}
+.accessNote{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#121110;border:1px solid var(--gold);color:var(--gold-bright);padding:13px 26px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;z-index:130;display:none}
+
 /* gallery modal */
 .gmodal{position:fixed;inset:0;background:#0A0A0A;z-index:100;display:none;flex-direction:column}
 .gmodal.open{display:flex}
@@ -392,10 +413,10 @@ footer span.gold{color:var(--gold-dim)}
     </div>
     <div class="proofGrid">
       <div class="prop rv" data-gallery="kenwell" role="button" tabindex="0"
-           aria-label="View all photos of 7619 Kenwell St">
-        <img src="assets/photos/kenwell_00.jpg" alt="7619 Kenwell St exterior" loading="lazy">
-        <h3>7619 Kenwell St</h3>
-        <div class="city">Dallas, TX 75209</div>
+           aria-label="Request access to Dallas residence photos">
+        <img src="assets/photos/kenwell_00.jpg" alt="Contemporary residence exterior, Dallas" loading="lazy">
+        <h3>Contemporary Residence</h3>
+        <div class="city">Dallas, TX</div>
         <div class="specs">~4,100 SF · 4 BD / 4.5 BA · 2025</div>
         <div class="feat">Stucco-and-brick exterior, floor-to-ceiling aluminum windows,
         Sub-Zero / Wolf kitchen, Taj Mahal stone.</div>
@@ -403,10 +424,10 @@ footer span.gold{color:var(--gold-dim)}
         <span class="viewAll">View all 40 photos</span>
       </div>
       <div class="prop rv" data-gallery="edgefield" role="button" tabindex="0"
-           aria-label="View all photos of 741 Edgefield Rd">
-        <img src="assets/photos/edgefield_00.jpg" alt="741 Edgefield Rd exterior" loading="lazy">
-        <h3>741 Edgefield Rd</h3>
-        <div class="city">Fort Worth, TX 76107</div>
+           aria-label="Request access to Fort Worth residence photos">
+        <img src="assets/photos/edgefield_00.jpg" alt="Modern transitional residence exterior, Fort Worth" loading="lazy">
+        <h3>Modern Transitional Residence</h3>
+        <div class="city">Fort Worth, TX</div>
         <div class="specs">5,011 SF · 5 BD / 5.5 BA · 2026</div>
         <div class="feat">Steel-framed window walls, white-oak floors, stone waterfall
         island; game room, theater, and wet bar.</div>
@@ -414,10 +435,10 @@ footer span.gold{color:var(--gold-dim)}
         <span class="viewAll">View all 40 photos</span>
       </div>
       <div class="prop rv" data-gallery="belmont" role="button" tabindex="0"
-           aria-label="View all photos of 4520 Belmont Ave">
-        <img src="assets/photos/belmont_00.jpg" alt="4520 Belmont Ave exterior" loading="lazy">
-        <h3>4520 Belmont Ave</h3>
-        <div class="city">Dallas, TX 75204</div>
+           aria-label="Request access to Knox-Henderson residence photos">
+        <img src="assets/photos/belmont_00.jpg" alt="Knox-Henderson residence exterior, Dallas" loading="lazy">
+        <h3>Knox–Henderson Residence</h3>
+        <div class="city">Dallas, TX</div>
         <div class="specs">2,500 SF · 3 BD / 3.5 BA · New Build</div>
         <div class="feat">Contemporary architecture with clean lines in Knox–Henderson,
         steps from the Katy Trail.</div>
@@ -531,6 +552,30 @@ footer span.gold{color:var(--gold-dim)}
   </div>
 </footer>
 
+<div class="amodal" id="amodal" role="dialog" aria-modal="true" aria-label="Request gallery access">
+  <div class="abox">
+    <div class="ahead">Request <em>access.</em></div>
+    <div class="asub">Full photo galleries of our delivered homes are shared on request.
+    Verify your email and we'll review your request — you'll receive a private access
+    link once approved.</div>
+    <div class="aprop" id="aprop"></div>
+    <form id="aform" novalidate>
+      <div>
+        <label for="aname">Full name</label>
+        <input type="text" id="aname" name="name" autocomplete="name" required maxlength="80" placeholder="Your name">
+      </div>
+      <div>
+        <label for="aemail">Email</label>
+        <input type="email" id="aemail" name="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
+      </div>
+      <button class="asubmit" id="asubmit" type="submit">Request Access</button>
+    </form>
+    <div class="amsg" id="amsg"></div>
+    <button class="acancel" id="acancel" type="button">Cancel</button>
+  </div>
+</div>
+<div class="accessNote" id="accessNote"></div>
+
 <div class="gmodal" id="gmodal" role="dialog" aria-modal="true" aria-label="Property photo gallery">
   <div class="ghead">
     <div>
@@ -561,9 +606,9 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
 /* ---------- property galleries ---------- */
 const GALLERIES = {
-  kenwell:   {n: 40, title: '7619 Kenwell St',  sub: 'Dallas, TX 75209'},
-  edgefield: {n: 40, title: '741 Edgefield Rd', sub: 'Fort Worth, TX 76107'},
-  belmont:   {n: 28, title: '4520 Belmont Ave', sub: 'Dallas, TX 75204'}
+  kenwell:   {n: 40, title: 'Contemporary Residence', sub: 'Dallas, TX'},
+  edgefield: {n: 40, title: 'Modern Transitional Residence', sub: 'Fort Worth, TX'},
+  belmont:   {n: 28, title: 'Knox–Henderson Residence', sub: 'Dallas, TX'}
 };
 const pad = i => String(i).padStart(2, '0');
 const gmodal = document.getElementById('gmodal'),
@@ -616,11 +661,94 @@ function stepLight(d) {
 }
 function closeLight() { lbox.classList.remove('open'); }
 
+/* ---------- access gate ---------- */
+const API = 'https://api.sebby.homes';
+const amodal = document.getElementById('amodal'),
+      aform = document.getElementById('aform'),
+      amsg = document.getElementById('amsg'),
+      asubmit = document.getElementById('asubmit');
+let pendingKey = null, accessOK = false;
+
+function note(text) {
+  const n = document.getElementById('accessNote');
+  n.textContent = text;
+  n.style.display = 'block';
+  setTimeout(() => n.style.display = 'none', 5000);
+}
+async function checkAccess() {
+  const k = localStorage.getItem('sebbyAccess');
+  if (!k) return false;
+  try {
+    const r = await fetch(API + '/check?key=' + encodeURIComponent(k));
+    const j = await r.json();
+    if (j.ok) { accessOK = true; return true; }
+  } catch (e) {}
+  localStorage.removeItem('sebbyAccess');
+  return false;
+}
+function openRequest(key) {
+  pendingKey = key;
+  document.getElementById('aprop').textContent = GALLERIES[key].title + ' · ' + GALLERIES[key].sub;
+  amsg.className = 'amsg'; amsg.textContent = '';
+  aform.style.display = '';
+  amodal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeRequest() {
+  amodal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+aform.addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = document.getElementById('aname').value.trim();
+  const email = document.getElementById('aemail').value.trim();
+  if (name.length < 2 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    amsg.className = 'amsg err';
+    amsg.textContent = 'Please enter your full name and a valid email address.';
+    return;
+  }
+  asubmit.disabled = true;
+  try {
+    const r = await fetch(API + '/request', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name, email, property: GALLERIES[pendingKey].title})
+    });
+    const j = await r.json();
+    if (j.ok) {
+      aform.style.display = 'none';
+      amsg.className = 'amsg ok';
+      amsg.textContent = 'Almost there — we sent a verification link to ' + email +
+        '. Click it to confirm your email; your request then goes to Sebby Homes for approval.';
+    } else { throw new Error(j.error || 'failed'); }
+  } catch (err) {
+    amsg.className = 'amsg err';
+    amsg.textContent = 'Something went wrong sending your request. Please try again, or email seb@sebby.homes.';
+  }
+  asubmit.disabled = false;
+});
+document.getElementById('acancel').addEventListener('click', closeRequest);
+amodal.addEventListener('click', e => { if (e.target === amodal) closeRequest(); });
+
 document.querySelectorAll('.prop[data-gallery]').forEach(p => {
-  const open = () => openGallery(p.dataset.gallery);
+  const open = async () => {
+    if (accessOK || await checkAccess()) openGallery(p.dataset.gallery);
+    else openRequest(p.dataset.gallery);
+  };
   p.addEventListener('click', open);
   p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
 });
+
+/* approved access link: sebby.homes/?key=... */
+(async () => {
+  const k = new URLSearchParams(location.search).get('key');
+  if (k) {
+    localStorage.setItem('sebbyAccess', k);
+    history.replaceState(null, '', location.pathname + '#proof');
+    if (await checkAccess()) note('Gallery access granted — welcome.');
+    else note('This access link is invalid or was revoked.');
+  } else { checkAccess(); }
+})();
 document.getElementById('gclose').addEventListener('click', closeGallery);
 document.getElementById('lclose').addEventListener('click', closeLight);
 document.getElementById('lprev').addEventListener('click', () => stepLight(-1));
@@ -632,6 +760,7 @@ addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') stepLight(-1);
     if (e.key === 'ArrowRight') stepLight(1);
   } else if (gmodal.classList.contains('open') && e.key === 'Escape') closeGallery();
+  else if (amodal.classList.contains('open') && e.key === 'Escape') closeRequest();
 });
 let tx0 = null;
 lbox.addEventListener('touchstart', e => tx0 = e.touches[0].clientX, {passive: true});

@@ -1,0 +1,17 @@
+name = "sebby-gallery-gate"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+
+workers_dev = false
+
+[[routes]]
+pattern = "api.sebby.homes"
+custom_domain = true
+
+[vars]
+OWNER_EMAIL = "sebpessy@gmail.com"
+FROM_EMAIL = "Sebby Homes <gallery@sebby.homes>"
+
+[[kv_namespaces]]
+binding = "GATE"
+id = "PLACEHOLDER"
