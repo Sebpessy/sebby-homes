@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sebby Homes — Custom Luxury Residential · Dallas–Fort Worth</title>
+<meta name="description" content="Sebby Homes designs and delivers contemporary custom residences across Dallas–Fort Worth — Highland Park, Preston Hollow, Southlake, Westlake, and Uptown.">
+<meta property="og:title" content="Sebby Homes — Custom Luxury Residential">
+<meta property="og:description" content="Contemporary luxury custom home builder, Dallas–Fort Worth.">
+<meta property="og:image" content="https://sebby.homes/assets/photos/edgefield_39.jpg">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0B0B0B;
+  --panel:#141311;
+  --gold:#C9A24B;
+  --gold-bright:#E5C76B;
+  --gold-dim:#7A6330;
+  --gold-faint:rgba(201,162,75,.28);
+  --white:#FFFFFF;
+  --muted:#CFCFCF;
+  --muted-dim:#8F8A80;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--muted);font-family:'Inter',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:var(--black)}
+img{display:block;max-width:100%}
+a{color:var(--gold);text-decoration:none}
+.serif{font-family:'Cormorant Garamond',serif}
+.caps{font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:.32em;font-weight:500}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.rule{width:38px;height:1px;background:var(--gold);border:0;margin:14px 0 26px}
+.eyebrow{color:var(--gold);font-size:.72rem}
+section{padding:110px 0}
+h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(2rem,4.4vw,3rem);color:var(--white);line-height:1.15}
+h2 em{font-style:normal;color:var(--gold)}
+.lede{max-width:640px;margin-top:18px;color:var(--muted);font-size:1rem}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease}
+.rv.in{opacity:1;transform:none}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;transition:background .4s ease,border-color .4s ease;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(11,11,11,.92);backdrop-filter:blur(10px);border-bottom-color:var(--gold-faint)}
+nav .brand{display:flex;align-items:center;gap:14px}
+nav .brand img{height:46px;width:auto}
+nav .brand span{font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:.3em;color:var(--white);font-size:.82rem}
+nav .links{display:flex;gap:30px;align-items:center}
+nav .links a{color:var(--muted);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;transition:color .3s}
+nav .links a:hover{color:var(--gold-bright)}
+nav .links a.cta{border:1px solid var(--gold-dim);color:var(--gold);padding:9px 18px;transition:all .3s}
+nav .links a.cta:hover{background:var(--gold);color:var(--black)}
+@media(max-width:860px){nav .links a:not(.cta){display:none}}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center}
+.hero .bg{position:absolute;inset:0;background:url('assets/photos/edgefield_39.jpg') center/cover no-repeat}
+.hero .shade{position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(11,11,11,.94) 0%,rgba(11,11,11,.72) 38%,rgba(11,11,11,.25) 70%,rgba(11,11,11,.45) 100%),
+  linear-gradient(0deg,rgba(11,11,11,1) 0%,rgba(11,11,11,.25) 32%,rgba(11,11,11,.35) 100%)}
+.hero .inner{position:relative;z-index:2;width:100%}
+.hero h1{font-family:'Montserrat',sans-serif;font-weight:900;color:var(--white);letter-spacing:.16em;font-size:clamp(2.2rem,6.4vw,4.6rem);line-height:1.05}
+.hero .tag{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:clamp(1.3rem,2.6vw,1.9rem);margin-top:14px}
+.hero .loc{margin-top:22px;color:var(--muted);font-size:.74rem}
+.hero .heroRule{width:54px;height:1px;background:var(--gold);margin-bottom:30px}
+.hero .scroll{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);color:var(--muted-dim);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;z-index:2}
+.hero .scroll::after{content:"";display:block;width:1px;height:34px;background:var(--gold-dim);margin:10px auto 0;animation:drip 2.2s ease infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* intro statement */
+.intro{padding:130px 0 120px;text-align:center}
+.intro p.serifBig{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.2vw,2.3rem);color:var(--white);max-width:880px;margin:0 auto;line-height:1.45}
+.intro p.serifBig em{font-style:italic;color:var(--gold)}
+.intro .sub{max-width:640px;margin:26px auto 0;color:var(--muted-dim);font-size:.95rem}
+
+/* cards */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:54px}
+@media(max-width:980px){.grid4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid4{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--gold-faint);border-radius:8px;padding:30px 26px;box-shadow:0 18px 40px rgba(0,0,0,.28)}
+.card .num{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--gold-dim);line-height:1}
+.card .numRule{width:26px;height:1px;background:var(--gold);margin:12px 0 16px}
+.card h3{font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.14em;color:var(--gold-bright);text-transform:uppercase;margin-bottom:12px}
+.card p{font-size:.86rem;color:var(--muted);line-height:1.65}
+
+/* partnership */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:54px}
+@media(max-width:860px){.duo{grid-template-columns:1fr}}
+.duo .card h3{font-size:1rem;letter-spacing:.12em;color:var(--white)}
+.duo .card .role{color:var(--gold);font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;margin-bottom:16px}
+.duo .card .ledeIn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--gold-bright);margin:16px 0 18px}
+.duo .card.secondary .ledeIn{color:var(--muted)}
+.duo ul{list-style:none}
+.duo li{position:relative;padding-left:20px;font-size:.88rem;margin-bottom:10px}
+.duo li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;background:var(--gold)}
+.duo .card{border-top:2px solid var(--gold)}
+.duo .card.secondary{border-top:2px solid var(--gold-faint)}
+.partnerLine{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;color:var(--gold);margin-top:50px}
+
+/* pillars */
+.pillar{display:grid;grid-template-columns:5fr 7fr;gap:54px;align-items:center;padding:64px 0;border-bottom:1px solid rgba(201,162,75,.14)}
+.pillar:last-of-type{border-bottom:0}
+.pillar.flip{grid-template-columns:7fr 5fr}
+.pillar.flip .txt{order:2}
+.pillar.flip .media{order:1}
+@media(max-width:860px){.pillar,.pillar.flip{grid-template-columns:1fr}.pillar.flip .txt{order:1}.pillar.flip .media{order:2}}
+.pillar h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.8rem,3.4vw,2.5rem);color:var(--white)}
+.pillar h3 em{font-style:normal;color:var(--gold)}
+.pillar p{margin-top:16px;font-size:.95rem;max-width:430px}
+.pillar blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;color:var(--gold);margin-top:18px;max-width:430px;line-height:1.4}
+.media{position:relative}
+.media img{width:100%;height:100%;object-fit:cover;border:1px solid var(--gold-dim);filter:brightness(.92) saturate(.92)}
+.media .cap{position:absolute;left:16px;bottom:12px;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-bright);text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.media.tall img{aspect-ratio:3/4}
+.media.wide img{aspect-ratio:16/10}
+.mediaPair{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mediaPair .media img{aspect-ratio:4/5}
+
+/* proof */
+.proofGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:54px}
+@media(max-width:860px){.proofGrid{grid-template-columns:1fr}}
+.prop img{aspect-ratio:16/10;width:100%;object-fit:cover;border:1px solid var(--gold-dim);filter:brightness(.94)}
+.prop h3{font-family:'Montserrat',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:.06em;color:var(--white);margin-top:20px}
+.prop .city{font-size:.74rem;color:var(--muted-dim);margin-top:2px}
+.prop .specs{border-top:1px solid var(--gold-faint);margin-top:14px;padding-top:12px;color:var(--gold-bright);font-size:.74rem;letter-spacing:.08em;font-weight:500}
+.prop .feat{font-size:.82rem;color:var(--muted);margin-top:10px}
+.prop .credit{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-dim);font-size:.92rem;margin-top:14px}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:26px;margin-top:64px;position:relative}
+.steps::before{content:"";position:absolute;top:7px;left:0;right:0;height:1px;background:var(--gold-dim)}
+@media(max-width:860px){.steps{grid-template-columns:1fr;gap:34px}.steps::before{display:none}}
+.step .dot{width:13px;height:13px;border:1.5px solid var(--gold);border-radius:50%;background:var(--black);position:relative;z-index:1}
+.step .n{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--gold-dim);margin-top:18px;line-height:1}
+.step h3{font-family:'Montserrat',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.16em;color:var(--gold-bright);text-transform:uppercase;margin-top:8px}
+.step p{font-size:.82rem;margin-top:10px;color:var(--muted)}
+.processLine{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted-dim);font-size:1.15rem;margin-top:64px}
+
+/* contact */
+.contact{position:relative;padding:140px 0 120px;overflow:hidden}
+.contact .bg{position:absolute;inset:0;background:url('assets/photos/kenwell_03.jpg') center/cover no-repeat;filter:brightness(.5)}
+.contact .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,11,11,.96) 0%,rgba(11,11,11,.85) 45%,rgba(11,11,11,.55) 100%)}
+.contact .inner{position:relative;z-index:2}
+.contact h2{font-size:clamp(2.2rem,4.8vw,3.4rem)}
+.contact .miniSteps{display:flex;gap:60px;margin-top:54px;flex-wrap:wrap}
+.contact .ms .n{font-family:'Cormorant Garamond',serif;color:var(--gold-dim);font-size:1.4rem}
+.contact .ms h3{font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.16em;color:var(--gold-bright);text-transform:uppercase;margin-top:6px}
+.contact .ms p{font-size:.8rem;color:var(--muted-dim);max-width:220px;margin-top:6px}
+.contact .block{margin-top:64px;border-top:1px solid var(--gold-dim);padding-top:30px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:30px}
+.contact .who{font-family:'Montserrat',sans-serif;letter-spacing:.18em;color:var(--white);font-size:.85rem;font-weight:700}
+.contact .ways{margin-top:10px;color:var(--gold);font-size:.86rem;letter-spacing:.08em}
+.contact .ways a{color:var(--gold)}
+.contact .ways a:hover{color:var(--gold-bright)}
+.contact img.crest{height:130px;width:auto}
+
+/* footer */
+footer{border-top:1px solid rgba(201,162,75,.18);padding:26px 0}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+footer span{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted-dim)}
+footer span.gold{color:var(--gold-dim)}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="brand">
+    <img src="assets/logo.png" alt="Sebby Homes crest">
+    <span>SEBBY HOMES</span>
+  </div>
+  <div class="links">
+    <a href="#who">Who We Are</a>
+    <a href="#partnership">Partnership</a>
+    <a href="#design">Design</a>
+    <a href="#proof">Portfolio</a>
+    <a href="#process">Process</a>
+    <a href="#contact" class="cta">Start a Conversation</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="bg"></div>
+  <div class="shade"></div>
+  <div class="inner wrap">
+    <div class="heroRule"></div>
+    <h1>SEBBY HOMES</h1>
+    <div class="tag">Custom Luxury Residential</div>
+    <div class="loc caps">Dallas &nbsp;·&nbsp; Fort Worth</div>
+  </div>
+  <div class="scroll">Scroll</div>
+</header>
+
+<section class="intro">
+  <div class="wrap rv">
+    <p class="serifBig">We take on a small number of homes each year, deliberately —
+    each one designed around its owners, <em>its light, and its land.</em></p>
+    <p class="sub">No pressure, no shortcuts. Just an honest standard of craft,
+    held from the first drawing to the final walkthrough.</p>
+  </div>
+</section>
+
+<section id="who">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow caps">01 · Who We Are</div>
+      <hr class="rule">
+      <h2>A contemporary luxury builder, <em>fluent in DFW.</em></h2>
+      <p class="lede">Sebby Homes designs and delivers contemporary custom residences
+      across Dallas–Fort Worth — Highland Park, Preston Hollow, Southlake, Westlake,
+      and Uptown. One team, one standard of finish.</p>
+    </div>
+    <div class="grid4">
+      <div class="card rv"><div class="num">01</div><div class="numRule"></div>
+        <h3>Design-Led</h3>
+        <p>Architecture, interiors, and budget resolved together — before the first pour, not after.</p></div>
+      <div class="card rv"><div class="num">02</div><div class="numRule"></div>
+        <h3>A Standard of Finish</h3>
+        <p>Flush reveals, aligned grain, shadow-gap millwork — details most builders don't attempt.</p></div>
+      <div class="card rv"><div class="num">03</div><div class="numRule"></div>
+        <h3>Single Accountability</h3>
+        <p>One builder of record, one schedule, one point of contact through delivery and warranty.</p></div>
+      <div class="card rv"><div class="num">04</div><div class="numRule"></div>
+        <h3>DFW Fluency</h3>
+        <p>Neighborhood-level knowledge of lots, codes, and what each street expects of a home.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="partnership">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow caps">02 · The Partnership</div>
+      <hr class="rule">
+      <h2>Two partners. One standard. <em>Clear roles.</em></h2>
+    </div>
+    <div class="duo">
+      <div class="card rv">
+        <h3>SEBBY HOMES</h3>
+        <div class="role">Lead Builder · Builder of Record</div>
+        <div class="ledeIn">Sebby Homes leads your project — construction, craftsmanship, and delivery.</div>
+        <ul>
+          <li>General contractor leading construction end to end</li>
+          <li>Craftsmanship, quality control, and schedule ownership</li>
+          <li>Subcontractor selection and on-site leadership</li>
+          <li>Your day-to-day point of contact, through handover and warranty</li>
+        </ul>
+      </div>
+      <div class="card secondary rv">
+        <h3>DIFFERENT PROPERTIES LLC</h3>
+        <div class="role">Development Partner</div>
+        <div class="ledeIn">A development and ownership partner standing behind the project.</div>
+        <ul>
+          <li>Land and development strategy</li>
+          <li>Project planning and entitlement support</li>
+          <li>Development-side coordination behind the scenes</li>
+          <li>Aligned with Sebby Homes from first drawing to closing</li>
+        </ul>
+      </div>
+    </div>
+    <div class="partnerLine rv">Sebby Homes leads your build. Different Properties LLC stands behind it.</div>
+  </div>
+</section>
+
+<section id="design">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow caps">03 · Design Language</div>
+      <hr class="rule">
+      <h2>Four pillars, <em>one signature.</em></h2>
+    </div>
+
+    <div class="pillar">
+      <div class="txt rv">
+        <h3>Light<em>.</em></h3>
+        <p>Designed around natural light by day — then layered cove and LED,
+        statement fixtures, and landscape uplighting as the architecture comes
+        alive at dusk.</p>
+      </div>
+      <div class="media wide rv">
+        <img src="assets/photos/kenwell_03.jpg" alt="Open double-height living space washed in natural light" loading="lazy">
+        <div class="cap">Open volume, washed in natural light</div>
+      </div>
+    </div>
+
+    <div class="pillar flip">
+      <div class="txt rv">
+        <h3>Texture &amp; <em>Materiality.</em></h3>
+        <p>White oak, matte black metal, natural stone, limewash plaster,
+        large-format slab — materials chosen to be touched, not just seen.</p>
+      </div>
+      <div class="mediaPair rv">
+        <div class="media"><img src="assets/photos/edgefield_24.jpg" alt="White oak slat screen with matte black metal" loading="lazy">
+          <div class="cap">White oak + matte black metal</div></div>
+        <div class="media"><img src="assets/photos/belmont_02.jpg" alt="Dark stone powder room detail" loading="lazy">
+          <div class="cap">Stone + large-format slab</div></div>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="txt rv">
+        <h3>The Invisible <em>Craft.</em></h3>
+        <blockquote>"In a true custom build, you don't see the systems."</blockquote>
+        <p>Linear slot diffusers flush to the ceiling. Concealed returns. No visible
+        trim, no clumsy reveals. Audio, video, and climate integrated into the
+        architecture. The engineering disappears — the architecture remains.</p>
+      </div>
+      <div class="media wide rv">
+        <img src="assets/photos/edgefield_27.jpg" alt="Media room with recessed cove and trimless ceiling plane" loading="lazy">
+        <div class="cap">Recessed cove, trimless ceiling plane</div>
+      </div>
+    </div>
+
+    <div class="pillar flip">
+      <div class="txt rv">
+        <h3>Modern <em>Living.</em></h3>
+        <p>Open volume and clean rooflines. Kitchen and bath as sculpture —
+        waterfall island, floating vanity — with smart climate and automation
+        woven through the home.</p>
+      </div>
+      <div class="mediaPair rv">
+        <div class="media"><img src="assets/photos/edgefield_10.jpg" alt="Kitchen with stone island and white oak cabinetry" loading="lazy">
+          <div class="cap">Kitchen as sculpture</div></div>
+        <div class="media"><img src="assets/photos/edgefield_19.jpg" alt="Sculptural freestanding tub, concealed systems" loading="lazy">
+          <div class="cap">Sculptural calm, systems concealed</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow caps">04 · Proof of Build</div>
+      <hr class="rule">
+      <h2>Homes we've <em>already delivered.</em></h2>
+    </div>
+    <div class="proofGrid">
+      <div class="prop rv">
+        <img src="assets/photos/kenwell_00.jpg" alt="7619 Kenwell St exterior" loading="lazy">
+        <h3>7619 Kenwell St</h3>
+        <div class="city">Dallas, TX 75209</div>
+        <div class="specs">~4,100 SF · 4 BD / 4.5 BA · 2025</div>
+        <div class="feat">Stucco-and-brick exterior, floor-to-ceiling aluminum windows,
+        Sub-Zero / Wolf kitchen, Taj Mahal stone.</div>
+        <div class="credit">Built in partnership with Different Properties LLC</div>
+      </div>
+      <div class="prop rv">
+        <img src="assets/photos/edgefield_00.jpg" alt="741 Edgefield Rd exterior" loading="lazy">
+        <h3>741 Edgefield Rd</h3>
+        <div class="city">Fort Worth, TX 76107</div>
+        <div class="specs">5,011 SF · 5 BD / 5.5 BA · 2026</div>
+        <div class="feat">Steel-framed window walls, white-oak floors, stone waterfall
+        island; game room, theater, and wet bar.</div>
+        <div class="credit">Built in partnership with Different Properties LLC</div>
+      </div>
+      <div class="prop rv">
+        <img src="assets/photos/belmont_00.jpg" alt="4520 Belmont Ave exterior" loading="lazy">
+        <h3>4520 Belmont Ave</h3>
+        <div class="city">Dallas, TX 75204</div>
+        <div class="specs">2,500 SF · 3 BD / 3.5 BA · New Build</div>
+        <div class="feat">Contemporary architecture with clean lines in Knox–Henderson,
+        steps from the Katy Trail.</div>
+        <div class="credit">Built in partnership with Different Properties LLC</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow caps">05 · Our Process</div>
+      <hr class="rule">
+      <h2>From first drawing <em>to your front door.</em></h2>
+    </div>
+    <div class="steps">
+      <div class="step rv"><div class="dot"></div><div class="n">01</div>
+        <h3>Design</h3><p>Architecture, interiors, and budget resolved as one — not in sequence.</p></div>
+      <div class="step rv"><div class="dot"></div><div class="n">02</div>
+        <h3>Preconstruction</h3><p>Engineering, permits, selections, and a transparent build plan.</p></div>
+      <div class="step rv"><div class="dot"></div><div class="n">03</div>
+        <h3>Build</h3><p>Disciplined site leadership, clean sites, and weekly owner updates.</p></div>
+      <div class="step rv"><div class="dot"></div><div class="n">04</div>
+        <h3>Finish-Out</h3><p>The invisible-craft stage — millwork, systems, light, and detail.</p></div>
+      <div class="step rv"><div class="dot"></div><div class="n">05</div>
+        <h3>Handover</h3><p>Final walkthrough, systems training, and responsive warranty care.</p></div>
+    </div>
+    <div class="processLine rv">Five phases. One point of accountability. No surprises along the way.</div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="bg"></div>
+  <div class="shade"></div>
+  <div class="inner wrap">
+    <div class="rv">
+      <div class="eyebrow caps">06 · Next Steps</div>
+      <hr class="rule">
+      <h2>Let's walk <em>your lot.</em></h2>
+      <p class="lede">The next step is simply a conversation — about your site, your
+      program, and the home you have in mind.</p>
+    </div>
+    <div class="miniSteps rv">
+      <div class="ms"><div class="n">01</div><h3>Conversation</h3>
+        <p>Your vision, your timeline, our approach.</p></div>
+      <div class="ms"><div class="n">02</div><h3>Site Walk</h3>
+        <p>We meet on your lot and read the land together.</p></div>
+      <div class="ms"><div class="n">03</div><h3>Design Kickoff</h3>
+        <p>Architecture, interiors, and budget — as one.</p></div>
+    </div>
+    <div class="block rv">
+      <div>
+        <div class="who caps">Sebastien Pessy · Founder</div>
+        <div class="ways">
+          <a href="tel:+14699963789">469-996-3789</a>
+          &nbsp;·&nbsp; <a href="mailto:seb@six9builder.com">seb@six9builder.com</a>
+        </div>
+      </div>
+      <img class="crest" src="assets/logo.png" alt="Sebby Homes crest">
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Building Excellence · Creating Legacy</span>
+    <span class="gold">© Sebby Homes · Dallas–Fort Worth</span>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), {threshold:.12});
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
