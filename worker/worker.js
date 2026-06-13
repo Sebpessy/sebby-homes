@@ -83,7 +83,10 @@ export default {
           status: 'pending_verify', vt, ts: Date.now(),
         }), { expirationTtl: 60 * 60 * 24 * 7 });
 
-        const link = `${url.origin}/verify?id=${id}&t=${vt}`;
+        // Path-style link (no "?id=" / "&t="): query-string "=" followed by hex
+        // gets eaten by quoted-printable email decoders, which silently breaks
+        // every token/key link. Path segments avoid "=" entirely.
+        const link = `${url.origin}/verify/${id}/${vt}`;
         await sendEmail(env, email.trim(), 'Verify your email — Sebby Homes gallery access', emailShell(`
           <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">One quick step, ${esc(name.trim().split(' ')[0])}.</h2>
           <p style="color:#CFCFCF;font-size:14px;line-height:1.7">Confirm your email address to send your
@@ -95,8 +98,10 @@ export default {
       }
 
       // ---------------- GET /verify ----------------
-      if (url.pathname === '/verify') {
-        const id = url.searchParams.get('id'), t = url.searchParams.get('t');
+      if (url.pathname === '/verify' || url.pathname.startsWith('/verify/')) {
+        const seg = url.pathname.split('/').filter(Boolean); // ['verify', id, t]
+        const id = seg[1] || url.searchParams.get('id');
+        const t  = seg[2] || url.searchParams.get('t');
         const raw = await env.GATE.get(`req:${id}`);
         if (!raw) return page('Link expired', `<h1>Link <em>expired.</em></h1><p>This verification link is no longer valid. Please submit a new request.</p><a class="btn" href="${SITE}/#proof">Back to sebby.homes</a>`);
         const r = JSON.parse(raw);
@@ -107,8 +112,8 @@ export default {
           r.at = tok(); // approval token for owner links
           await env.GATE.put(`req:${id}`, JSON.stringify(r), { expirationTtl: 60 * 60 * 24 * 30 });
 
-          const a = `${url.origin}/decide?id=${id}&t=${r.at}&action=approve`;
-          const d = `${url.origin}/decide?id=${id}&t=${r.at}&action=deny`;
+          const a = `${url.origin}/decide/${id}/${r.at}/approve`;
+          const d = `${url.origin}/decide/${id}/${r.at}/deny`;
           await sendEmail(env, env.OWNER_EMAIL, `Gallery access request — ${r.name}`, emailShell(`
             <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">New gallery access request</h2>
             <p style="color:#CFCFCF;font-size:14px;line-height:1.8">
@@ -122,9 +127,11 @@ export default {
       }
 
       // ---------------- GET /decide (owner) ----------------
-      if (url.pathname === '/decide') {
-        const id = url.searchParams.get('id'), t = url.searchParams.get('t'),
-              action = url.searchParams.get('action');
+      if (url.pathname === '/decide' || url.pathname.startsWith('/decide/')) {
+        const seg = url.pathname.split('/').filter(Boolean); // ['decide', id, t, action]
+        const id = seg[1] || url.searchParams.get('id');
+        const t  = seg[2] || url.searchParams.get('t');
+        const action = seg[3] || url.searchParams.get('action');
         const raw = await env.GATE.get(`req:${id}`);
         if (!raw) return page('Not found', `<h1>Request <em>not found.</em></h1><p>This request has expired or was already handled.</p>`);
         const r = JSON.parse(raw);
@@ -140,7 +147,7 @@ export default {
           await sendEmail(env, r.email, 'Your gallery access — Sebby Homes', emailShell(`
             <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">Access granted, ${esc(r.name.split(' ')[0])}.</h2>
             <p style="color:#CFCFCF;font-size:14px;line-height:1.7">Your request to view the full photo galleries has been approved. Use your private link below — it works on any of your devices.</p>
-            ${btn(`${SITE}/?key=${key}`, 'View the galleries')}
+            ${btn(`${SITE}/#g/${key}`, 'View the galleries')}
             <p style="color:#8F8A80;font-size:12px">This link is personal to you — please don't forward it.</p>`));
           return page('Approved', `<h1>Access <em>approved.</em></h1><p>${esc(r.name)} (${esc(r.email)}) now has gallery access for ${esc(r.property)}.</p><p>They've been notified by email.</p>`);
         } else {
