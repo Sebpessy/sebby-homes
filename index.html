@@ -1056,9 +1056,11 @@ document.querySelectorAll('.prop[data-gallery]').forEach(p => {
   p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
 });
 
-/* approved access link: sebby.homes/?key=... */
+/* approved access link: sebby.homes/#g/<key>  (legacy: ?key=...) */
 (async () => {
-  const k = new URLSearchParams(location.search).get('key');
+  const hash = location.hash.slice(1);
+  const k = hash.startsWith('g/') ? decodeURIComponent(hash.slice(2))
+                                   : new URLSearchParams(location.search).get('key');
   if (k) {
     localStorage.setItem('sebbyAccess', k);
     history.replaceState(null, '', location.pathname + '#proof');
