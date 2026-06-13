@@ -816,13 +816,30 @@ if (window.gsap && window.ScrollTrigger && !reduceMotion) {
     const golds = prep([...svg.querySelectorAll('.goldPath, .goldThin')]);
     const labels = [...svg.querySelectorAll('.vnum, .vlab, .vdimlab')];
     gsap.set(labels, {autoAlpha: 0});
-    gsap.timeline({scrollTrigger: {trigger: '.vWrap', start: 'top 78%', once: true}})
+    gsap.set('.vLegend span', {autoAlpha: 0, y: 12});
+
+    /* continuous loop: the invisible systems keep redrawing themselves.
+       yoyo erases (offset -> length) then redraws (length -> 0), forever,
+       with a hold at each end via repeatDelay. */
+    const loop = gsap.timeline({repeat: -1, yoyo: true, repeatDelay: 1.5, paused: true})
+      .fromTo(golds, {strokeDashoffset: 0},
+              {strokeDashoffset: (i, t) => t.getTotalLength() || 0,
+               duration: 1.6, ease: 'sine.inOut', stagger: .12, immediateRender: false})
+      .fromTo(svg.querySelectorAll('.vnum, .vlab'), {autoAlpha: 1},
+              {autoAlpha: .2, duration: 1, ease: 'sine.inOut', immediateRender: false}, '<');
+
+    /* one-time intro: dim house + all labels draw in, then start the loop */
+    const intro = gsap.timeline({scrollTrigger: {trigger: '.vWrap', start: 'top 80%', once: true},
+                                 onComplete: () => loop.play()})
       .to(dims, {strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut', stagger: .05})
       .to(svg.querySelectorAll('.vdimlab'), {autoAlpha: 1, duration: .5, stagger: .08}, '-=.4')
       .to(golds, {strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut', stagger: .12}, '-=.2')
       .to(svg.querySelectorAll('.vnum, .vlab'), {autoAlpha: 1, duration: .6, stagger: .1}, '-=.6')
       .to('.vLegend span', {autoAlpha: 1, y: 0, duration: .5, stagger: .08}, '-=.4');
-    gsap.set('.vLegend span', {autoAlpha: 0, y: 12});
+
+    /* pause the continuous loop when the section scrolls off-screen (perf) */
+    ScrollTrigger.create({trigger: '.vWrap', start: 'top bottom', end: 'bottom top',
+      onToggle: self => { if (intro.progress() === 1) self.isActive ? loop.play() : loop.pause(); }});
   })();
 
   /* gold rules draw in */
