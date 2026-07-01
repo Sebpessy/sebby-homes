@@ -1,4 +1,4 @@
-# robots.txt for Sebby Homes — https://sebby.homes
+# robots.txt for Sebby Homes - https://sebby.homes
 # We welcome search and AI/answer-engine crawlers. Nothing here is private;
 # the only gated content (photo galleries) lives behind JS "#" routes that
 # crawlers cannot reach anyway, so no disallow rules are needed.
