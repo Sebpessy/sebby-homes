@@ -1,0 +1,68 @@
+/* Sebby Homes — Journal stylesheet
+   Shares the homepage brand tokens. Used by all pages under /journal/. */
+:root{
+  --black:#0B0B0B;
+  --panel:#141311;
+  --gold:#C9A24B;
+  --gold-bright:#E5C76B;
+  --gold-dim:#7A6330;
+  --gold-faint:rgba(201,162,75,.28);
+  --white:#FFFFFF;
+  --muted:#CFCFCF;
+  --muted-dim:#8F8A80;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--muted);font-family:'Inter',sans-serif;font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:var(--black)}
+img{display:block;max-width:100%}
+a{color:var(--gold);text-decoration:none}
+a:hover{color:var(--gold-bright)}
+.serif{font-family:'Cormorant Garamond',serif}
+.caps{font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:.28em;font-weight:500}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 28px}
+
+/* top bar */
+.jnav{border-bottom:1px solid var(--gold-faint)}
+.jnav .wrap{max-width:1180px;display:flex;align-items:center;justify-content:space-between;padding-top:20px;padding-bottom:20px}
+.jnav .brand{display:flex;align-items:center;gap:12px}
+.jnav .brand img{height:44px;width:auto}
+.jnav .brand b{font-family:'Cormorant Garamond',serif;color:var(--white);font-weight:600;font-size:1.25rem}
+.jnav .links a{color:var(--muted);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;margin-left:26px}
+.jnav .links a:hover{color:var(--gold-bright)}
+
+.eyebrow{color:var(--gold);font-size:.72rem}
+.rule{width:38px;height:1px;background:var(--gold);border:0;margin:14px 0 26px}
+
+/* article */
+article{padding:70px 0 90px}
+article header{margin-bottom:42px}
+article h1{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--white);font-size:clamp(2.1rem,5vw,3.1rem);line-height:1.12}
+article .meta{color:var(--muted-dim);font-size:.8rem;letter-spacing:.06em;margin-top:18px}
+article .lede{color:var(--muted);font-size:1.18rem;margin-top:22px;font-family:'Cormorant Garamond',serif;font-style:italic}
+article h2{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--white);font-size:1.7rem;line-height:1.2;margin:44px 0 14px}
+article h3{font-family:'Inter',sans-serif;font-weight:600;color:var(--white);font-size:1.05rem;margin:30px 0 8px}
+article p{margin:0 0 18px;max-width:70ch}
+article ul,article ol{margin:0 0 18px 1.2em}
+article li{margin-bottom:8px}
+article blockquote{border-left:2px solid var(--gold);padding-left:20px;margin:26px 0;color:var(--white);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem}
+article img{border:1px solid var(--gold-faint);margin:30px 0}
+.cta-band{border-top:1px solid var(--gold-faint);margin-top:50px;padding-top:30px}
+.cta-band a.btn{display:inline-block;border:1px solid var(--gold-dim);color:var(--gold);padding:11px 22px;letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;transition:all .3s}
+.cta-band a.btn:hover{background:var(--gold);color:var(--black)}
+
+/* index list */
+.jlist{padding:60px 0 90px}
+.jlist h1{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--white);font-size:clamp(2rem,4.4vw,2.8rem)}
+.post-card{display:block;border-top:1px solid var(--gold-faint);padding:30px 0}
+.post-card:last-child{border-bottom:1px solid var(--gold-faint)}
+.post-card .t{font-family:'Cormorant Garamond',serif;color:var(--white);font-size:1.6rem;line-height:1.2}
+.post-card .d{color:var(--muted-dim);font-size:.76rem;letter-spacing:.06em;margin-top:8px}
+.post-card p{color:var(--muted);margin-top:10px;max-width:70ch}
+.post-card:hover .t{color:var(--gold-bright)}
+
+footer{border-top:1px solid var(--gold-faint);padding:30px 0}
+footer .wrap{max-width:1180px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.78rem;color:var(--muted-dim)}
+footer .gold{color:var(--gold)}
+@media(max-width:640px){.jnav .links a{margin-left:16px}}
