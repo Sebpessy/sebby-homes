@@ -1,6 +1,8 @@
 /**
  * Sebby Homes — gallery access gate
  * Routes (api.sebby.homes):
+ *   POST /contact  {name,email,phone,location,projectType,timeline,message}
+ *                                        -> email owner + acknowledge visitor
  *   POST /request  {name,email,property} -> store + send verification email to visitor
  *   GET  /verify?id&t                    -> mark verified + email owner approve/deny links
  *   GET  /decide?id&t&action             -> owner approves/denies; visitor notified
@@ -32,14 +34,16 @@ a.btn{display:inline-block;margin-top:18px;background:#C9A24B;color:#0B0B0B;padd
 </head><body><div class="box"><div class="tag">Sebby Homes · Dallas — Fort Worth</div>${body}</div></body></html>`,
   { headers: { 'Content-Type': 'text/html;charset=utf-8' } });
 
-async function sendEmail(env, to, subject, html) {
+async function sendEmail(env, to, subject, html, replyTo) {
+  const payload = { from: env.FROM_EMAIL, to: [to], subject, html };
+  if (replyTo) payload.reply_to = [replyTo];
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${env.RESEND_API_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ from: env.FROM_EMAIL, to: [to], subject, html }),
+    body: JSON.stringify(payload),
   });
   if (!r.ok) throw new Error(`resend ${r.status}: ${await r.text()}`);
 }
@@ -93,6 +97,58 @@ export default {
           gallery access request for <strong style="color:#E5C76B">${esc(property || 'our portfolio')}</strong> to Sebby Homes for review.</p>
           ${btn(link, 'Verify my email')}
           <p style="color:#8F8A80;font-size:12px">If you didn't request this, you can ignore this email.</p>`));
+
+        return Response.json({ ok: true }, { headers: CORS });
+      }
+
+      // ---------------- POST /contact ----------------
+      if (url.pathname === '/contact' && req.method === 'POST') {
+        const b = await req.json();
+        const str = (v) => (typeof v === 'string' ? v : '').trim();
+        const name = str(b.name);
+        const email = str(b.email);
+        // honeypot: real people never fill a field they cannot see
+        if (b.website) return Response.json({ ok: true }, { headers: CORS });
+        if (name.length < 2 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
+          return Response.json({ ok: false, error: 'invalid input' }, { status: 400, headers: CORS });
+
+        const rl = await env.GATE.get(`crl:${email.toLowerCase()}`);
+        if (rl) return Response.json({ ok: false, error: 'too many requests' }, { status: 429, headers: CORS });
+        await env.GATE.put(`crl:${email.toLowerCase()}`, '1', { expirationTtl: 600 });
+
+        const f = {
+          name: name.slice(0, 80),
+          email: email.slice(0, 120),
+          phone: str(b.phone).slice(0, 40),
+          location: str(b.location).slice(0, 120),
+          projectType: str(b.projectType).slice(0, 80),
+          timeline: str(b.timeline).slice(0, 80),
+          message: str(b.message).slice(0, 4000),
+          ts: Date.now(),
+        };
+        await env.GATE.put(`msg:${tok()}`, JSON.stringify(f), { expirationTtl: 60 * 60 * 24 * 365 });
+
+        const row = (k, v) => v ? `<strong style="color:#E5C76B">${k}:</strong> ${esc(v)}<br>` : '';
+        await sendEmail(env, env.OWNER_EMAIL, `New inquiry — ${f.name}${f.location ? ' · ' + f.location : ''}`, emailShell(`
+          <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">New inquiry from sebby.homes</h2>
+          <p style="color:#CFCFCF;font-size:14px;line-height:1.8">
+            ${row('Name', f.name)}
+            <strong style="color:#E5C76B">Email:</strong> <a href="mailto:${esc(f.email)}" style="color:#C9A24B">${esc(f.email)}</a><br>
+            ${f.phone ? `<strong style="color:#E5C76B">Phone:</strong> <a href="tel:${esc(f.phone)}" style="color:#C9A24B">${esc(f.phone)}</a><br>` : ''}
+            ${row('Location', f.location)}
+            ${row('Project', f.projectType)}
+            ${row('Timeline', f.timeline)}
+            <strong style="color:#E5C76B">When:</strong> ${new Date(f.ts).toLocaleString('en-US', { timeZone: 'America/Chicago' })} CT</p>
+          ${f.message ? `<div style="border-left:2px solid #7A6330;padding-left:16px;margin-top:8px;color:#CFCFCF;font-size:14px;line-height:1.7;white-space:pre-wrap">${esc(f.message)}</div>` : ''}
+          ${btn(`mailto:${esc(f.email)}`, 'Reply')}`), f.email);
+
+        await sendEmail(env, f.email, 'We received your message — Sebby Homes', emailShell(`
+          <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">Thank you, ${esc(f.name.split(' ')[0])}.</h2>
+          <p style="color:#CFCFCF;font-size:14px;line-height:1.7">Your message reached Sebastien directly. He reads every
+          inquiry himself and will reply personally, usually within one business day.</p>
+          <p style="color:#CFCFCF;font-size:14px;line-height:1.7">If it's time-sensitive, call
+          <a href="tel:+14699963789" style="color:#C9A24B">469-996-3789</a>.</p>
+          ${f.message ? `<div style="border-left:2px solid #7A6330;padding-left:16px;margin-top:18px;color:#8F8A80;font-size:13px;line-height:1.7;white-space:pre-wrap">${esc(f.message)}</div>` : ''}`));
 
         return Response.json({ ok: true }, { headers: CORS });
       }
