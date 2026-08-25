@@ -454,6 +454,31 @@ nav .links a.cta:hover{background:var(--gold);color:var(--black)}
 .contact .ways a:hover{color:var(--gold-bright)}
 .contact img.wordmark{width:340px;max-width:80vw;height:auto;border:1px solid var(--gold-faint);box-shadow:0 24px 60px rgba(0,0,0,.5)}
 
+/* contact form */
+.cform{position:relative;margin-top:58px;max-width:640px;border:1px solid var(--gold-faint);background:rgba(18,17,16,.86);padding:38px 36px}
+.cform h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--white);line-height:1.2}
+.cform h3 em{font-style:normal;color:var(--gold)}
+.cform .csub{font-size:.85rem;color:var(--muted-dim);margin-top:10px;line-height:1.6;max-width:470px}
+.cform form{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+.cform .full{grid-column:1/-1}
+.cform label{display:block;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-dim);margin-bottom:8px}
+.cform input,.cform select,.cform textarea{background:#0B0B0B;border:1px solid #2c2a26;color:var(--white);padding:13px 14px;font-family:'Inter',sans-serif;font-size:.92rem;width:100%;outline:none;border-radius:0;-webkit-appearance:none;appearance:none;transition:border-color .3s}
+.cform select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 19px) calc(50% + 1px),calc(100% - 13px) calc(50% + 1px);background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:38px;cursor:pointer}
+.cform select option{background:#0B0B0B;color:var(--white)}
+.cform textarea{resize:vertical;min-height:120px;line-height:1.6}
+.cform input:focus,.cform select:focus,.cform textarea:focus{border-color:var(--gold)}
+.cform input::placeholder,.cform textarea::placeholder{color:#5d5952}
+.cform .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cform .csubmit{margin-top:6px;background:var(--gold);color:var(--black);border:0;padding:15px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .3s}
+.cform .csubmit:hover{background:var(--gold-bright)}
+.cform .csubmit:disabled{opacity:.5;cursor:wait}
+.cform .cfine{grid-column:1/-1;font-size:.68rem;color:var(--muted-dim);letter-spacing:.04em;line-height:1.6}
+.cform .cfine a{color:var(--gold)}
+.cform .cmsg{margin-top:20px;font-size:.88rem;line-height:1.7;display:none}
+.cform .cmsg.ok{display:block;color:var(--gold-bright)}
+.cform .cmsg.err{display:block;color:#d27a6a}
+@media(max-width:640px){.cform{padding:30px 24px}.cform form{grid-template-columns:1fr}}
+
 /* footer */
 footer{border-top:1px solid rgba(201,162,75,.18);padding:26px 0}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
@@ -926,6 +951,59 @@ footer span.gold{color:var(--gold-dim)}
       <div class="ms"><div class="n">03</div><h3>Design Kickoff</h3>
         <p>Architecture, interiors, and budget, as one.</p></div>
     </div>
+    <div class="cform rv">
+      <h3>Tell us about <em>your project.</em></h3>
+      <div class="csub">A few details are enough to start. Sebastien reads every message
+      and replies personally, usually within one business day.</div>
+      <form id="cform" novalidate>
+        <div>
+          <label for="cname">Full name</label>
+          <input type="text" id="cname" name="name" autocomplete="name" required maxlength="80" placeholder="Your name">
+        </div>
+        <div>
+          <label for="cemail">Email</label>
+          <input type="email" id="cemail" name="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
+        </div>
+        <div>
+          <label for="cphone">Phone <span style="text-transform:none;letter-spacing:.04em">(optional)</span></label>
+          <input type="tel" id="cphone" name="phone" autocomplete="tel" maxlength="40" placeholder="469-000-0000">
+        </div>
+        <div>
+          <label for="clocation">Lot or neighborhood <span style="text-transform:none;letter-spacing:.04em">(optional)</span></label>
+          <input type="text" id="clocation" name="location" maxlength="120" placeholder="Highland Park, Southlake, ...">
+        </div>
+        <div>
+          <label for="ctype">Project</label>
+          <select id="ctype" name="projectType">
+            <option>New custom home</option>
+            <option>Major renovation or addition</option>
+            <option>Pool, outdoor living, or site work</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div>
+          <label for="ctimeline">Timeline</label>
+          <select id="ctimeline" name="timeline">
+            <option>Ready to start</option>
+            <option>Within 6 months</option>
+            <option>6 to 12 months</option>
+            <option>Exploring</option>
+          </select>
+        </div>
+        <div class="full">
+          <label for="cmessage">The home you have in mind</label>
+          <textarea id="cmessage" name="message" maxlength="4000" placeholder="Site, program, square footage, architect if you have one, anything that helps us prepare for the conversation."></textarea>
+        </div>
+        <div class="hp" aria-hidden="true">
+          <label for="cwebsite">Website</label>
+          <input type="text" id="cwebsite" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        <button class="csubmit full" id="csubmit" type="submit">Start the Conversation</button>
+        <div class="cfine">Prefer to talk now? Call <a href="tel:+14699963789">469-996-3789</a>
+        or email <a href="mailto:seb@sebby.homes">seb@sebby.homes</a>.</div>
+      </form>
+      <div class="cmsg" id="cmsg" role="status" aria-live="polite"></div>
+    </div>
     <div class="block rv">
       <div class="founder">
         <img class="fphoto" src="assets/seb_cowboy.jpg" alt="Sebastien Pessy, founder of Sebby Homes">
@@ -1286,6 +1364,51 @@ aform.addEventListener('submit', async e => {
 });
 document.getElementById('acancel').addEventListener('click', closeRequest);
 amodal.addEventListener('click', e => { if (e.target === amodal) closeRequest(); });
+
+/* ---------- contact form ---------- */
+const cform = document.getElementById('cform'),
+      cmsg = document.getElementById('cmsg'),
+      csubmit = document.getElementById('csubmit');
+cform.addEventListener('submit', async e => {
+  e.preventDefault();
+  const val = id => document.getElementById(id).value.trim();
+  const name = val('cname'), email = val('cemail');
+  if (name.length < 2 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    cmsg.className = 'cmsg err';
+    cmsg.textContent = 'Please enter your full name and a valid email address.';
+    return;
+  }
+  csubmit.disabled = true;
+  try {
+    const r = await fetch(API + '/contact', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name, email,
+        phone: val('cphone'),
+        location: val('clocation'),
+        projectType: val('ctype'),
+        timeline: val('ctimeline'),
+        message: val('cmessage'),
+        website: val('cwebsite')
+      })
+    });
+    const j = await r.json();
+    if (j.ok) {
+      cform.style.display = 'none';
+      cmsg.className = 'cmsg ok';
+      cmsg.textContent = 'Thank you, ' + name.split(' ')[0] + '. Your message is with Sebastien, ' +
+        'and a copy is on its way to ' + email + '. You will hear back within one business day.';
+    } else if (r.status === 429) {
+      cmsg.className = 'cmsg err';
+      cmsg.textContent = 'We already have a message from you. Give us a few minutes, or call 469-996-3789.';
+    } else { throw new Error(j.error || 'failed'); }
+  } catch (err) {
+    cmsg.className = 'cmsg err';
+    cmsg.textContent = 'Something went wrong sending your message. Please try again, or email seb@sebby.homes.';
+  }
+  csubmit.disabled = false;
+});
 
 document.querySelectorAll('.prop[data-gallery]').forEach(p => {
   const open = async () => {
