@@ -144,7 +144,7 @@ export default {
 
         await sendEmail(env, f.email, 'We received your message — Sebby Homes', emailShell(`
           <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">Thank you, ${esc(f.name.split(' ')[0])}.</h2>
-          <p style="color:#CFCFCF;font-size:14px;line-height:1.7">Your message reached Sebastien directly. He reads every
+          <p style="color:#CFCFCF;font-size:14px;line-height:1.7">Your message reached Seb directly. He reads every
           inquiry himself and will reply personally, usually within one business day.</p>
           <p style="color:#CFCFCF;font-size:14px;line-height:1.7">If it's time-sensitive, call
           <a href="tel:+14699963789" style="color:#C9A24B">469-996-3789</a>.</p>

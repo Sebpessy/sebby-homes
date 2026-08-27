@@ -1,14 +1,14 @@
 # Sebby Homes
 
 > Sebby Homes is a custom luxury residential home builder serving Dallas–Fort Worth,
-> Texas. Founded by Sebastien Pessy, the firm designs and delivers contemporary custom
+> Texas. Founded by Seb Pessy, the firm designs and delivers contemporary custom
 > homes with a design-led, single-accountability process across Highland Park, Preston
 > Hollow, Southlake, Westlake, Uptown, and Knox–Henderson.
 
 ## Key facts
 
 - **Business:** Sebby Homes, custom luxury home builder (general contractor)
-- **Founder:** Sebastien Pessy
+- **Founder:** Seb Pessy
 - **Service area:** Dallas–Fort Worth, Texas (Highland Park, Preston Hollow, Southlake, Westlake, Uptown, Knox–Henderson)
 - **Website:** https://sebby.homes
 - **Phone:** 469-996-3789
@@ -45,5 +45,5 @@ through the six9 Builder client portal (live schedule, documented decisions, one
 
 ## Contact
 
-To start a project, contact founder Sebastien Pessy at 469-996-3789 or seb@sebby.homes.
+To start a project, contact founder Seb Pessy at 469-996-3789 or seb@sebby.homes.
 The first step is a conversation and a walk of your lot in the Dallas–Fort Worth area.

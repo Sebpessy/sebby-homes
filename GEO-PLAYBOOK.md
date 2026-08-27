@@ -13,7 +13,7 @@ across the web. Do these in order.
 ## What's already done (in this repo)
 
 - ✅ **Structured data (JSON-LD)** in `index.html` — a linked graph describing the business
-  (`GeneralContractor`), founder (Sebastien Pessy), website, and an FAQ. This is what lets AI
+  (`GeneralContractor`), founder (Seb Pessy), website, and an FAQ. This is what lets AI
   extract your who/where/what/contact with confidence.
 - ✅ **`robots.txt`** — explicitly welcomes AI crawlers (GPTBot, PerplexityBot, ClaudeBot,
   Google-Extended, and more).
@@ -56,7 +56,7 @@ AI "home builder in Dallas" answers lean heavily on Google's local data.
 
 ## Step 4 — LinkedIn + secondary directories
 
-- **LinkedIn** company page for Sebby Homes (link the site; Sebastien as founder).
+- **LinkedIn** company page for Sebby Homes (link the site; Seb as founder).
 - **Bing Places** (<https://www.bingplaces.com>) — powers Copilot/Bing answers.
 - **Apple Business Connect** (<https://businessconnect.apple.com>) — powers Apple/Siri.
 - Consider: BuildZoom, Angi, local DFW builder associations. Same NAP everywhere.
