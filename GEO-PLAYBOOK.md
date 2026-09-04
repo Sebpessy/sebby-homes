@@ -85,12 +85,34 @@ Once the profiles above exist, add their URLs to the site so AI connects them to
 
 ## Step 6 — Keep it alive (the compounding loop)
 
-1. **Publish a journal post** every few weeks (see `journal/README.md`). High-intent titles
-   like "Building a custom home in Highland Park" earn citations.
-2. **Bump `dateModified`** when you update a page — freshness triggers AI re-crawls, usually
+1. **Publish a journal post every few weeks, never in a batch** (see `journal/README.md`).
+   High-intent titles earn citations.
+2. **Neighborhood posts: one at a time, on a schedule, with real local detail.** Google's
+   scaled-content-abuse enforcement targets the pattern of many near-identical location
+   pages appearing at once. One neighborhood post is an asset; a stack of them published
+   together is a liability. Rules:
+   - **Cadence:** at most one neighborhood post per month, and never two in the same week.
+     The site launched with four articles; hold that baseline rather than jumping it.
+   - **Order:** write the neighborhoods where homes have actually been delivered or lots
+     walked first, so the post can name real streets, lot conditions, and review outcomes.
+     Knox–Henderson has a delivered residence; Highland Park is already written.
+   - **Content bar:** every neighborhood post must contain things true only of that place:
+     its town or city review process and realistic timeline, lot size, tree, slope and soil
+     conditions, deed restrictions or architectural control, what land costs relative to the
+     build, and at least one detail from a real project or lot walk there. If a paragraph
+     would still be true with the neighborhood name swapped, cut it.
+   - **Overlap check:** before publishing, compare the draft against every existing
+     neighborhood post. Shared text should be limited to the nav, footer, and CTA band. If
+     two read alike, merge them into one Park Cities or DFW-wide post instead.
+   - **Wire-up:** each post gets the three edits in `journal/README.md` with the real
+     publish date in `sitemap.xml`. Do not backdate.
+   - **Stop rule:** no more than four neighborhood posts total, Highland Park included.
+     Past that the journal starts to look like a location-page set rather than a builder
+     writing about their own work.
+3. **Bump `dateModified`** when you update a page — freshness triggers AI re-crawls, usually
    within days.
-3. **Gather Google reviews** steadily.
-4. **Post to Instagram/Houzz** consistently with the same NAP.
+4. **Gather Google reviews** steadily.
+5. **Post to Instagram/Houzz** consistently with the same NAP.
 
 ---
 

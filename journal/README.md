@@ -34,8 +34,23 @@ re-crawl within a few days.
 
 ## Good post ideas (high-intent, high-citation)
 
-- Building a custom home in Highland Park / Preston Hollow / Southlake — what to know
 - How long does it take to build a custom home in DFW?
 - Custom vs. production builder: what's the difference?
 - What is a design-led build, and why does it save money?
 - Choosing a lot in Dallas–Fort Worth: the site factors that drive cost
+- A neighborhood post (Preston Hollow, Southlake, Knox–Henderson) — **one at a time**, see below
+
+## Neighborhood posts: space them out
+
+Highland Park is already published. The rest are worth writing, but one per month at most
+and never two in the same week: a run of near-identical location pages is the pattern
+Google's scaled-content-abuse enforcement looks for, and four articles is the baseline this
+site has established.
+
+Each neighborhood post must carry detail true only of that place — the town or city review
+process and its real timeline, lot size, trees, slope and soil, deed restrictions or
+architectural control, what land costs relative to the build, and something from a project
+or lot walk there. A paragraph that survives swapping the neighborhood name does not belong
+in the post. Before publishing, read the draft against the existing neighborhood posts; if
+they read alike, write one Park Cities post instead of two thin ones. Cap the journal at
+four neighborhood posts in total, Highland Park included.
