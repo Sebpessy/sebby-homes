@@ -108,6 +108,7 @@
             "name": "Luxury home renovation",
             "serviceType": "Home renovation and remodeling",
             "url": "https://sebby.homes/#renovation",
+            "image": "https://sebby.homes/assets/photos/reno_kitchen01_after.jpg",
             "provider": { "@id": "https://sebby.homes/#business" },
             "areaServed": "Dallas–Fort Worth, Texas",
             "hasOfferCatalog": {
@@ -881,6 +882,21 @@ footer span.gold{color:var(--gold-dim)}
 #renovation .live p{font-size:.92rem;color:var(--muted);line-height:1.7}
 #renovation .live p + p{margin-top:12px}
 #renovation .renoCta{text-align:center;margin-top:30px}
+#renovation .baFig{max-width:880px;margin:48px auto 0}
+#renovation .ba{position:relative;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--gold-dim);background:var(--panel);cursor:ew-resize;touch-action:pan-y;user-select:none;-webkit-user-select:none;outline:none}
+#renovation .ba:focus-visible{border-color:var(--gold-bright)}
+#renovation .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+#renovation .ba .baBefore{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos,50%)) 0 0)}
+#renovation .baLine{position:absolute;top:0;bottom:0;left:var(--pos,50%);width:2px;margin-left:-1px;background:var(--gold);pointer-events:none}
+#renovation .baKnob{position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;border:1px solid var(--gold);background:rgba(11,11,11,.72);display:flex;align-items:center;justify-content:center;gap:6px;color:var(--gold-bright);font-size:.9rem;line-height:1}
+#renovation .baTag{position:absolute;top:14px;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--white);background:rgba(11,11,11,.62);padding:6px 10px;pointer-events:none}
+#renovation .baTag.l{left:14px}
+#renovation .baTag.r{right:14px}
+#renovation .baFig figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;margin-top:16px}
+#renovation .baFig h3{font-family:'Montserrat',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:.06em;color:var(--white)}
+#renovation .baFig .city{font-size:.74rem;color:var(--muted-dim);margin-top:2px}
+#renovation .baFig .feat{font-size:.82rem;color:var(--muted);max-width:520px}
+#renovation .baHint{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-dim);font-size:.95rem;align-self:center}
 #renovation .renoCta a{display:inline-block;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;border:1px solid var(--gold-dim);color:var(--gold);padding:14px 28px;transition:all .3s}
 #renovation .renoCta a:hover{background:var(--gold);color:var(--black)}
 </style>
@@ -895,6 +911,29 @@ footer span.gold{color:var(--gold-dim)}
       cellars, and backyards and front yards, held to the same standard as the custom homes we build
       from the ground up.</p>
     </div>
+    <figure class="baFig rv">
+      <div class="ba" id="baKitchen" role="slider" tabindex="0" aria-label="Kitchen renovation, before and after. Drag or use the arrow keys to compare."
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <img src="assets/photos/reno_kitchen01_after.jpg" width="1600" height="1200" loading="lazy"
+             alt="After: white flat-panel kitchen with a quartz island, pendant lights, and stacked wall ovens">
+        <div class="baBefore">
+          <img src="assets/photos/reno_kitchen01_before.jpg" width="1600" height="1200" loading="lazy"
+               alt="Before: oak-cabinet kitchen with a laminate-topped peninsula and wallpapered walls">
+        </div>
+        <span class="baTag l">Before</span>
+        <span class="baTag r">After</span>
+        <div class="baLine" aria-hidden="true"><div class="baKnob">&#8249; &#8250;</div></div>
+      </div>
+      <figcaption>
+        <div>
+          <h3>Kitchen Renovation</h3>
+          <div class="city">Dallas–Fort Worth, TX</div>
+        </div>
+        <div class="feat">Oak cabinetry and a clipped laminate peninsula replaced with flat-panel
+        cabinetry to the ceiling, a quartz island with seating for five, and stacked wall ovens.</div>
+        <div class="baHint">Drag to compare</div>
+      </figcaption>
+    </figure>
     <div class="renoGrid">
       <div class="note rv">
         <p>I came up remodeling. Before I built a single new home, I spent years opening
@@ -939,19 +978,6 @@ footer span.gold{color:var(--gold-dim)}
         <h3>Wine Cellars &amp; Wine Rooms</h3>
         <p>Glass-walled wine rooms and climate-controlled cellars, with insulation, vapor barrier, and cooling built in before the racking goes up.</p></div>
     </div>
-    <!--
-      Before / after grid: add once renovation photos are in assets/photos/.
-      One .prop card per project, same markup as #proof, for example:
-      <div class="proofGrid">
-        <div class="prop rv">
-          <img src="assets/photos/reno_PROJECT_after.jpg" alt="Renovated kitchen, NEIGHBORHOOD, Dallas" loading="lazy">
-          <h3>Kitchen and Primary Suite</h3>
-          <div class="city">NEIGHBORHOOD, TX</div>
-          <div class="specs">Renovation · YEAR</div>
-          <div class="feat">One line on what was found behind the walls and fixed.</div>
-        </div>
-      </div>
-    -->
     <div class="processLine rv">One builder of record. A plan for your household. Nothing left behind the walls.</div>
     <div class="renoCta rv"><a href="#contact" data-project="Renovation or remodel">Start a renovation conversation</a></div>
   </div>
@@ -1606,6 +1632,48 @@ document.querySelectorAll('.prop[data-gallery]').forEach(p => {
   };
   p.addEventListener('click', open);
   p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+});
+
+/* ---------- renovation before / after ---------- */
+document.querySelectorAll('.ba').forEach(ba => {
+  let pos = 50, dragging = false, touched = false, sweep = null;
+  const set = v => {
+    pos = Math.max(0, Math.min(100, v));
+    ba.style.setProperty('--pos', pos + '%');
+    ba.setAttribute('aria-valuenow', Math.round(pos));
+  };
+  const fromEvent = e => {
+    const r = ba.getBoundingClientRect();
+    set((e.clientX - r.left) / r.width * 100);
+  };
+  const stopSweep = () => { touched = true; if (sweep) { sweep.kill(); sweep = null; } };
+  ba.addEventListener('pointerdown', e => {
+    stopSweep(); dragging = true; ba.setPointerCapture(e.pointerId); fromEvent(e);
+  });
+  ba.addEventListener('pointermove', e => { if (dragging) fromEvent(e); });
+  ['pointerup', 'pointercancel'].forEach(t => ba.addEventListener(t, () => { dragging = false; }));
+  ba.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 10 : 2;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { stopSweep(); set(pos - step); e.preventDefault(); }
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { stopSweep(); set(pos + step); e.preventDefault(); }
+    if (e.key === 'Home') { stopSweep(); set(0); e.preventDefault(); }
+    if (e.key === 'End') { stopSweep(); set(100); e.preventDefault(); }
+  });
+  set(50);
+  // Sweep the divider back and forth while it is on screen, until someone grabs it.
+  if (reduceMotion || !window.gsap) return;
+  const state = {v: 50};
+  new IntersectionObserver(([en]) => {
+    if (touched) return;
+    if (en.isIntersecting && !sweep) {
+      state.v = pos;
+      sweep = gsap.timeline({repeat: -1, repeatDelay: 1.6, onUpdate: () => set(state.v)})
+        .to(state, {v: 14, duration: 1.4, ease: 'power2.inOut'})
+        .to(state, {v: 86, duration: 2.2, ease: 'power2.inOut'})
+        .to(state, {v: 50, duration: 1.4, ease: 'power2.inOut'});
+    } else if (!en.isIntersecting && sweep) { sweep.pause(); }
+    else if (en.isIntersecting && sweep) { sweep.resume(); }
+  }, {threshold: .5}).observe(ba);
 });
 
 /* approved access link: sebby.homes/#g/<key>  (legacy: ?key=...) */
