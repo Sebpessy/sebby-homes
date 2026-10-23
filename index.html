@@ -108,7 +108,10 @@
             "name": "Luxury home renovation",
             "serviceType": "Home renovation and remodeling",
             "url": "https://sebby.homes/#renovation",
-            "image": "https://sebby.homes/assets/photos/reno_kitchen01_after.jpg",
+            "image": [
+              "https://sebby.homes/assets/photos/reno_kitchen01_after.jpg",
+              "https://sebby.homes/assets/photos/reno_wine01_after.jpg"
+            ],
             "provider": { "@id": "https://sebby.homes/#business" },
             "areaServed": "Dallas–Fort Worth, Texas",
             "hasOfferCatalog": {
@@ -882,9 +885,12 @@ footer span.gold{color:var(--gold-dim)}
 #renovation .live p{font-size:.92rem;color:var(--muted);line-height:1.7}
 #renovation .live p + p{margin-top:12px}
 #renovation .renoCta{text-align:center;margin-top:30px}
-#renovation .baFig{max-width:880px;margin:48px auto 0}
+#renovation .baRow{display:grid;grid-template-columns:16fr 9fr;gap:28px;align-items:start;margin-top:48px}
+@media(max-width:860px){#renovation .baRow{grid-template-columns:1fr;gap:40px}}
+#renovation .baFig{margin:0;min-width:0}
 #renovation .ba{position:relative;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--gold-dim);background:var(--panel);cursor:ew-resize;touch-action:pan-y;user-select:none;-webkit-user-select:none;outline:none}
 #renovation .ba:focus-visible{border-color:var(--gold-bright)}
+#renovation .ba.tall{aspect-ratio:3/4}
 #renovation .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 #renovation .ba .baBefore{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos,50%)) 0 0)}
 #renovation .baLine{position:absolute;top:0;bottom:0;left:var(--pos,50%);width:2px;margin-left:-1px;background:var(--gold);pointer-events:none}
@@ -911,6 +917,7 @@ footer span.gold{color:var(--gold-dim)}
       cellars, and backyards and front yards, held to the same standard as the custom homes we build
       from the ground up.</p>
     </div>
+    <div class="baRow">
     <figure class="baFig rv">
       <div class="ba" id="baKitchen" role="slider" tabindex="0" aria-label="Kitchen renovation, before and after. Drag or use the arrow keys to compare."
            aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
@@ -934,6 +941,30 @@ footer span.gold{color:var(--gold-dim)}
         <div class="baHint">Drag to compare</div>
       </figcaption>
     </figure>
+    <figure class="baFig rv">
+      <div class="ba tall" id="baWine" role="slider" tabindex="0" aria-label="Wine room, before and after. Drag or use the arrow keys to compare."
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <img src="assets/photos/reno_wine01_after.jpg" width="900" height="1200" loading="lazy"
+             alt="After: glass-walled wine room with floating black steel racking and recessed lighting, beside a lit bar">
+        <div class="baBefore">
+          <img src="assets/photos/reno_wine01_before.jpg" width="900" height="1200" loading="lazy"
+               alt="Before: empty window nook with bare walls and new wood flooring">
+        </div>
+        <span class="baTag l">Before</span>
+        <span class="baTag r">After</span>
+        <div class="baLine" aria-hidden="true"><div class="baKnob">&#8249; &#8250;</div></div>
+      </div>
+      <figcaption>
+        <div>
+          <h3>Wine Room &amp; Bar</h3>
+          <div class="city">Dallas–Fort Worth, TX</div>
+        </div>
+        <div class="feat">An empty window nook turned into a glass-walled wine room with
+        floating steel racking, recessed lighting, and a lit bar.</div>
+        <div class="baHint">Drag to compare</div>
+      </figcaption>
+    </figure>
+    </div>
     <div class="renoGrid">
       <div class="note rv">
         <p>I came up remodeling. Before I built a single new home, I spent years opening
@@ -1635,7 +1666,7 @@ document.querySelectorAll('.prop[data-gallery]').forEach(p => {
 });
 
 /* ---------- renovation before / after ---------- */
-document.querySelectorAll('.ba').forEach(ba => {
+document.querySelectorAll('.ba').forEach((ba, i) => {
   let pos = 50, dragging = false, touched = false, sweep = null;
   const set = v => {
     pos = Math.max(0, Math.min(100, v));
@@ -1667,7 +1698,7 @@ document.querySelectorAll('.ba').forEach(ba => {
     if (touched) return;
     if (en.isIntersecting && !sweep) {
       state.v = pos;
-      sweep = gsap.timeline({repeat: -1, repeatDelay: 1.6, onUpdate: () => set(state.v)})
+      sweep = gsap.timeline({delay: i * .8, repeat: -1, repeatDelay: 1.6, onUpdate: () => set(state.v)})
         .to(state, {v: 14, duration: 1.4, ease: 'power2.inOut'})
         .to(state, {v: 86, duration: 2.2, ease: 'power2.inOut'})
         .to(state, {v: 50, duration: 1.4, ease: 'power2.inOut'});
