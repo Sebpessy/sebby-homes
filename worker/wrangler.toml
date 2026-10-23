@@ -11,6 +11,7 @@ custom_domain = true
 [vars]
 OWNER_EMAIL = "sebpessy@gmail.com"
 FROM_EMAIL = "Sebby Homes <gallery@sebby.homes>"
+OAI_PIXEL_ID = "YWz1kEyitvtSHHxhEwzzA8"
 
 [[kv_namespaces]]
 binding = "GATE"

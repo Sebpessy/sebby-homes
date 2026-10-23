@@ -1,15 +1,15 @@
 /**
  * Sebby Homes — gallery access gate
  * Routes (api.sebby.homes):
- *   POST /contact  {name,email,phone,location,projectType,timeline,message,source}
+ *   POST /contact  {name,email,phone,location,projectType,timeline,message,source,leadId,oppref,obref}
  *                                        -> email owner + acknowledge visitor
  *   POST /request  {name,email,property} -> store + send verification email to visitor
  *   GET  /verify?id&t                    -> mark verified + email owner approve/deny links
  *   GET  /decide?id&t&action             -> owner approves/denies; visitor notified
  *   GET  /check?key                      -> {ok} for the frontend unlock
  *
- * Bindings: GATE (KV), secrets: RESEND_API_KEY
- * Vars: OWNER_EMAIL, FROM_EMAIL, SITE
+ * Bindings: GATE (KV), secrets: RESEND_API_KEY, OAI_CAPI_KEY (ChatGPT Ads Conversions API)
+ * Vars: OWNER_EMAIL, FROM_EMAIL, SITE, OAI_PIXEL_ID
  */
 
 const SITE = 'https://sebby.homes';
@@ -60,10 +60,47 @@ const emailShell = (inner) => `
 const btn = (href, label, color = '#C9A24B') =>
   `<a href="${href}" style="display:inline-block;background:${color};color:#0B0B0B;padding:13px 26px;text-decoration:none;font-weight:bold;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin:6px 8px 6px 0">${label}</a>`;
 
+const sha256 = async (s) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))]
+  .map((b) => b.toString(16).padStart(2, '0')).join('');
+
+// ChatGPT Ads Conversions API: report an accepted lead server-side. The page's pixel
+// sends the same lead with the same id, and OpenAI keeps whichever arrives first.
+// Email and phone leave here only as SHA-256 hashes, normalized per OpenAI's docs.
+async function reportLead(env, req, f, b) {
+  if (!env.OAI_CAPI_KEY || !env.OAI_PIXEL_ID) return;
+  const id = typeof b.leadId === 'string' && /^[\w-]{1,80}$/.test(b.leadId) ? b.leadId : `lead_${tok()}`;
+  let digits = f.phone.replace(/\D/g, '').replace(/^0+/, '');
+  if (digits.length === 10) digits = '1' + digits;
+  const user = {
+    emails_sha256: [await sha256(f.email.toLowerCase())],
+    countries: ['US'],
+    user_agent: req.headers.get('User-Agent') || undefined,
+    ip_address: req.headers.get('CF-Connecting-IP') || undefined,
+  };
+  if (digits.length >= 8 && digits.length <= 15) user.phone_numbers_sha256 = [await sha256(digits)];
+  if (typeof b.obref === 'string' && b.obref.trim()) user.obref = b.obref.trim().slice(0, 200);
+  const event = {
+    id,
+    type: 'lead_created',
+    timestamp_ms: f.ts,
+    source_url: SITE + '/',
+    action_source: 'web',
+    user,
+    data: { type: 'customer_action' },
+  };
+  if (typeof b.oppref === 'string' && b.oppref.trim()) event.oppref = b.oppref.trim().slice(0, 500);
+  const r = await fetch(`https://bzr.openai.com/v1/events?pid=${encodeURIComponent(env.OAI_PIXEL_ID)}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env.OAI_CAPI_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ events: [event] }),
+  });
+  console.log(`capi lead_created ${id} oppref=${event.oppref ? 'yes' : 'no'} -> ${r.status}${r.ok ? '' : ' ' + (await r.text()).slice(0, 300)}`);
+}
+
 const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const url = new URL(req.url);
     if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
 
@@ -128,6 +165,7 @@ export default {
           ts: Date.now(),
         };
         await env.GATE.put(`msg:${tok()}`, JSON.stringify(f), { expirationTtl: 60 * 60 * 24 * 365 });
+        ctx.waitUntil(reportLead(env, req, f, b).catch((e) => console.log('capi failed', e.message)));
 
         const row = (k, v) => v ? `<strong style="color:#E5C76B">${k}:</strong> ${esc(v)}<br>` : '';
         await sendEmail(env, env.OWNER_EMAIL, `New inquiry · ${f.name}${f.location ? ' · ' + f.location : ''}`, emailShell(`
