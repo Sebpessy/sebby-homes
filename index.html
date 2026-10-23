@@ -1246,8 +1246,9 @@ footer span.gold{color:var(--gold-dim)}
     </div>
     <div class="cform rv">
       <h3>Tell us about <em>your project.</em></h3>
-      <div class="csub">A few details are enough to start. Seb reads every message
-      and replies personally, usually within one business day.</div>
+      <div class="csub">A few details are enough to start, and an email or a phone number,
+      whichever you prefer. Seb reads every message and replies personally, usually
+      within one business day.</div>
       <form id="cform" novalidate>
         <div>
           <label for="cname">Full name</label>
@@ -1255,11 +1256,11 @@ footer span.gold{color:var(--gold-dim)}
         </div>
         <div>
           <label for="cemail">Email</label>
-          <input type="email" id="cemail" name="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
+          <input type="email" id="cemail" name="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
         </div>
         <div>
           <label for="cphone">Phone</label>
-          <input type="tel" id="cphone" name="phone" autocomplete="tel" required maxlength="40" placeholder="469-000-0000">
+          <input type="tel" id="cphone" name="phone" autocomplete="tel" maxlength="40" placeholder="469-000-0000">
         </div>
         <div>
           <label for="clocation">Lot or neighborhood <span style="text-transform:none;letter-spacing:.04em">(optional)</span></label>
@@ -1677,11 +1678,10 @@ const pixelCookie = name => {
 const measureLead = async (leadId, email, phone) => {
   let digits = phone.replace(/\D/g, '').replace(/^0+/, '');
   if (digits.length === 10) digits = '1' + digits;
-  oaiq('init', {user: {
-    email_sha256: await sha256(email.trim().toLowerCase()),
-    phone_number_sha256: await sha256(digits),
-    country: 'US'
-  }});
+  const user = {country: 'US'};
+  if (email) user.email_sha256 = await sha256(email.trim().toLowerCase());
+  if (digits) user.phone_number_sha256 = await sha256(digits);
+  oaiq('init', {user});
   oaiq('measure', 'lead_created', {type: 'customer_action'}, {event_id: leadId});
 };
 const pickProject = label => { document.getElementById('ctype').value = label; };
@@ -1712,14 +1712,15 @@ cform.addEventListener('submit', async e => {
   e.preventDefault();
   const val = id => document.getElementById(id).value.trim();
   const name = val('cname'), email = val('cemail'), phone = val('cphone');
-  if (name.length < 2 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+  // Email or phone, whichever the visitor prefers; whatever they do fill in must be valid.
+  const err = name.length < 2 ? 'Please enter your full name.'
+    : !email && !phone ? 'Please leave an email or a phone number so Seb can reach you.'
+    : email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) ? 'Please check your email address.'
+    : phone && phone.replace(/\D/g, '').length < 10 ? 'Please check your phone number.'
+    : '';
+  if (err) {
     cmsg.className = 'cmsg err';
-    cmsg.textContent = 'Please enter your full name and a valid email address.';
-    return;
-  }
-  if (phone.replace(/\D/g, '').length < 10) {
-    cmsg.className = 'cmsg err';
-    cmsg.textContent = 'Please enter a phone number so Seb can call you back.';
+    cmsg.textContent = err;
     return;
   }
   csubmit.disabled = true;
@@ -1748,8 +1749,9 @@ cform.addEventListener('submit', async e => {
       measureLead(leadId, email, phone).catch(() => {});
       cform.style.display = 'none';
       cmsg.className = 'cmsg ok';
-      cmsg.textContent = 'Thank you, ' + name.split(' ')[0] + '. Your message is with Seb, ' +
-        'and a copy is on its way to ' + email + '. You will hear back within one business day.';
+      cmsg.textContent = 'Thank you, ' + name.split(' ')[0] + '. Your message is with Seb' +
+        (email ? ', and a copy is on its way to ' + email + '.' : '.') +
+        ' You will hear back within one business day.';
     } else if (r.status === 429) {
       cmsg.className = 'cmsg err';
       cmsg.textContent = 'We already have a message from you. Give us a few minutes, or call 469-996-3789.';

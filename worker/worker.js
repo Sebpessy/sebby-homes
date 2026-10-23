@@ -2,7 +2,7 @@
  * Sebby Homes — gallery access gate
  * Routes (api.sebby.homes):
  *   POST /contact  {name,email,phone,location,projectType,timeline,message,source,leadId,oppref,obref}
- *                                        -> email owner + acknowledge visitor
+ *                                        -> email owner + acknowledge visitor (if they gave an email)
  *   POST /request  {name,email,property} -> store + send verification email to visitor
  *   GET  /verify?id&t                    -> mark verified + email owner approve/deny links
  *   GET  /decide?id&t&action             -> owner approves/denies; visitor notified
@@ -72,11 +72,11 @@ async function reportLead(env, req, f, b) {
   let digits = f.phone.replace(/\D/g, '').replace(/^0+/, '');
   if (digits.length === 10) digits = '1' + digits;
   const user = {
-    emails_sha256: [await sha256(f.email.toLowerCase())],
     countries: ['US'],
     user_agent: req.headers.get('User-Agent') || undefined,
     ip_address: req.headers.get('CF-Connecting-IP') || undefined,
   };
+  if (f.email) user.emails_sha256 = [await sha256(f.email.toLowerCase())];
   if (digits.length >= 8 && digits.length <= 15) user.phone_numbers_sha256 = [await sha256(digits)];
   if (typeof b.obref === 'string' && b.obref.trim()) user.obref = b.obref.trim().slice(0, 200);
   const event = {
@@ -144,14 +144,18 @@ export default {
         const str = (v) => (typeof v === 'string' ? v : '').trim();
         const name = str(b.name);
         const email = str(b.email);
+        const phoneDigits = str(b.phone).replace(/\D/g, '');
         // honeypot: real people never fill a field they cannot see
         if (b.website) return Response.json({ ok: true }, { headers: CORS });
-        if (name.length < 2 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || str(b.phone).replace(/\D/g, '').length < 10)
+        // email or phone, at least one; whichever is given must be valid
+        if (name.length < 2 || (!email && !phoneDigits) ||
+            (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) || (phoneDigits && phoneDigits.length < 10))
           return Response.json({ ok: false, error: 'invalid input' }, { status: 400, headers: CORS });
 
-        const rl = await env.GATE.get(`crl:${email.toLowerCase()}`);
+        const rlKey = `crl:${email ? email.toLowerCase() : phoneDigits}`;
+        const rl = await env.GATE.get(rlKey);
         if (rl) return Response.json({ ok: false, error: 'too many requests' }, { status: 429, headers: CORS });
-        await env.GATE.put(`crl:${email.toLowerCase()}`, '1', { expirationTtl: 600 });
+        await env.GATE.put(rlKey, '1', { expirationTtl: 600 });
 
         const f = {
           name: name.slice(0, 80),
@@ -172,7 +176,7 @@ export default {
           <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">New inquiry from sebby.homes</h2>
           <p style="color:#CFCFCF;font-size:14px;line-height:1.8">
             ${row('Name', f.name)}
-            <strong style="color:#E5C76B">Email:</strong> <a href="mailto:${esc(f.email)}" style="color:#C9A24B">${esc(f.email)}</a><br>
+            ${f.email ? `<strong style="color:#E5C76B">Email:</strong> <a href="mailto:${esc(f.email)}" style="color:#C9A24B">${esc(f.email)}</a><br>` : ''}
             ${f.phone ? `<strong style="color:#E5C76B">Phone:</strong> <a href="tel:${esc(f.phone)}" style="color:#C9A24B">${esc(f.phone)}</a><br>` : ''}
             ${row('Location', f.location)}
             ${row('Project', f.projectType)}
@@ -180,9 +184,10 @@ export default {
             ${row('Source', f.source)}
             <strong style="color:#E5C76B">When:</strong> ${new Date(f.ts).toLocaleString('en-US', { timeZone: 'America/Chicago' })} CT</p>
           ${f.message ? `<div style="border-left:2px solid #7A6330;padding-left:16px;margin-top:8px;color:#CFCFCF;font-size:14px;line-height:1.7;white-space:pre-wrap">${esc(f.message)}</div>` : ''}
-          ${btn(`mailto:${esc(f.email)}`, 'Reply')}`), f.email);
+          ${f.email ? btn(`mailto:${esc(f.email)}`, 'Reply') : btn(`tel:${esc(f.phone)}`, 'Call back')}`), f.email || undefined);
 
-        await sendEmail(env, f.email, 'We received your message · Sebby Homes', emailShell(`
+        // no email given: nobody to acknowledge, Seb calls back
+        if (f.email) await sendEmail(env, f.email, 'We received your message · Sebby Homes', emailShell(`
           <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">Thank you, ${esc(f.name.split(' ')[0])}.</h2>
           <p style="color:#CFCFCF;font-size:14px;line-height:1.7">Your message reached Seb directly. He reads every
           inquiry himself and will reply personally, usually within one business day.</p>
