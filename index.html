@@ -895,9 +895,6 @@ footer span.gold{color:var(--gold-dim)}
 #renovation .ba .baBefore{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos,50%)) 0 0)}
 #renovation .baLine{position:absolute;top:0;bottom:0;left:var(--pos,50%);width:2px;margin-left:-1px;background:var(--gold);pointer-events:none}
 #renovation .baKnob{position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;border:1px solid var(--gold);background:rgba(11,11,11,.72);display:flex;align-items:center;justify-content:center;gap:6px;color:var(--gold-bright);font-size:.9rem;line-height:1}
-#renovation .baTag{position:absolute;top:14px;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--white);background:rgba(11,11,11,.62);padding:6px 10px;pointer-events:none}
-#renovation .baTag.l{left:14px}
-#renovation .baTag.r{right:14px}
 #renovation .baFig figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;margin-top:16px}
 #renovation .baFig h3{font-family:'Montserrat',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:.06em;color:var(--white)}
 #renovation .baFig .city{font-size:.74rem;color:var(--muted-dim);margin-top:2px}
@@ -927,8 +924,6 @@ footer span.gold{color:var(--gold-dim)}
           <img src="assets/photos/reno_kitchen01_before.jpg" width="1600" height="1200" loading="lazy"
                alt="Before: oak-cabinet kitchen with a laminate-topped peninsula and wallpapered walls">
         </div>
-        <span class="baTag l">Before</span>
-        <span class="baTag r">After</span>
         <div class="baLine" aria-hidden="true"><div class="baKnob">&#8249; &#8250;</div></div>
       </div>
       <figcaption>
@@ -950,8 +945,6 @@ footer span.gold{color:var(--gold-dim)}
           <img src="assets/photos/reno_wine01_before.jpg" width="900" height="1200" loading="lazy"
                alt="Before: empty window nook with bare walls and new wood flooring">
         </div>
-        <span class="baTag l">Before</span>
-        <span class="baTag r">After</span>
         <div class="baLine" aria-hidden="true"><div class="baKnob">&#8249; &#8250;</div></div>
       </div>
       <figcaption>
@@ -1665,7 +1658,8 @@ document.querySelectorAll('.prop[data-gallery]').forEach(p => {
   p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
 });
 
-/* ---------- renovation before / after ---------- */
+/* ---------- renovation before / after ----------
+   No labels: the before photo is always the left (clipped) layer, the after photo the right. */
 document.querySelectorAll('.ba').forEach((ba, i) => {
   let pos = 50, dragging = false, touched = false, sweep = null;
   const set = v => {
