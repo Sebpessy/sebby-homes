@@ -1653,7 +1653,18 @@ const cform = document.getElementById('cform'),
 const qs = new URLSearchParams(location.search);
 const leadSource = [qs.get('utm_source'), qs.get('utm_campaign')].filter(Boolean).join(' / ');
 const pickProject = label => { document.getElementById('ctype').value = label; };
-if (location.hash === '#renovation') pickProject('Renovation or remodel');
+// Ad platforms that lock the URL and drop the #fragment still pass
+// utm_campaign=renovation, so treat that like #renovation and take the visitor there.
+const renoLanding = location.hash === '#renovation' ||
+  (!location.hash && qs.get('utm_campaign') === 'renovation');
+if (renoLanding) {
+  pickProject('Renovation or remodel');
+  if (location.hash !== '#renovation') {
+    history.replaceState(null, '', location.pathname + location.search + '#renovation');
+    addEventListener('load', () =>
+      document.getElementById('renovation').scrollIntoView({behavior: 'instant'}));
+  }
+}
 document.querySelectorAll('a[data-project]').forEach(a =>
   a.addEventListener('click', () => pickProject(a.dataset.project)));
 cform.addEventListener('submit', async e => {
