@@ -1659,11 +1659,20 @@ const renoLanding = location.hash === '#renovation' ||
   (!location.hash && qs.get('utm_campaign') === 'renovation');
 if (renoLanding) {
   pickProject('Renovation or remodel');
-  if (location.hash !== '#renovation') {
+  if (location.hash !== '#renovation')
     history.replaceState(null, '', location.pathname + location.search + '#renovation');
-    addEventListener('load', () =>
-      document.getElementById('renovation').scrollIntoView({behavior: 'instant'}));
-  }
+  // Put the section's eyebrow just under the fixed nav (the plain anchor jump hides the
+  // headline behind it). Wait for fonts and layout, then settle once more after the
+  // nav's crest finishes shrinking.
+  const toReno = () => {
+    const eb = document.querySelector('#renovation .eyebrow');
+    const y = eb.getBoundingClientRect().top + scrollY - nav.getBoundingClientRect().height - 16;
+    scrollTo({top: Math.max(0, y), behavior: 'instant'});
+  };
+  addEventListener('load', () => document.fonts.ready.then(() => {
+    toReno();
+    setTimeout(toReno, 700);
+  }));
 }
 document.querySelectorAll('a[data-project]').forEach(a =>
   a.addEventListener('click', () => pickProject(a.dataset.project)));
