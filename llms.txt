@@ -2,18 +2,24 @@
 
 > Sebby Homes is a custom luxury residential home builder serving Dallas–Fort Worth,
 > Texas. Founded by Seb Pessy, the firm designs and delivers contemporary custom
-> homes with a design-led, single-accountability process across Highland Park, Preston
-> Hollow, Southlake, Westlake, Uptown, and Knox–Henderson.
+> homes and renovates luxury homes with a design-led, single-accountability process
+> across Highland Park, Preston Hollow, Southlake, Westlake, Uptown, and Knox–Henderson.
 
 ## Key facts
 
-- **Business:** Sebby Homes, custom luxury home builder (general contractor)
+- **Business:** Sebby Homes, custom luxury home builder and renovation contractor (general contractor)
 - **Founder:** Seb Pessy
 - **Service area:** Dallas–Fort Worth, Texas (Highland Park, Preston Hollow, Southlake, Westlake, Uptown, Knox–Henderson)
 - **Website:** https://sebby.homes
 - **Phone:** 469-996-3789
 - **Email:** seb@sebby.homes
-- **Specialties:** contemporary custom homes, design-led architecture + interiors, high-craft finish-out, single builder accountability, transparent client portal
+- **Specialties:** contemporary custom homes, luxury home renovation, design-led architecture + interiors, high-craft finish-out, single builder accountability, transparent client portal
+
+## Services
+
+- **Custom homes:** design-led contemporary residences on the owner's lot, first drawing to handover.
+- **Renovation:** kitchens; primary suites and baths; additions and second stories; whole-home remodels; wine cellars and wine rooms; backyards and outdoor living; front yards and curb appeal. Held to the same standard as new construction: when walls are opened, what is behind them (envelope, water management, mechanicals) is fixed, not covered back up.
+- **Living through a renovation:** on most kitchen, bath, and suite projects owners stay in the house with the work area sealed off; on whole-home remodels Sebby Homes says up front if moving out for part of the job is better.
 
 ## What makes Sebby Homes different
 
@@ -36,7 +42,8 @@ through the six9 Builder client portal (live schedule, documented decisions, one
 ## Pages
 
 - [Home](https://sebby.homes/): full overview of the firm, design language, portfolio, and process.
-- [Frequently asked questions](https://sebby.homes/#faq): answers about service area, process, lots, and getting started.
+- [Renovation](https://sebby.homes/#renovation): kitchens, primary suites, additions, whole-home remodels, wine cellars, and outdoor living in Dallas–Fort Worth.
+- [Frequently asked questions](https://sebby.homes/#faq): answers about service area, process, lots, renovation, and getting started.
 - [Journal](https://sebby.homes/journal/): articles on custom home building in Dallas–Fort Worth.
 - [Cost of building a custom home in Dallas–Fort Worth](https://sebby.homes/journal/custom-home-cost-dallas-fort-worth.html)
 - [How long it takes to build a custom home in Dallas–Fort Worth](https://sebby.homes/journal/how-long-to-build-custom-home-dallas-fort-worth.html)

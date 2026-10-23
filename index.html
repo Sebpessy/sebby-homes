@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sebby Homes · Custom Luxury Residential · Dallas–Fort Worth</title>
-<meta name="description" content="Sebby Homes designs and delivers contemporary custom residences across Dallas–Fort Worth: Highland Park, Preston Hollow, Southlake, Westlake, and Uptown.">
+<title>Sebby Homes · Custom Homes &amp; Renovations · Dallas–Fort Worth</title>
+<meta name="description" content="Sebby Homes builds contemporary custom homes and renovates luxury homes across Dallas–Fort Worth: kitchens, primary suites, additions, whole-home remodels, wine cellars, and outdoor living.">
 <link rel="canonical" href="https://sebby.homes/">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="theme-color" content="#0B0B0B">
@@ -17,8 +17,8 @@
 <meta property="og:site_name" content="Sebby Homes">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://sebby.homes/">
-<meta property="og:title" content="Sebby Homes · Custom Luxury Residential · Dallas–Fort Worth">
-<meta property="og:description" content="Sebby Homes designs and delivers contemporary custom residences across Dallas–Fort Worth: Highland Park, Preston Hollow, Southlake, Westlake, and Uptown.">
+<meta property="og:title" content="Sebby Homes · Custom Homes &amp; Renovations · Dallas–Fort Worth">
+<meta property="og:description" content="Sebby Homes builds contemporary custom homes and renovates luxury homes across Dallas–Fort Worth: kitchens, primary suites, additions, whole-home remodels, wine cellars, and outdoor living.">
 <meta property="og:image" content="https://sebby.homes/assets/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -27,8 +27,8 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sebby Homes · Custom Luxury Residential · Dallas–Fort Worth">
-<meta name="twitter:description" content="Contemporary custom home builder serving Dallas–Fort Worth: Highland Park, Preston Hollow, Southlake, Westlake, Uptown.">
+<meta name="twitter:title" content="Sebby Homes · Custom Homes &amp; Renovations · Dallas–Fort Worth">
+<meta name="twitter:description" content="Custom homes and luxury renovations across Dallas–Fort Worth: kitchens, primary suites, additions, whole-home remodels, wine cellars, and outdoor living.">
 <meta name="twitter:image" content="https://sebby.homes/assets/og.jpg">
 
 <link rel="apple-touch-icon" href="assets/logo.png">
@@ -55,7 +55,7 @@
       "url": "https://sebby.homes/",
       "logo": "https://sebby.homes/assets/logo.png",
       "image": "https://sebby.homes/assets/photos/kenwell_00.jpg",
-      "description": "Sebby Homes is a design-led custom luxury home builder serving Dallas–Fort Worth, Texas, designing and delivering contemporary custom residences with single-builder accountability across Highland Park, Preston Hollow, Southlake, Westlake, Uptown, and Knox–Henderson.",
+      "description": "Sebby Homes is a design-led custom luxury home builder serving Dallas–Fort Worth, Texas, designing and delivering contemporary custom residences, and renovating luxury homes, with single-builder accountability across Highland Park, Preston Hollow, Southlake, Westlake, Uptown, and Knox–Henderson.",
       "slogan": "Building Excellence · Creating Legacy",
       "telephone": "+1-469-996-3789",
       "email": "seb@sebby.homes",
@@ -84,16 +84,48 @@
         "Interior design",
         "Dallas–Fort Worth luxury real estate",
         "High-performance building envelopes",
-        "Architectural millwork and finish carpentry"
+        "Architectural millwork and finish carpentry",
+        "Home renovation and remodeling",
+        "Kitchen and bath remodeling",
+        "Home additions and second-story additions",
+        "Outdoor living and landscape construction",
+        "Wine cellar and wine room construction"
       ],
-      "makesOffer": {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Custom luxury home design and construction",
-          "areaServed": "Dallas–Fort Worth, Texas"
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Custom luxury home design and construction",
+            "areaServed": "Dallas–Fort Worth, Texas"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "@id": "https://sebby.homes/#renovation",
+            "name": "Luxury home renovation",
+            "serviceType": "Home renovation and remodeling",
+            "url": "https://sebby.homes/#renovation",
+            "provider": { "@id": "https://sebby.homes/#business" },
+            "areaServed": "Dallas–Fort Worth, Texas",
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Renovation services",
+              "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Kitchen remodeling" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Primary suite and bathroom remodeling" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Home additions and second stories" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Whole-home remodeling" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Backyard and outdoor living construction" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Front yard and curb appeal improvements" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wine cellar and wine room construction" } }
+              ]
+            }
+          }
         }
-      }
+      ]
     },
     {
       "@type": "Person",
@@ -167,10 +199,42 @@
         },
         {
           "@type": "Question",
+          "name": "Does Sebby Homes do renovations, or only new homes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Both. Seb Pessy came up remodeling before building new custom homes, and Sebby Homes renovates kitchens, primary suites and baths, additions and second stories, whole homes, wine cellars, and backyards and front yards across Dallas–Fort Worth, held to the same standard as its new construction."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can we live in the house during a renovation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On most kitchen, bath, and suite projects, yes. The work area is sealed off, and you know which rooms stay usable, and when water and power are off, before demolition starts. On whole-home remodels Sebby Homes tells you up front if moving out for part of the job is the better call."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if you find a problem behind the walls?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sebby Homes shows it to you before anything is covered back up, with photos in your six9 Builder client portal, and agrees the fix and its cost with you in writing before the work continues. Finding those problems is the point of opening the walls."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Sebby Homes remodel backyards and front yards?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Sebby Homes builds outdoor kitchens, covered patios, hardscape, landscape, entries, walkways, and driveways across Dallas–Fort Worth, with the same team and the same standard as the house itself."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "How do I start a project with Sebby Homes?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "To start a custom home project with Sebby Homes, contact founder Seb Pessy at 469-996-3789 or seb@sebby.homes. The first step is a simple conversation about your site and program, followed by a walk of your lot in the Dallas–Fort Worth area."
+            "text": "To start a custom home or renovation project with Sebby Homes, contact founder Seb Pessy at 469-996-3789 or seb@sebby.homes. The first step is a simple conversation, followed by a walk of your lot or, for a renovation, a walkthrough of your house in the Dallas–Fort Worth area."
           }
         }
       ]
@@ -226,6 +290,10 @@ nav .brand img{transition:height .35s ease}
 nav .brand span{display:none}
 nav .links{display:flex;gap:30px;align-items:center}
 nav .links a{color:var(--muted);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;transition:color .3s}
+nav .brand{flex-shrink:0}
+nav .links a{white-space:nowrap}
+@media(max-width:1400px){nav .links{gap:20px}nav .links a{letter-spacing:.18em}}
+@media(max-width:1320px){nav .links{gap:14px;margin-left:18px}nav .links a{letter-spacing:.14em}nav .links a.cta{padding:9px 12px}}
 nav .links a:hover{color:var(--gold-bright)}
 nav .links a.cta{border:1px solid var(--gold-dim);color:var(--gold);padding:9px 18px;transition:all .3s}
 nav .links a.cta:hover{background:var(--gold);color:var(--black)}
@@ -243,9 +311,12 @@ nav .links a.cta:hover{background:var(--gold);color:var(--black)}
 .mmenu a.cta{font-family:'Inter',sans-serif;font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:14px 28px;margin-top:26px}
 .mmenu .mrule{width:38px;height:1px;background:var(--gold-dim);margin:18px 0}
 .mmenu .mtag{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted-dim);margin-top:30px}
-@media(max-width:860px){
+/* nine links plus the CTA no longer fit beside the crest below ~1180px */
+@media(max-width:1180px){
   nav .links{display:none}
   .burger{display:flex}
+}
+@media(max-width:860px){
   nav .brand img{height:96px}
   nav.scrolled .brand img{height:72px}
 }
@@ -502,6 +573,7 @@ footer span.gold{color:var(--gold-dim)}
     <a href="#partnership">Partnership</a>
     <a href="#design">Design</a>
     <a href="#proof">Portfolio</a>
+    <a href="#renovation">Renovation</a>
     <a href="#process">Process</a>
     <a href="#portal">Portal</a>
     <a href="#faq">FAQ</a>
@@ -518,6 +590,7 @@ footer span.gold{color:var(--gold-dim)}
   <a href="#partnership">Partnership</a>
   <a href="#design">Design</a>
   <a href="#proof">Portfolio</a>
+  <a href="#renovation">Renovation</a>
   <a href="#process">Process</a>
   <a href="#portal">Portal</a>
   <a href="#faq">FAQ</a>
@@ -532,9 +605,9 @@ footer span.gold{color:var(--gold-dim)}
   <canvas class="dust" id="dust" aria-hidden="true"></canvas>
   <div class="inner wrap">
     <div class="heroRule"></div>
-    <h1 class="srOnly">Sebby Homes · Custom Luxury Residential, Dallas–Fort Worth</h1>
+    <h1 class="srOnly">Sebby Homes · Custom Homes and Renovations, Dallas–Fort Worth</h1>
     <div class="tag">Custom Luxury Residential</div>
-    <div class="loc caps">Dallas &nbsp;·&nbsp; Fort Worth</div>
+    <div class="loc caps">New Builds &nbsp;·&nbsp; Renovations &nbsp;·&nbsp; Dallas–Fort Worth</div>
   </div>
   <div class="scroll">Scroll</div>
 </header>
@@ -797,10 +870,97 @@ footer span.gold{color:var(--gold-dim)}
   </div>
 </section>
 
+<style>
+#renovation .renoGrid{display:grid;grid-template-columns:6fr 5fr;gap:64px;align-items:start;margin-top:48px}
+@media(max-width:980px){#renovation .renoGrid{grid-template-columns:1fr;gap:40px}}
+#renovation .renoGrid .note p{margin-top:16px;font-size:.97rem;max-width:520px;color:var(--muted)}
+#renovation .renoGrid .note p strong{color:var(--white);font-weight:500}
+#renovation blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.5rem,2.6vw,1.9rem);color:var(--gold);margin:26px 0 6px;line-height:1.35;max-width:480px}
+#renovation .sig{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted-dim);font-size:1.1rem;margin-top:10px}
+#renovation .live h3{font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.14em;color:var(--gold-bright);text-transform:uppercase;margin-bottom:14px}
+#renovation .live p{font-size:.92rem;color:var(--muted);line-height:1.7}
+#renovation .live p + p{margin-top:12px}
+#renovation .renoCta{text-align:center;margin-top:30px}
+#renovation .renoCta a{display:inline-block;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;border:1px solid var(--gold-dim);color:var(--gold);padding:14px 28px;transition:all .3s}
+#renovation .renoCta a:hover{background:var(--gold);color:var(--black)}
+</style>
+<section id="renovation">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow caps">06 · Renovation</div>
+      <hr class="rule">
+      <h2>Renovation, <em>built like new construction.</em></h2>
+      <p class="lede">Sebby Homes renovates homes across Dallas–Fort Worth: kitchens,
+      primary suites and baths, additions and second stories, whole-home remodels, wine
+      cellars, and backyards and front yards, held to the same standard as the custom homes we build
+      from the ground up.</p>
+    </div>
+    <div class="renoGrid">
+      <div class="note rv">
+        <p>I came up remodeling. Before I built a single new home, I spent years opening
+        walls in other people's houses, and that is where I learned what actually matters.</p>
+        <p>Behind a tired kitchen there is usually a bigger story: <strong>a missing vapor
+        barrier, a duct run that was never sealed, a joist someone notched for a
+        drain.</strong> A cosmetic remodel covers it back up. I don't.</p>
+        <p>When we open a wall, we fix what's behind it, then finish it to the standard
+        of a new custom home.</p>
+        <blockquote>"Open the walls once. Fix what's behind them."</blockquote>
+        <div class="sig">Seb</div>
+      </div>
+      <div class="card live rv">
+        <h3>Living through it</h3>
+        <p>On most kitchen, bath, and suite projects you stay in the house. The work area
+        is sealed off, and you know which rooms stay usable, and when water and power are
+        off, before demolition starts.</p>
+        <p>On whole-home remodels we tell you up front if moving out for part of the job
+        is the better call. Either way, you follow every step in your six9 Builder portal.</p>
+      </div>
+    </div>
+    <div class="grid4">
+      <div class="card rv"><div class="num">01</div><div class="numRule"></div>
+        <h3>Kitchens</h3>
+        <p>Layout, cabinetry, stone, and appliances, plus the ventilation, electrical, and plumbing behind them.</p></div>
+      <div class="card rv"><div class="num">02</div><div class="numRule"></div>
+        <h3>Primary Suites &amp; Baths</h3>
+        <p>Curbless showers and floating vanities, with waterproofing done before tile, not hoped for after.</p></div>
+      <div class="card rv"><div class="num">03</div><div class="numRule"></div>
+        <h3>Additions &amp; Second Stories</h3>
+        <p>New square footage that matches the original structure, roofline, and finish, so it never reads as added on.</p></div>
+      <div class="card rv"><div class="num">04</div><div class="numRule"></div>
+        <h3>Whole-Home Remodels</h3>
+        <p>Down to the studs where it needs to be: envelope, mechanical, electrical, plumbing, and every finish.</p></div>
+      <div class="card rv"><div class="num">05</div><div class="numRule"></div>
+        <h3>Backyards &amp; Outdoor Living</h3>
+        <p>Outdoor kitchens, covered patios, hardscape, and landscape, built by the same team as the house.</p></div>
+      <div class="card rv"><div class="num">06</div><div class="numRule"></div>
+        <h3>Front Yards &amp; Curb Appeal</h3>
+        <p>Entries, walkways, driveways, lighting, and planting that give the house the arrival it deserves.</p></div>
+      <div class="card rv"><div class="num">07</div><div class="numRule"></div>
+        <h3>Wine Cellars &amp; Wine Rooms</h3>
+        <p>Glass-walled wine rooms and climate-controlled cellars, with insulation, vapor barrier, and cooling built in before the racking goes up.</p></div>
+    </div>
+    <!--
+      Before / after grid: add once renovation photos are in assets/photos/.
+      One .prop card per project, same markup as #proof, for example:
+      <div class="proofGrid">
+        <div class="prop rv">
+          <img src="assets/photos/reno_PROJECT_after.jpg" alt="Renovated kitchen, NEIGHBORHOOD, Dallas" loading="lazy">
+          <h3>Kitchen and Primary Suite</h3>
+          <div class="city">NEIGHBORHOOD, TX</div>
+          <div class="specs">Renovation · YEAR</div>
+          <div class="feat">One line on what was found behind the walls and fixed.</div>
+        </div>
+      </div>
+    -->
+    <div class="processLine rv">One builder of record. A plan for your household. Nothing left behind the walls.</div>
+    <div class="renoCta rv"><a href="#contact" data-project="Renovation or remodel">Start a renovation conversation</a></div>
+  </div>
+</section>
+
 <section id="process">
   <div class="wrap">
     <div class="rv">
-      <div class="eyebrow caps">06 · Our Process</div>
+      <div class="eyebrow caps">07 · Our Process</div>
       <hr class="rule">
       <h2>From first drawing <em>to your front door.</em></h2>
     </div>
@@ -823,7 +983,7 @@ footer span.gold{color:var(--gold-dim)}
 <section class="portal" id="portal">
   <div class="wrap">
     <div class="rv">
-      <div class="eyebrow caps">07 · The six9 Builder Portal</div>
+      <div class="eyebrow caps">08 · The six9 Builder Portal</div>
       <hr class="rule">
       <h2>Communication, <em>engineered.</em></h2>
       <p class="lede">Every Sebby build runs on <strong style="color:var(--white)">six9 Builder</strong>,
@@ -871,11 +1031,11 @@ footer span.gold{color:var(--gold-dim)}
 <section id="faq">
   <div class="wrap">
     <div class="rv">
-      <div class="eyebrow caps">08 · Questions</div>
+      <div class="eyebrow caps">09 · Questions</div>
       <hr class="rule">
       <h2>Questions, <em>answered.</em></h2>
-      <p class="lede">What owners ask most about building a custom home with Sebby Homes
-      in Dallas–Fort Worth.</p>
+      <p class="lede">What owners ask most about building or renovating a home with
+      Sebby Homes in Dallas–Fort Worth.</p>
     </div>
     <div class="faqList rv">
       <div class="qa">
@@ -924,12 +1084,28 @@ footer span.gold{color:var(--gold-dim)}
         client portal.</p>
       </div>
       <div class="qa">
+        <h3>Does Sebby Homes do renovations, or only new homes?</h3>
+        <p>Both. Seb Pessy came up remodeling before building new custom homes, and Sebby Homes renovates kitchens, primary suites and baths, additions and second stories, whole homes, wine cellars, and backyards and front yards across Dallas–Fort Worth, held to the same standard as its new construction.</p>
+      </div>
+      <div class="qa">
+        <h3>Can we live in the house during a renovation?</h3>
+        <p>On most kitchen, bath, and suite projects, yes. The work area is sealed off, and you know which rooms stay usable, and when water and power are off, before demolition starts. On whole-home remodels Sebby Homes tells you up front if moving out for part of the job is the better call.</p>
+      </div>
+      <div class="qa">
+        <h3>What happens if you find a problem behind the walls?</h3>
+        <p>Sebby Homes shows it to you before anything is covered back up, with photos in your six9 Builder client portal, and agrees the fix and its cost with you in writing before the work continues. Finding those problems is the point of opening the walls.</p>
+      </div>
+      <div class="qa">
+        <h3>Does Sebby Homes remodel backyards and front yards?</h3>
+        <p>Yes. Sebby Homes builds outdoor kitchens, covered patios, hardscape, landscape, entries, walkways, and driveways across Dallas–Fort Worth, with the same team and the same standard as the house itself.</p>
+      </div>
+      <div class="qa">
         <h3>How do I start a project with Sebby Homes?</h3>
-        <p>To start a custom home project with Sebby Homes, contact founder Seb Pessy
-        at <a href="tel:+14699963789">469-996-3789</a> or
+        <p>To start a custom home or renovation project with Sebby Homes, contact founder
+        Seb Pessy at <a href="tel:+14699963789">469-996-3789</a> or
         <a href="mailto:seb@sebby.homes">seb@sebby.homes</a>. The first step is a simple
-        conversation about your site and program, followed by a walk of your lot in the
-        Dallas–Fort Worth area.</p>
+        conversation, followed by a walk of your lot or, for a renovation, a walkthrough
+        of your house in the Dallas–Fort Worth area.</p>
       </div>
     </div>
   </div>
@@ -940,11 +1116,11 @@ footer span.gold{color:var(--gold-dim)}
   <div class="shade"></div>
   <div class="inner wrap">
     <div class="rv">
-      <div class="eyebrow caps">09 · Next Steps</div>
+      <div class="eyebrow caps">10 · Next Steps</div>
       <hr class="rule">
       <h2>Let's walk <em>your lot.</em></h2>
-      <p class="lede">The next step is simply a conversation about your site, your
-      program, and the home you have in mind.</p>
+      <p class="lede">The next step is simply a conversation about your site or your
+      house, your program, and what you have in mind.</p>
     </div>
     <div class="miniSteps rv">
       <div class="ms"><div class="n">01</div><h3>Conversation</h3>
@@ -979,8 +1155,9 @@ footer span.gold{color:var(--gold-dim)}
           <label for="ctype">Project</label>
           <select id="ctype" name="projectType">
             <option>New custom home</option>
-            <option>Major renovation or addition</option>
-            <option>Pool, outdoor living, or site work</option>
+            <option>Renovation or remodel</option>
+            <option>Addition or second story</option>
+            <option>Backyard, front yard, or outdoor living</option>
             <option>Not sure yet</option>
           </select>
         </div>
@@ -1372,6 +1549,14 @@ amodal.addEventListener('click', e => { if (e.target === amodal) closeRequest();
 const cform = document.getElementById('cform'),
       cmsg = document.getElementById('cmsg'),
       csubmit = document.getElementById('csubmit');
+// Ads and campaign links carry utm_source / utm_campaign; pass them through so a
+// lead says where it came from. Landing on #renovation preselects that project type.
+const qs = new URLSearchParams(location.search);
+const leadSource = [qs.get('utm_source'), qs.get('utm_campaign')].filter(Boolean).join(' / ');
+const pickProject = label => { document.getElementById('ctype').value = label; };
+if (location.hash === '#renovation') pickProject('Renovation or remodel');
+document.querySelectorAll('a[data-project]').forEach(a =>
+  a.addEventListener('click', () => pickProject(a.dataset.project)));
 cform.addEventListener('submit', async e => {
   e.preventDefault();
   const val = id => document.getElementById(id).value.trim();
@@ -1393,6 +1578,7 @@ cform.addEventListener('submit', async e => {
         projectType: val('ctype'),
         timeline: val('ctimeline'),
         message: val('cmessage'),
+        source: leadSource,
         website: val('cwebsite')
       })
     });
