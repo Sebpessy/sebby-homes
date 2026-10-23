@@ -1670,6 +1670,10 @@ const leadSource = [qs.get('utm_source'), qs.get('utm_campaign')].filter(Boolean
 // ChatGPT Ads conversion: hashed email and phone only, normalized per OpenAI's pixel docs.
 const sha256 = async s => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))]
   .map(b => b.toString(16).padStart(2, '0')).join('');
+const pixelCookie = name => {
+  const c = document.cookie.split('; ').find(p => p.startsWith(name + '='));
+  try { return c ? decodeURIComponent(c.slice(name.length + 1)) : ''; } catch (e) { return ''; }
+};
 const measureLead = async (leadId, email, phone) => {
   let digits = phone.replace(/\D/g, '').replace(/^0+/, '');
   if (digits.length === 10) digits = '1' + digits;
@@ -1734,6 +1738,8 @@ cform.addEventListener('submit', async e => {
         message: val('cmessage'),
         source: leadSource,
         leadId,
+        oppref: pixelCookie('__oppref'),
+        obref: pixelCookie('__obref'),
         website: val('cwebsite')
       })
     });
