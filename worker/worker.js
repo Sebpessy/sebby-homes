@@ -1,7 +1,7 @@
 /**
  * Sebby Homes — gallery access gate
  * Routes (api.sebby.homes):
- *   POST /contact  {name,email,phone,location,projectType,timeline,message}
+ *   POST /contact  {name,email,phone,location,projectType,timeline,message,source}
  *                                        -> email owner + acknowledge visitor
  *   POST /request  {name,email,property} -> store + send verification email to visitor
  *   GET  /verify?id&t                    -> mark verified + email owner approve/deny links
@@ -124,12 +124,13 @@ export default {
           projectType: str(b.projectType).slice(0, 80),
           timeline: str(b.timeline).slice(0, 80),
           message: str(b.message).slice(0, 4000),
+          source: str(b.source).slice(0, 80),
           ts: Date.now(),
         };
         await env.GATE.put(`msg:${tok()}`, JSON.stringify(f), { expirationTtl: 60 * 60 * 24 * 365 });
 
         const row = (k, v) => v ? `<strong style="color:#E5C76B">${k}:</strong> ${esc(v)}<br>` : '';
-        await sendEmail(env, env.OWNER_EMAIL, `New inquiry — ${f.name}${f.location ? ' · ' + f.location : ''}`, emailShell(`
+        await sendEmail(env, env.OWNER_EMAIL, `New inquiry · ${f.name}${f.location ? ' · ' + f.location : ''}`, emailShell(`
           <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">New inquiry from sebby.homes</h2>
           <p style="color:#CFCFCF;font-size:14px;line-height:1.8">
             ${row('Name', f.name)}
@@ -138,11 +139,12 @@ export default {
             ${row('Location', f.location)}
             ${row('Project', f.projectType)}
             ${row('Timeline', f.timeline)}
+            ${row('Source', f.source)}
             <strong style="color:#E5C76B">When:</strong> ${new Date(f.ts).toLocaleString('en-US', { timeZone: 'America/Chicago' })} CT</p>
           ${f.message ? `<div style="border-left:2px solid #7A6330;padding-left:16px;margin-top:8px;color:#CFCFCF;font-size:14px;line-height:1.7;white-space:pre-wrap">${esc(f.message)}</div>` : ''}
           ${btn(`mailto:${esc(f.email)}`, 'Reply')}`), f.email);
 
-        await sendEmail(env, f.email, 'We received your message — Sebby Homes', emailShell(`
+        await sendEmail(env, f.email, 'We received your message · Sebby Homes', emailShell(`
           <h2 style="color:#fff;font-weight:normal;margin:0 0 14px">Thank you, ${esc(f.name.split(' ')[0])}.</h2>
           <p style="color:#CFCFCF;font-size:14px;line-height:1.7">Your message reached Seb directly. He reads every
           inquiry himself and will reply personally, usually within one business day.</p>
