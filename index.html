@@ -1243,8 +1243,8 @@ footer span.gold{color:var(--gold-dim)}
           <input type="email" id="cemail" name="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
         </div>
         <div>
-          <label for="cphone">Phone <span style="text-transform:none;letter-spacing:.04em">(optional)</span></label>
-          <input type="tel" id="cphone" name="phone" autocomplete="tel" maxlength="40" placeholder="469-000-0000">
+          <label for="cphone">Phone</label>
+          <input type="tel" id="cphone" name="phone" autocomplete="tel" required maxlength="40" placeholder="469-000-0000">
         </div>
         <div>
           <label for="clocation">Lot or neighborhood <span style="text-transform:none;letter-spacing:.04em">(optional)</span></label>
@@ -1659,10 +1659,15 @@ document.querySelectorAll('a[data-project]').forEach(a =>
 cform.addEventListener('submit', async e => {
   e.preventDefault();
   const val = id => document.getElementById(id).value.trim();
-  const name = val('cname'), email = val('cemail');
+  const name = val('cname'), email = val('cemail'), phone = val('cphone');
   if (name.length < 2 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     cmsg.className = 'cmsg err';
     cmsg.textContent = 'Please enter your full name and a valid email address.';
+    return;
+  }
+  if (phone.replace(/\D/g, '').length < 10) {
+    cmsg.className = 'cmsg err';
+    cmsg.textContent = 'Please enter a phone number so Seb can call you back.';
     return;
   }
   csubmit.disabled = true;
@@ -1672,7 +1677,7 @@ cform.addEventListener('submit', async e => {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         name, email,
-        phone: val('cphone'),
+        phone,
         location: val('clocation'),
         projectType: val('ctype'),
         timeline: val('ctimeline'),
