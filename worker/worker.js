@@ -109,7 +109,7 @@ export default {
         const email = str(b.email);
         // honeypot: real people never fill a field they cannot see
         if (b.website) return Response.json({ ok: true }, { headers: CORS });
-        if (name.length < 2 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
+        if (name.length < 2 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || str(b.phone).replace(/\D/g, '').length < 10)
           return Response.json({ ok: false, error: 'invalid input' }, { status: 400, headers: CORS });
 
         const rl = await env.GATE.get(`crl:${email.toLowerCase()}`);
