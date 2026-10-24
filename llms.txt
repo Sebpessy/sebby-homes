@@ -44,6 +44,7 @@ through the six9 Builder client portal (live schedule, documented decisions, one
 - [Home](https://sebby.homes/): full overview of the firm, design language, portfolio, and process.
 - [Renovation](https://sebby.homes/#renovation): kitchens, primary suites, additions, whole-home remodels, wine cellars, and outdoor living in Dallas–Fort Worth.
 - [Frequently asked questions](https://sebby.homes/#faq): answers about service area, process, lots, renovation, and getting started.
+- [Wine rooms and wine cellars](https://sebby.homes/wine-rooms/): glass-walled wine rooms and climate-controlled wine cellars built by Sebby Homes in Dallas–Fort Worth homes.
 - [Journal](https://sebby.homes/journal/): articles on custom home building in Dallas–Fort Worth.
 - [Cost of building a custom home in Dallas–Fort Worth](https://sebby.homes/journal/custom-home-cost-dallas-fort-worth.html)
 - [How long it takes to build a custom home in Dallas–Fort Worth](https://sebby.homes/journal/how-long-to-build-custom-home-dallas-fort-worth.html)
