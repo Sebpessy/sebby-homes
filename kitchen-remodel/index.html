@@ -564,5 +564,15 @@ document.querySelectorAll('.ba').forEach(ba => {
   }, {threshold: .5}).observe(ba);
 });
 </script>
+<script>
+/* ---------- phone tap: a tap on any tel: link counts as a "phone_tap" conversion, once per visit ---------- */
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href^="tel:"]');
+  if (!a || !window.oaiq) return;
+  try { if (sessionStorage.getItem('sh_phone_tap')) return; sessionStorage.setItem('sh_phone_tap', '1'); } catch (err) {}
+  const id = 'tap_' + (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '_' + Math.random().toString(36).slice(2));
+  oaiq('measure', 'custom', {type: 'custom'}, {custom_event_name: 'phone_tap', event_id: id});
+});
+</script>
 </body>
 </html>
