@@ -50,7 +50,7 @@
       "name": "Custom wine rooms and wine cellars",
       "serviceType": "Wine cellar and wine room design and construction",
       "description": "Design and construction of glass-walled wine rooms and climate-controlled wine cellars in existing homes and new custom homes across Dallas–Fort Worth.",
-      "image": "https://sebby.homes/assets/photos/reno_wine01_after.jpg",
+      "image": ["https://sebby.homes/assets/photos/reno_wine01_after.jpg", "https://sebby.homes/assets/photos/reno_wine01_finished.jpg", "https://sebby.homes/assets/photos/reno_wine01_glass.jpg"],
       "url": "https://sebby.homes/wine-rooms/",
       "areaServed": { "@type": "Place", "name": "Dallas–Fort Worth, Texas" },
       "provider": {
@@ -158,6 +158,13 @@ nav .links a.cta:hover{background:var(--gold);color:var(--black)}
 .filmGrid{display:grid;grid-template-columns:7fr 4fr;gap:60px;align-items:center}
 @media(max-width:860px){.filmGrid{grid-template-columns:1fr;gap:36px}}
 .filmVid{width:100%;max-width:340px;height:auto;aspect-ratio:640/1136;justify-self:center;border:1px solid var(--gold-dim);background:var(--panel);box-shadow:0 30px 70px rgba(0,0,0,.5)}
+
+/* finished photos */
+.photoGrid{display:grid;grid-template-columns:3fr 4fr;gap:28px;margin-top:44px;align-items:end}
+@media(max-width:860px){.photoGrid{grid-template-columns:1fr;gap:32px}}
+.photo{margin:0;min-width:0}
+.photo img{width:100%;height:auto;border:1px solid var(--gold-dim);background:var(--panel)}
+.photo figcaption{font-size:.84rem;color:var(--muted);margin-top:12px;max-width:520px}
 
 /* cards */
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
@@ -292,6 +299,26 @@ footer span.gold{color:var(--gold-dim)}
     <video class="filmVid" src="../assets/video/wine-room.mp4" poster="../assets/video/wine-room-poster.jpg"
            muted loop playsinline controls preload="metadata" width="640" height="1136"
            aria-label="Video of a Sebby Homes wine room build in Dallas–Fort Worth, from preparation and glass hardware to the finished room"></video>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow caps">Finished</div>
+    <hr class="rule">
+    <h2>Stocked, lit, <em>and seen from the dining room.</em></h2>
+    <div class="photoGrid">
+      <figure class="photo">
+        <img src="../assets/photos/reno_wine01_finished.jpg" width="1200" height="1600" loading="lazy"
+             alt="Finished glass wine room, stocked and lit, seen through an arched opening from the dining room under a crystal chandelier, with the bar to the right">
+        <figcaption>The finished room from the dining table: a glass front, floating steel racking, and the bar beside it.</figcaption>
+      </figure>
+      <figure class="photo">
+        <img src="../assets/photos/reno_wine01_glass.jpg" width="1600" height="1200" loading="lazy"
+             alt="Hands holding a glass panel with a suction-cup lifter while a black glass-door hinge is set, with the steel racking behind the glass">
+        <figcaption>Setting the glass door hinge. Glass, hardware, and racking are lined up on site before the room is stocked.</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
