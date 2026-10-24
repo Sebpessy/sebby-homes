@@ -594,7 +594,14 @@ footer span.gold{color:var(--gold-dim)}
     <a href="#partnership">Partnership</a>
     <a href="#design">Design</a>
     <a href="#proof">Portfolio</a>
-    <a href="#renovation">Renovation</a>
+    <div class="drop">
+      <a href="#renovation">Renovation</a>
+      <div class="dropMenu">
+        <a href="kitchen-remodel/">Kitchens</a>
+        <a href="bathroom-remodel/">Bathrooms</a>
+        <a href="wine-rooms/">Wine Rooms</a>
+      </div>
+    </div>
     <a href="#process">Process</a>
     <a href="#portal">Portal</a>
     <a href="#faq">FAQ</a>
@@ -612,6 +619,11 @@ footer span.gold{color:var(--gold-dim)}
   <a href="#design">Design</a>
   <a href="#proof">Portfolio</a>
   <a href="#renovation">Renovation</a>
+  <div class="msub">
+    <a href="kitchen-remodel/">Kitchens</a>
+    <a href="bathroom-remodel/">Bathrooms</a>
+    <a href="wine-rooms/">Wine Rooms</a>
+  </div>
   <a href="#process">Process</a>
   <a href="#portal">Portal</a>
   <a href="#faq">FAQ</a>
@@ -923,6 +935,24 @@ footer span.gold{color:var(--gold-dim)}
 #renovation .renoCta a:hover{background:var(--gold);color:var(--black)}
 .baMore,.cardMore{display:inline-block;align-self:flex-start;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold-dim);padding-bottom:4px;margin-top:12px;transition:color .3s,border-color .3s}
 .baMore:hover,.cardMore:hover{color:var(--white,#fff);border-color:var(--gold)}
+#renovation .rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+@media(max-width:860px){#renovation .rooms{grid-template-columns:1fr;gap:12px}}
+#renovation .room{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--gold-dim)}
+@media(max-width:860px){#renovation .room{aspect-ratio:5/2}}
+#renovation .room img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+#renovation .room::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,11,0) 35%,rgba(11,11,11,.88) 100%)}
+#renovation .room:hover img{transform:scale(1.04)}
+#renovation .room:hover{border-color:var(--gold)}
+#renovation .roomTxt{position:absolute;left:20px;right:20px;bottom:16px;z-index:1;display:flex;flex-direction:column;gap:2px}
+#renovation .roomTxt b{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--white);line-height:1.1}
+#renovation .roomTxt i{font-style:normal;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+#renovation .room:hover .roomTxt i{color:var(--gold-bright)}
+nav .drop{position:relative;padding:12px 0;margin:-12px 0}
+nav .drop>a::after{content:"";display:inline-block;width:5px;height:5px;margin-left:8px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:translateY(-3px) rotate(45deg)}
+nav .dropMenu{position:absolute;top:100%;left:-20px;display:flex;flex-direction:column;gap:14px;padding:18px 20px;background:rgba(11,11,11,.96);border:1px solid var(--gold-faint);opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s,transform .25s,visibility .25s}
+nav .drop:hover .dropMenu,nav .drop:focus-within .dropMenu{opacity:1;visibility:visible;transform:none}
+.mmenu .msub{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:-2px 0 6px}
+.mmenu .msub a{font-family:'Inter',sans-serif;font-weight:500;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);padding:4px 0}
 </style>
 <section id="renovation">
   <div class="wrap">
@@ -934,6 +964,20 @@ footer span.gold{color:var(--gold-dim)}
       primary suites and baths, additions and second stories, whole-home remodels, wine
       cellars, and backyards and front yards, held to the same standard as the custom homes we build
       from the ground up.</p>
+    </div>
+    <div class="rooms rv">
+      <a class="room" href="kitchen-remodel/">
+        <img src="assets/photos/reno_kitchen01_after.jpg" width="1600" height="1200" loading="lazy" alt="">
+        <span class="roomTxt"><b>Kitchens</b><i>See kitchen remodels</i></span>
+      </a>
+      <a class="room" href="bathroom-remodel/">
+        <img src="assets/photos/reno_bath01_after.jpg" width="1600" height="1200" loading="lazy" alt="">
+        <span class="roomTxt"><b>Bathrooms</b><i>See bathroom remodels</i></span>
+      </a>
+      <a class="room" href="wine-rooms/">
+        <img src="assets/photos/reno_wine01_after.jpg" width="900" height="1200" loading="lazy" alt="">
+        <span class="roomTxt"><b>Wine Rooms</b><i>See wine room builds</i></span>
+      </a>
     </div>
     <div class="baRow">
     <figure class="baFig rv">
@@ -954,6 +998,7 @@ footer span.gold{color:var(--gold-dim)}
         </div>
         <div class="feat">Oak cabinetry and a clipped laminate peninsula replaced with flat-panel
         cabinetry to the ceiling, a quartz island with seating for five, and stacked wall ovens.</div>
+        <a class="baMore" href="kitchen-remodel/">See kitchen remodels</a>
         <div class="baHint">Drag to compare</div>
       </figcaption>
     </figure>
@@ -999,6 +1044,7 @@ footer span.gold{color:var(--gold-dim)}
         </div>
         <div class="feat">Yellow wall tile and a wall-hung sink replaced with large-format
         marble-look tile, a double-sink vanity, and a mosaic backsplash.</div>
+        <a class="baMore" href="bathroom-remodel/">See bathroom remodels</a>
         <div class="baHint">Drag to compare</div>
       </figcaption>
     </figure>
@@ -1021,6 +1067,7 @@ footer span.gold{color:var(--gold-dim)}
         <div class="feat">A tiled corner jetted tub and oak vanities replaced with a freestanding
         tub, a lit niche, floating vanities with black stone tops, backlit mirrors, and a
         black-and-white geometric tile floor.</div>
+        <a class="baMore" href="bathroom-remodel/">See bathroom remodels</a>
         <div class="baHint">Drag to compare</div>
       </figcaption>
     </figure>
@@ -1050,10 +1097,10 @@ footer span.gold{color:var(--gold-dim)}
     <div class="grid4">
       <div class="card rv"><div class="num">01</div><div class="numRule"></div>
         <h3>Kitchens</h3>
-        <p>Layout, cabinetry, stone, and appliances, plus the ventilation, electrical, and plumbing behind them.</p></div>
+        <p>Layout, cabinetry, stone, and appliances, plus the ventilation, electrical, and plumbing behind them.</p><a class="cardMore" href="kitchen-remodel/">See kitchens</a></div>
       <div class="card rv"><div class="num">02</div><div class="numRule"></div>
         <h3>Primary Suites &amp; Baths</h3>
-        <p>Curbless showers and floating vanities, with waterproofing done before tile, not hoped for after.</p></div>
+        <p>Curbless showers and floating vanities, with waterproofing done before tile, not hoped for after.</p><a class="cardMore" href="bathroom-remodel/">See bathrooms</a></div>
       <div class="card rv"><div class="num">03</div><div class="numRule"></div>
         <h3>Additions &amp; Second Stories</h3>
         <p>New square footage that matches the original structure, roofline, and finish, so it never reads as added on.</p></div>
@@ -1321,7 +1368,7 @@ footer span.gold{color:var(--gold-dim)}
 <footer>
   <div class="wrap">
     <span>Building Excellence · Creating Legacy</span>
-    <span><a href="wine-rooms/">Wine Rooms</a> &nbsp;·&nbsp; <a href="journal/">Journal</a> &nbsp;·&nbsp; <span class="gold">© Sebby Homes · Dallas–Fort Worth</span></span>
+    <span><a href="kitchen-remodel/">Kitchens</a> &nbsp;·&nbsp; <a href="bathroom-remodel/">Bathrooms</a> &nbsp;·&nbsp; <a href="wine-rooms/">Wine Rooms</a> &nbsp;·&nbsp; <a href="journal/">Journal</a> &nbsp;·&nbsp; <span class="gold">© Sebby Homes · Dallas–Fort Worth</span></span>
   </div>
 </footer>
 
