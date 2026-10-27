@@ -16,6 +16,8 @@
     f.parentNode.insertBefore(js, f);
   })(window, document, "script", "https://bzrcdn.openai.com/sdk/oaiq.min.js");
   oaiq("init", { pixelId: "YWz1kEyitvtSHHxhEwzzA8" });
+  // one page_viewed per load, so an ad click shows in Ads Manager even when the visitor never calls or writes
+  oaiq("measure", "page_viewed", { type: "contents" });
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kitchen Remodels in Dallas–Fort Worth · Sebby Homes</title>
