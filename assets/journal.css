@@ -66,3 +66,6 @@ footer{border-top:1px solid var(--gold-faint);padding:30px 0}
 footer .wrap{max-width:1180px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.78rem;color:var(--muted-dim)}
 footer .gold{color:var(--gold)}
 @media(max-width:640px){.jnav .links a{margin-left:16px}}
+
+footer .bbbFoot{display:inline-flex;align-items:center;background:#fff;border-radius:6px;padding:5px 8px;line-height:0}
+.bbbFoot img{height:38px;width:auto;display:block}

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sebby.homes/</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://sebby.homes/journal/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -51,6 +51,12 @@
   <url>
     <loc>https://sebby.homes/journal/custom-vs-production-home-builder.html</loc>
     <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sebby.homes/journal/bbb-accredited-business.html</loc>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
