@@ -67,5 +67,7 @@ footer .wrap{max-width:1180px;display:flex;justify-content:space-between;flex-wr
 footer .gold{color:var(--gold)}
 @media(max-width:640px){.jnav .links a{margin-left:16px}}
 
-footer .bbbFoot{display:inline-flex;align-items:center;background:#fff;border-radius:6px;padding:5px 8px;line-height:0}
-.bbbFoot img{height:38px;width:auto;display:block}
+footer .bbbFoot{display:inline-flex;align-items:center;background:#fff;border-radius:6px;padding:4px 6px;line-height:0}
+.bbbFoot a{display:block;width:150px;height:68px;overflow:hidden}
+.bbbFoot img{display:block;width:300px;height:68px;max-width:none}
+.bbbFoot a:hover img{margin-left:-150px}
