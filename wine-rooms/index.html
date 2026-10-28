@@ -15,7 +15,26 @@
     var f = d.getElementsByTagName(s)[0];
     f.parentNode.insertBefore(js, f);
   })(window, document, "script", "https://bzrcdn.openai.com/sdk/oaiq.min.js");
-  oaiq("init", { pixelId: "YWz1kEyitvtSHHxhEwzzA8" });
+  // Anonymous visitor id: 32 random bytes kept in this browser, no personal data.
+  // Sent as external_id so Ads Manager can match a visit or lead to its ad click.
+  var sbVid = null;
+  try {
+    sbVid = localStorage.getItem("sb_vid");
+    if (!/^[0-9a-f]{64}$/.test(sbVid || "")) {
+      sbVid = Array.from(crypto.getRandomValues(new Uint8Array(32)), function (b) {
+        return b.toString(16).padStart(2, "0");
+      }).join("");
+      localStorage.setItem("sb_vid", sbVid);
+    }
+  } catch (e) { sbVid = null; }
+  window.sbVid = sbVid;
+  // The pixel reads its click id (oppref) from the query only; an ad URL that ends
+  // in #section gets it appended after the #, so hand it over explicitly.
+  var sbRef = /[#&?]oppref=([^&]+)/.exec(location.hash);
+  var sbInit = { pixelId: "YWz1kEyitvtSHHxhEwzzA8" };
+  if (sbVid) sbInit.user = { external_id_sha256: sbVid };
+  if (sbRef) sbInit.oppref = decodeURIComponent(sbRef[1]);
+  oaiq("init", sbInit);
   // one page_viewed per load, so an ad click shows in Ads Manager even when the visitor never calls or writes
   oaiq("measure", "page_viewed", { type: "contents" });
 </script>
@@ -493,6 +512,8 @@ const measureLead = async (leadId, email, phone) => {
   let digits = phone.replace(/\D/g, '').replace(/^0+/, '');
   if (digits.length === 10) digits = '1' + digits;
   const user = {country: 'US'};
+  // a later init replaces the user, so carry the visitor id into the lead
+  if (window.sbVid) user.external_id_sha256 = window.sbVid;
   if (email) user.email_sha256 = await sha256(email.trim().toLowerCase());
   if (digits) user.phone_number_sha256 = await sha256(digits);
   oaiq('init', {user});
