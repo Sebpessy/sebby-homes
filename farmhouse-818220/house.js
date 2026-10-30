@@ -745,7 +745,7 @@ export async function build(labels) {
   });
   const TOTAL = s + LEAVE + END;
   O = x => x * SC / TOTAL; const P = x => x / TOTAL;
-  const AX = { t: [50, 9, 57], az: -52, el: 27, fov: 1.5, h: 215, sx: -0.01, sy: -0.06, ph: { h: 320, sx: 0.2, sy: -0.16 } };
+  const AX = { t: [50, 9, 57], az: -52, el: 27, fov: 1.5, h: 215, sx: -0.01, sy: 0.02, ph: { h: 320, sx: 0.2, sy: -0.16 } };
   const OUT = { t: [50, 8, 57], az: -52, el: 27, fov: 1.5, h: 190, sx: 0.12, sy: -0.02, ph: { h: 400, sx: 0, sy: 0.06 } };
   const keys = [
     { at: 0, ...AX },
@@ -844,7 +844,7 @@ export async function build(labels) {
     colX: () => ctx.phone ? ctx.W - 150 : ctx.W * 0.74,
     draw: { dir: [0, 1, 0], radial: 0, min: -4, max: 34, soft: 4 },
     radar: {
-      scale: '1/16″ = 1′', viewBox: '-10 -4 122 122', svgH: 132, svgHPhone: 62, plan: planOf(1), plans: { 1: planOf(1), 2: planOf(2) }, strokeW: 0.8, dotR: 2.6, coneW: 0.8, coneLen: 14,
+      scale: '1/16″ = 1′', viewBox: '-10 -4 122 122', svgH: 84, svgHPhone: 62, plan: planOf(1), plans: { 1: planOf(1), 2: planOf(2) }, strokeW: 0.8, dotR: 2.6, coneW: 0.8, coneLen: 14,
       lvlNames: { 1: 'MAIN FL', 2: 'BONUS' }, lvl2Y: 12.5,
       clampX: [-10, 112], clampZ: [-6, 117], axoDot: [112, -4], axoAng: 2.4,
       zones: [
