@@ -200,13 +200,13 @@ export async function build(labels) {
   segs(L1.g, tendons, hatchMat);
 
   // 02-04 Framing: level 1 walls, the level 2 floor and walls, then the roof joists
-  const LF1 = layer('frame1', '02', 'Level 1 framing', '2×6 studs at 16″ · 11 ft walls', 1);
-  const LF2 = layer('frame2', '03', 'Level 2 framing', 'Floor joists · 9 ft walls', 2);
+  const LF1 = layer('frame1', '02', '1st Floor framing', '2×6 studs at 16″ · 11 ft walls', 1);
+  const LF2 = layer('frame2', '03', '2nd Floor framing', 'Floor joists · 9 ft walls', 2);
   const LFR = layer('roofframe', '04', 'Roof framing', 'Joists at 24″ · 2 ft overhangs', 3);
   // 05 Sheathing and decking: the walls are wrapped, the floors and roof are decked
   const LS = layer('sheath', '05', 'Sheathing & decking', 'Walls wrapped · floors and roof decked', 4);
   // 07 Stone and siding, with the interior finishes: floors, the stair, kitchen and furniture
-  const LC = layer('clad', '07', 'Stone & siding', 'Limestone below · cedar above · finishes in', 6);
+  const LC = layer('clad', '07', 'Stone & siding', 'Limestone 1st Floor · cedar 2nd Floor', 6);
   const L2 = LC, L3 = LC;
 
   const runs = wallRuns();
@@ -429,7 +429,7 @@ export async function build(labels) {
     glazing: [subs['x11'].g, V(66.3, 6, 50)],
     clad: [LC.g, V(66.6, 3, 6)],
   };
-  const SHORT = { slab: 'Slab', frame1: 'L1 frame', frame2: 'L2 frame', roofframe: 'Roof frame', sheath: 'Sheathing', glazing: 'Windows', clad: 'Stone · siding' };
+  const SHORT = { slab: 'Slab', frame1: '1st Floor', frame2: '2nd Floor', roofframe: 'Roof frame', sheath: 'Sheathing', glazing: 'Windows', clad: 'Stone · siding' };
   for (const L of layers) { const [obj, at] = anchor[L.id]; L.label = labels.add({ no: L.no, name: L.name, short: SHORT[L.id], sub: L.sub, obj, at, rank: 10 - Number(L.no) }); }
 
   const dash = liveLine(dashMat);
@@ -625,7 +625,7 @@ function drawPlan(P) {
     g.beginPath(); g.moveTo(tbx, tby + tbh * 0.55); g.lineTo(tbx + tbw, tby + tbh * 0.55); g.moveTo(tbx + tbw * 0.62, tby + tbh * 0.55); g.lineTo(tbx + tbw * 0.62, tby + tbh); g.stroke();
     g.textAlign = 'left'; g.font = '700 30px "Chakra Petch"'; g.fillText('SEBBY HOMES', tbx + 18, tby + tbh * 0.22);
     g.font = '500 18px "IBM Plex Mono"'; g.fillText('CONCEPT RESIDENCE NO. 01 · DALLAS–FORT WORTH', tbx + 18, tby + tbh * 0.42);
-    g.fillText('SITE + LEVEL 1 PLAN · FOR ILLUSTRATION', tbx + 18, tby + tbh * 0.77);
+    g.fillText('SITE + 1ST FLOOR PLAN · FOR ILLUSTRATION', tbx + 18, tby + tbh * 0.77);
     g.font = '700 34px "Chakra Petch"'; g.fillText('A-01', tbx + tbw * 0.62 + 22, tby + tbh * 0.79);
   });
 }
