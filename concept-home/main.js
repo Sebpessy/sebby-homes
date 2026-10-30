@@ -18,6 +18,7 @@ resize();
 const labels = new Labels();
 const { build } = await import('./house.js');
 const S = await build(labels);
+if (S.screens) story.style.height = `${Math.round(S.screens * 100)}vh`;   // a screen of scroll for each step of the walk
 document.body.classList.add('drawn');
 
 // ---- chrome from the house. Headline lines sit in masks so they can slide up.
@@ -35,7 +36,7 @@ $('cm-scale').textContent = R.scale;
 $('cm-svg').setAttribute('viewBox', R.viewBox);
 $('cm-plan').setAttribute('d', R.plan); $('cm-plan').setAttribute('stroke-width', R.strokeW);
 cmDot.setAttribute('r', R.dotR); cmCone.setAttribute('stroke-width', R.coneW);
-$('cm-zones').innerHTML = R.zones.map(z => `<rect class="cm-zone" data-stop="${z.stop}" data-p="${z.p}" data-tag="${z.tag}" x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}"/>`).join('');
+$('cm-zones').innerHTML = R.zones.map(z => `<rect class="cm-zone" data-lvl="${z.lvl || 1}" data-stop="${z.stop}" data-p="${z.p}" data-tag="${z.tag}" x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}"/>`).join('');
 $('cm-stops').style.gridTemplateColumns = `repeat(${R.stops.length}, 1fr)`;
 $('cm-stops').innerHTML = R.stops.map(s => `<button type="button" class="cm-btn" data-stop="${s.stop}" data-p="${s.p}" data-tag="${s.tag}">${s.label}</button>`).join('');
 const span = () => Math.max(1, story.offsetHeight - innerHeight);
@@ -104,7 +105,13 @@ function step() {
   const ang = persp ? Math.atan2(cam.t[2] - camera.position.z, cam.t[0] - camera.position.x) : R.axoAng;
   const sp = 0.42, rad = R.coneLen;
   cmCone.setAttribute('points', `${cx},${cz} ${cx + Math.cos(ang - sp) * rad},${cz + Math.sin(ang - sp) * rad} ${cx + Math.cos(ang + sp) * rad},${cz + Math.sin(ang + sp) * rad}`);
-  cmLbl.textContent = hoverTag ? `JUMP // ${hoverTag}` : persp ? `POS X ${camera.position.x.toFixed(0)}′ · Z ${camera.position.z.toFixed(0)}′` : `AXO // ${String(Math.round(p * 100)).padStart(3, '0')}%`;
+  // the corner plan shows the floor the camera is on
+  const lvl = String(st.lvl || 1);
+  if (R.plans && cadMap.dataset.lvl !== lvl) {
+    cadMap.dataset.lvl = lvl; $('cm-plan').setAttribute('d', R.plans[lvl]);
+    cadMap.querySelectorAll('.cm-zone').forEach(el => { el.style.display = el.dataset.lvl === lvl ? '' : 'none'; });
+  }
+  cmLbl.textContent = hoverTag ? `JUMP // ${hoverTag}` : persp ? `${lvl === '2' ? '2ND' : '1ST'} FL · X ${camera.position.x.toFixed(0)}′ · Z ${camera.position.z.toFixed(0)}′` : `AXO // ${String(Math.round(p * 100)).padStart(3, '0')}%`;
   cadMap.querySelectorAll('[data-stop]').forEach(el => el.classList.toggle('active', el.dataset.stop === st.stop));
   const cap = $('caption'); cap.style.opacity = st.capOp || 0;
   if (st.cap && cap.dataset.k !== st.cap) { cap.dataset.k = st.cap; cap.innerHTML = st.cap; }

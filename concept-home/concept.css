@@ -125,7 +125,7 @@
 
 /* Interactive Bottom-Right CAD Radar (#cad-map) */
 #cad-map {
-  position: absolute; right: 30px; bottom: 58px; width: 228px;
+  position: absolute; right: 30px; bottom: 58px; width: 256px;
   background: rgba(29, 28, 25, 0.93); color: var(--paper);
   border: 1px solid var(--accent);
   padding: 8px 10px;
@@ -159,7 +159,7 @@
   appearance: none; background: rgba(242, 239, 231, 0.06);
   border: 1px solid rgba(242, 239, 231, 0.18);
   color: rgba(242, 239, 231, 0.78);
-  font: 600 7.5px/1 var(--mono); letter-spacing: .05em; text-transform: uppercase;
+  font: 600 7.5px/1 var(--mono); letter-spacing: .02em; text-transform: uppercase;
   padding: 4px 2px; cursor: pointer; text-align: center;
   transition: background .14s, color .14s, border-color .14s;
 }
