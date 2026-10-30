@@ -242,9 +242,10 @@ export async function build(labels) {
     L2.part.add('wood', bx(x0, y - 0.18, 22.4, x0 + 0.83, y, 26));
   }
   L2.part.add('dark', new THREE.BoxGeometry(0.3, 1.1, 18.2).rotateX(-Math.atan2(12, 13.3)).rotateY(Math.PI / 2).translate(40.4, 5.6, 24.2));
-  L2.part.add('glass', bx(41.2, 0.12, 22.6, 46.6, 6.2, 22.7), bx(41.2, 0.12, 25.8, 46.6, 6.2, 25.9), bx(41.1, 0.12, 22.6, 41.2, 6.2, 25.9));
-  for (let x = 41.8; x < 46.5; x += 0.9) L2.part.add('dark', bx(x, 0.12, 23.4, x + 0.08, 6.2, 25.2));
-  for (let y = 1; y < 6.2; y += 1.2) L2.part.add('dark', bx(41.6, y, 23.4, 46.4, y + 0.06, 25.2));
+  L2.part.add('glass', bx(40.9, 0.12, 22.6, 44.2, 6.2, 22.7), bx(40.9, 0.12, 25.8, 44.2, 6.2, 25.9),
+    bx(40.8, 0.12, 22.6, 40.9, 6.2, 25.9), bx(44.1, 0.12, 22.6, 44.2, 6.2, 25.9));
+  for (let x = 41.4; x < 44; x += 0.85) L2.part.add('dark', bx(x, 0.12, 23.4, x + 0.08, 6.2, 25.2));
+  for (let y = 1; y < 6.2; y += 1.2) L2.part.add('dark', bx(41.2, y, 23.4, 43.9, y + 0.06, 25.2));
   // foyer: console and a chandelier in the two-story volume
   L2.part.add('wood', bx(45.4, 0.12, 9, 46.5, 2.8, 15));
   L2.part.add('gold', cyl(2.2, 0.35, 40, 15.5, 14, 36, 2.2), cyl(0.05, 5, 40, 16, 14, 8));
@@ -299,9 +300,12 @@ export async function build(labels) {
       s.part.add('frame', B(a, v0, b, v0 + f, -0.3, 0.3), B(a, v1 - f, b, v1, -0.3, 0.3), B(a, v0, a + f, v1, -0.3, 0.3), B(b - f, v0, b, v1, -0.3, 0.3));
       // steel mullions about every 3 ft, and a transom on the tall walls of glass
       const n = Math.max(1, Math.round((b - a) / 3.2));
-      for (let k = 1; k < n; k++) { const u = a + (b - a) * k / n; if (kind === 'entry' && u > 38.5 && u < 41.5) continue; s.part.add('frame', B(u - 0.08, v0, u + 0.08, v1, -0.25, 0.25)); }
+      for (let k = 1; k < n; k++) { const u = a + (b - a) * k / n; if (kind === 'entry' && v0 < LVL2 && u > 38.5 && u < 43.5) continue; s.part.add('frame', B(u - 0.08, v0, u + 0.08, v1, -0.25, 0.25)); }
       if (v1 - v0 > 9) s.part.add('frame', B(a, v0 + 9.6, b, v0 + 9.8, -0.25, 0.25));
-      s.part.add('glass', B(a + f, v0 + f, b - f, v1 - f, -0.04, 0.04));
+      if (kind === 'entry' && v0 < LVL2) {
+        s.part.add('glass', B(a + f, v0 + f, 39, v1 - f, -0.04, 0.04), B(43, v0 + f, b - f, v1 - f, -0.04, 0.04), B(39, 10, 43, v1 - f, -0.04, 0.04));
+        s.part.add('frame', B(38.8, v0, 39, 10, -0.3, 0.3), B(43, v0, 43.2, 10, -0.3, 0.3), B(39, 9.8, 43, 10, -0.3, 0.3));
+      } else s.part.add('glass', B(a + f, v0 + f, b - f, v1 - f, -0.04, 0.04));
     }
   }
   const entry = subs['z-11'];
@@ -367,12 +371,26 @@ export async function build(labels) {
     { at: 0.52, t: [38, 8, 14], az: -72, el: 18, fov: 1.6, h: 60, sx: -0.06, ph: { h: 120, sx: 0, sy: -0.2 } },
     eyeKey(0.62, [40, EYE, -24], [40, 7.2, 6], 46, { sy: -0.12, ph: eyeKey(0.62, [40, EYE, -30], [40, 7.6, 6], 62, { sy: -0.1 }) }),
     eyeKey(0.70, [40, EYE, -15], [40, 7, 12], 50, { sy: -0.1, ph: eyeKey(0.70, [40, EYE, -20], [40, 7.4, 12], 64, { sy: -0.08 }) }),
-    eyeKey(1.0, [40, EYE, -15], [40, 7, 12], 50, { sy: -0.1, ph: eyeKey(1.0, [40, EYE, -20], [40, 7.4, 12], 64, { sy: -0.08 }) }),
+    // through the door, under the high end of the stair, into the family room, across to the kitchen, look back
+    eyeKey(0.75, [41.6, EYE, -2], [41.8, 6.2, 20], 58, { ph: eyeKey(0.75, [41.6, EYE, -4], [41.8, 6.4, 20], 70) }),
+    eyeKey(0.79, [42.4, EYE, 9], [44, 6.4, 28], 66, { ph: eyeKey(0.79, [42.4, EYE, 8], [44, 6.6, 28], 76) }),
+    eyeKey(0.835, [45.4, EYE, 24], [40.5, 5.4, 42], 64, { ph: eyeKey(0.835, [45.4, EYE, 23], [40.5, 5.6, 42], 74) }),
+    eyeKey(0.875, [42, EYE, 37], [41, 4.6, 75], 60, { ph: eyeKey(0.875, [42, EYE, 36], [41, 4.8, 75], 72) }),
+    eyeKey(0.905, [38.5, EYE, 52.2], [12, 4.4, 45], 60, { ph: eyeKey(0.905, [38.5, EYE, 52.2], [12, 4.6, 45], 72) }),
+    eyeKey(0.93, [29, EYE, 52.2], [8, 4, 43], 60, { ph: eyeKey(0.93, [30, EYE, 52.6], [8, 4.2, 43], 72) }),
+    eyeKey(0.955, [26, EYE, 52.4], [7, 4, 42], 58, { ph: eyeKey(0.955, [27, EYE, 52.8], [7, 4.2, 42], 70) }),
+    // and back out through the roof to the whole house, finished
+    { at: 0.99, t: [33, 9, 27], az: -52, el: 27, fov: 1.5, h: 112, sx: 0.12, sy: -0.02, ph: { h: 250, sx: 0, sy: 0.06 } },
+    { at: 1.0, t: [33, 9, 27], az: -52, el: 27, fov: 1.5, h: 112, sx: 0.12, sy: -0.02, ph: { h: 250, sx: 0, sy: 0.06 } },
   ];
   keys[4].easeFn = t => ease(t);
 
   const STOPS = [
-    { id: 'porch', a: 0.55, b: 1.01, lv: 'ARRIVAL // FRONT PORCH · +0′-0″', t: 'The two-story entry', m: '10 ft oak pivot door  ·  glass to the roof  ·  21 ft porch' },
+    { id: 'porch', a: 0.55, b: 0.735, lv: 'ARRIVAL // FRONT PORCH · +0′-0″', t: 'The two-story entry', m: '10 ft oak pivot door  ·  glass to the roof  ·  21 ft porch' },
+    { id: 'foyer', a: 0.775, b: 0.83, lv: 'FOYER // 14′ × 16′ · 21′ CEILING', t: 'A stair that floats', m: 'Oak treads on one steel stringer  ·  glass wine room underneath' },
+    { id: 'family', a: 0.86, b: 0.905, lv: 'FAMILY // 16′ × 20′ · 21′ CEILING', t: 'Two stories of glass', m: 'Stone fireplace wall  ·  looking out to the patio and pool' },
+    { id: 'kitchen', a: 0.925, b: 0.96, lv: "KITCHEN // 20′ × 20′ · BUTLER'S PANTRY", t: 'Cook, gather, host', m: 'Waterfall island with stools  ·  dining for eight beside it' },
+    { id: 'back', a: 0.975, b: 1.05, lv: 'SHEET A-01 // CONCEPT RESIDENCE NO. 01', t: 'Drawn before it is built', m: 'This is how we plan every Sebby home  ·  start yours below' },
   ];
 
   function update(p) {
@@ -420,7 +438,7 @@ export async function build(labels) {
     return {
       hero: 1 - clamp((p - 0.39) / 0.05),
       counter: p < 0.54 ? `Layer <b>${String(Math.min(5, landed + (p > T0 ? 1 : 0))).padStart(2, '0')}</b> / 05` : '',
-      hint: p < 0.42 ? 'Scroll to build it' : p < 0.62 ? 'Scroll to the front door' : '',
+      hint: p < 0.42 ? 'Scroll to build it' : p < 0.62 ? 'Scroll to the front door' : p < 0.74 ? 'Scroll to walk in' : p > 0.985 ? 'Scroll to start yours' : '',
       cap, capOp, stop: activeStop,
     };
   }
@@ -433,10 +451,18 @@ export async function build(labels) {
     radar: {
       scale: '1/8″ = 1′', viewBox: '-4 -10 74 70', plan: planPath, strokeW: 0.5, dotR: 1.8, coneW: 0.5, coneLen: 9,
       clampX: [-2, 68], clampZ: [-9, 56], axoDot: [70, -8], axoAng: 2.4,
-      zones: [{ stop: 'porch', p: 0.66, tag: 'PORCH // FRONT DOOR', x: 33, y: -6, w: 14, h: 12 }],
+      zones: [
+        { stop: 'porch', p: 0.66, tag: 'PORCH // FRONT DOOR', x: 33, y: -6, w: 14, h: 12 },
+        { stop: 'foyer', p: 0.8, tag: 'FOYER // STAIR', x: 33, y: 6, w: 14, h: 28 },
+        { stop: 'family', p: 0.88, tag: 'FAMILY // POOL VIEW', x: 33, y: 34, w: 16, h: 20 },
+        { stop: 'kitchen', p: 0.94, tag: 'KITCHEN // DINING', x: 0, y: 34, w: 33, h: 20 },
+      ],
       stops: [
         { stop: 'axo', p: 0.2, tag: 'AXO // LAYERS 01-05', label: 'AXO' },
         { stop: 'porch', p: 0.66, tag: 'PORCH // FRONT DOOR', label: 'PORCH' },
+        { stop: 'foyer', p: 0.8, tag: 'FOYER // STAIR', label: 'FOYER' },
+        { stop: 'family', p: 0.88, tag: 'FAMILY // POOL VIEW', label: 'FAMILY' },
+        { stop: 'kitchen', p: 0.94, tag: 'KITCHEN // DINING', label: 'KITCHEN' },
       ],
     },
     chrome: {
