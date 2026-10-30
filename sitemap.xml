@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://sebby.homes/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -63,6 +64,12 @@
   <url>
     <loc>https://sebby.homes/farmhouse-818220/</loc>
     <lastmod>2026-10-30</lastmod>
+    <image:image><image:loc>https://sebby.homes/assets/farmhouse-818220-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sebby.homes/farmhouse-818220/img/framing.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sebby.homes/farmhouse-818220/img/roof-framing.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sebby.homes/farmhouse-818220/img/finished-exterior.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sebby.homes/farmhouse-818220/img/rear-porch.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sebby.homes/farmhouse-818220/img/dining-glass-gable.jpg</image:loc></image:image>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
