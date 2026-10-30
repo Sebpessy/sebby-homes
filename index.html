@@ -478,15 +478,20 @@ nav .links a.cta:hover{background:var(--gold);color:var(--black)}
 #plan3d .plan3dCard{display:grid;grid-template-columns:7fr 5fr;gap:48px;align-items:center;border-top:1px solid rgba(201,162,75,.14);padding-top:64px}
 @media(max-width:860px){#plan3d .plan3dCard{grid-template-columns:1fr;gap:24px;padding-top:44px}}
 #plan3d .plan3dImg{position:relative;display:block;border:1px solid var(--gold-dim);overflow:hidden}
-/* a big "3D" over the drawing, extruded from stacked layers and turning like an object */
-#plan3d .spin3d{position:absolute;bottom:5%;left:4%;z-index:1;perspective:900px;pointer-events:none;text-align:center}
-#plan3d .spin3d .obj{position:relative;display:block;transform-style:preserve-3d;animation:spin3d 7s cubic-bezier(.45,0,.55,1) infinite}
-#plan3d .spin3d .obj i{display:block;font-style:normal;font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(3rem,7vw,6rem);line-height:.9;letter-spacing:-.02em;color:#7A6330;transform:translateZ(calc(var(--z) * -1px))}
-#plan3d .spin3d .obj i+i{position:absolute;inset:0}
-#plan3d .spin3d .obj i.face{color:transparent;background:linear-gradient(160deg,#F4DE96 0%,#E5C76B 38%,#C9A24B 62%,#9C7424 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-stroke:1px rgba(29,28,25,.35)}
-#plan3d .spin3d .obj i.back{color:#C9A24B}
-@keyframes spin3d{0%{transform:rotateX(12deg) rotateY(-28deg)}50%{transform:rotateX(12deg) rotateY(332deg)}100%{transform:rotateX(12deg) rotateY(332deg)}}
-@media(prefers-reduced-motion:reduce){#plan3d .spin3d .obj{animation:none;transform:rotateX(12deg) rotateY(-28deg)}}
+/* a CAD view cube in the corner of the drawing: ink edges on paper, the front face reads 3D, and it orbits */
+#plan3d .spin3d{--s:clamp(46px,6.4vw,84px);position:absolute;bottom:9%;left:6%;z-index:1;width:var(--s);height:var(--s);perspective:600px;pointer-events:none}
+#plan3d .spin3d .shadow{position:absolute;left:50%;top:100%;width:calc(var(--s) * 1.5);height:calc(var(--s) * .34);transform:translate(-50%,-10%);border-radius:50%;background:radial-gradient(closest-side,rgba(29,28,25,.22),rgba(29,28,25,0))}
+#plan3d .spin3d .cube{position:absolute;inset:0;transform-style:preserve-3d;animation:spin3d 14s linear infinite}
+#plan3d .spin3d .cube b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(242,239,231,.9);border:1.5px solid #1d1c19;box-shadow:inset 0 0 0 3px rgba(242,239,231,.9),inset 0 0 0 4px rgba(29,28,25,.18);font:600 calc(var(--s) * .15)/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.08em;color:#6b665c;backface-visibility:hidden}
+#plan3d .spin3d .cube b.f3d{font:900 calc(var(--s) * .44)/1 'Montserrat',sans-serif;letter-spacing:-.02em;color:#9C7424;border-color:#9C7424}
+#plan3d .spin3d .cube .fr{transform:translateZ(calc(var(--s) / 2))}
+#plan3d .spin3d .cube .bk{transform:rotateY(180deg) translateZ(calc(var(--s) / 2))}
+#plan3d .spin3d .cube .rt{transform:rotateY(90deg) translateZ(calc(var(--s) / 2))}
+#plan3d .spin3d .cube .lt{transform:rotateY(-90deg) translateZ(calc(var(--s) / 2))}
+#plan3d .spin3d .cube .tp{transform:rotateX(90deg) translateZ(calc(var(--s) / 2));background:rgba(229,199,107,.28)}
+#plan3d .spin3d .cube .bt{transform:rotateX(-90deg) translateZ(calc(var(--s) / 2))}
+@keyframes spin3d{from{transform:rotateX(-24deg) rotateY(-35deg)}to{transform:rotateX(-24deg) rotateY(-395deg)}}
+@media(prefers-reduced-motion:reduce){#plan3d .spin3d .cube{animation:none;transform:rotateX(-24deg) rotateY(-35deg)}}
 #plan3d .plan3dImg img{display:block;width:100%;height:auto;aspect-ratio:40/21;object-fit:cover;transition:transform .8s ease}
 #plan3d .plan3dImg:hover img{transform:scale(1.03)}
 .viewAll{display:inline-block;margin-top:16px;border:1px solid var(--gold-dim);color:var(--gold);font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;transition:background .3s,color .3s}
@@ -1011,7 +1016,7 @@ nav .drop:hover .dropMenu,nav .drop:focus-within .dropMenu{opacity:1;visibility:
   <div class="wrap">
     <div class="plan3dCard rv">
       <a class="plan3dImg" href="farmhouse-818220/">
-        <span class="spin3d" aria-hidden="true"><span class="obj"><i class="back" style="--z:15">3D</i><i style="--z:14">3D</i><i style="--z:13">3D</i><i style="--z:12">3D</i><i style="--z:11">3D</i><i style="--z:10">3D</i><i style="--z:9">3D</i><i style="--z:8">3D</i><i style="--z:7">3D</i><i style="--z:6">3D</i><i style="--z:5">3D</i><i style="--z:4">3D</i><i style="--z:3">3D</i><i style="--z:2">3D</i><i style="--z:1">3D</i><i class="face" style="--z:0">3D</i></span></span>
+        <span class="spin3d" aria-hidden="true"><span class="shadow"></span><span class="cube"><b class="fr f3d">3D</b><b class="rt">RIGHT</b><b class="bk f3d">3D</b><b class="lt">LEFT</b><b class="tp">TOP</b><b class="bt"></b></span></span>
         <img src="assets/farmhouse-818220-og.jpg" width="1200" height="630" loading="lazy"
         alt="Exploded 3D drawing of farmhouse plan 818220JSS with the wall framing up and the roof trusses lifting into place"></a>
       <div>
