@@ -258,7 +258,8 @@ export async function build(labels) {
   for (let y = 1; y < 6.2; y += 1.2) L2.part.add('dark', bx(41.2, y, 23.4, 43.9, y + 0.06, 25.2));
   // foyer: console and a chandelier in the two-story volume
   L2.part.add('wood', bx(45.4, 0.12, 9, 46.5, 2.8, 15));
-  L2.part.add('gold', cyl(2.2, 0.35, 40, 15.5, 14, 36, 2.2), cyl(0.05, 5, 40, 16, 14, 8));
+  // hung in the middle of the two-story part of the foyer, clear of the bridge, below the 2nd Floor line
+  L2.part.add('gold', cyl(2, 0.35, 40, 10.4, 10.5, 36, 2), cyl(0.05, 9.95, 40, 10.75, 10.5, 8));
   // family room: sofa, coffee table, rug, fireplace wall
   L2.part.add('soft', bx(36, 0.12, 37.5, 47, 0.16, 50));
   L2.part.add('soft', rb(36.5, 0.12, 47.4, 46.5, 1.5, 50.2), rb(36.5, 1.5, 49.4, 46.5, 2.9, 50.4),
@@ -468,7 +469,7 @@ export async function build(labels) {
     [0.9, [44.5, 15.4, 24.2], [52, 18.2, 24.2], 62],
     [0.35, [46.4, EYE2, 23.4], [38, 17, 17], 64],
     [0.25, [45.8, EYE2, 20.6], [38, 16, 15], 64],
-    [0.35, [40, EYE2, 19.5], [39, 14.5, 0], 64, 'landing'],
+    [0.35, [40, EYE2, 19.5], [39, 11, 0], 64, 'landing'],
     [0.6, [28, EYE2, 19], [10, 16, 19], 64, 'hall'],
     [0.35, [24, EYE2, 17.5], [24, 15, 5], 62],
     [0.4, [24, EYE2, 12], [17, 14, 4], 66, 'game'],

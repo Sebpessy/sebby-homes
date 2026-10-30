@@ -106,7 +106,7 @@ function step() {
   const sp = 0.42, rad = R.coneLen;
   cmCone.setAttribute('points', `${cx},${cz} ${cx + Math.cos(ang - sp) * rad},${cz + Math.sin(ang - sp) * rad} ${cx + Math.cos(ang + sp) * rad},${cz + Math.sin(ang + sp) * rad}`);
   // the corner plan shows the floor the camera is on
-  const lvl = String(st.lvl || 1);
+  const lvl = String(persp && camera.position.y > 13 ? 2 : 1);
   if (R.plans && cadMap.dataset.lvl !== lvl) {
     cadMap.dataset.lvl = lvl; $('cm-plan').setAttribute('d', R.plans[lvl]);
     cadMap.querySelectorAll('.cm-zone').forEach(el => { el.style.display = el.dataset.lvl === lvl ? '' : 'none'; });
