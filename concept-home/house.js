@@ -476,7 +476,7 @@ export async function build(labels) {
     [0.4, [24, EYE2, 18], [30, 15, 25], 62],
     [0.3, [29, EYE2, 19.5], [29, 14.5, 30], 62, 'linen'],
     [0.6, [12.5, EYE2, 19], [12.5, 15, 8], 62],
-    [0.4, [11, EYE2, 10], [4, 13.5, 7], 66, 'bed2'],
+    [0.4, [12, EYE2, 10], [4, 13.5, 7], 66, 'bed2'],
     [0.4, [5, EYE2, 12.5], [5, 14.5, 22], 64, 'bath2'],
     [0.4, [12.5, EYE2, 13], [12.5, 15.5, 25], 62],
     [0.35, [12.5, EYE2, 20], [12, 15, 32], 62],
@@ -541,7 +541,8 @@ export async function build(labels) {
     { at: P(s + LEAVE), ...OUT, easeFn: ease },
     { at: 1.0, ...OUT },
   ];
-  keys[4].easeFn = t => ease(t);
+  // no dead stop on the way down to the porch: speed up off the axo, glide through, settle at eye level
+  keys[2].easeFn = easeIn; keys[3].easeFn = t => t; keys[4].easeFn = easeOut;
 
   const INFO = {
     foyer: ['FOYER // 14′ × 16′ · 21′ CEILING', 'A stair that floats', 'Oak treads on one steel stringer  ·  glass wine room underneath'],

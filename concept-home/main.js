@@ -131,12 +131,17 @@ function step() {
 // only draw while the story is on screen
 let onScreen = true;
 new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }).observe(story);
+let last = performance.now();
 function frame() {
-  if (FIXED == null) p += (target() - p) * 0.12;
+  // the story trails the scroll a little, the same on any screen's frame rate, so a flick of the wheel
+  // or a swipe glides instead of jumping
+  const now = performance.now(), dt = Math.min(0.1, (now - last) / 1000); last = now;
+  if (FIXED == null) p += (target() - p) * (1 - Math.exp(-dt * 5.5));
   if (T_FIXED == null) T = (performance.now() - t0) / 1000;
   if (onScreen || frames < 3) step();
   if (++frames === 3) window.__ready = true;
   requestAnimationFrame(frame);
 }
+window.__camAt = pp => camAt(S.keys, pp);
 window.__frame = (t, pp) => { T = t; p = pp; step(); return true; };
 requestAnimationFrame(frame);

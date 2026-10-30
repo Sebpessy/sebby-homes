@@ -310,20 +310,44 @@ export function eyeKey(at, E, T, fov, extra = {}) {
     fov, h: 2 * D * Math.tan(fov * D2R / 2), sx: 0, sy: 0, ...extra,
   };
 }
+// Through a run of eye-level keys the camera rides a monotone cubic: it passes every waypoint without
+// stopping, holds its speed through the corners, never overshoots a waypoint on any axis, and only
+// eases to rest where the walk holds still.
+const WRAP = d => ((d % 360) + 540) % 360 - 180;
+const tangents = new WeakMap();
+function walkCurve(keys) {
+  let c = tangents.get(keys); if (c) return c;
+  const V = keys.map(k => k.pos ? [k.pos[0], k.pos[1], k.pos[2], k.laz, k.lel, k.ldist, Math.log(k.fov)] : null);
+  for (let i = 1; i < V.length; i++) if (V[i] && V[i - 1]) V[i][3] = V[i - 1][3] + WRAP(V[i][3] - V[i - 1][3]);
+  const same = (a, b) => a && b && a.every((v, j) => Math.abs(v - b[j]) < 1e-6);
+  const M = V.map((v, i) => {
+    const a = V[i - 1], b = V[i + 1];
+    if (!v || !a || !b || same(v, a) || same(v, b)) return v && v.map(() => 0);
+    const h0 = keys[i].at - keys[i - 1].at, h1 = keys[i + 1].at - keys[i].at;
+    return v.map((x, j) => {
+      const d0 = (x - a[j]) / h0, d1 = (b[j] - x) / h1;
+      if (d0 * d1 <= 0) return 0;
+      const m = (d0 * h1 + d1 * h0) / (h0 + h1);
+      return Math.sign(m) * Math.min(Math.abs(m), 3 * Math.abs(d0), 3 * Math.abs(d1));
+    });
+  });
+  c = { V, M }; tangents.set(keys, c); return c;
+}
+const phoneKeys = new WeakMap();
 export function camAt(keys0, p) {
-  const keys = ctx.phone ? keys0.map(k => k.ph ? { ...k, ...k.ph } : k) : keys0;
+  let keys = keys0;
+  if (ctx.phone) { keys = phoneKeys.get(keys0); if (!keys) phoneKeys.set(keys0, keys = keys0.map(k => k.ph ? { ...k, ...k.ph } : k)); }
   let i = 0; while (i < keys.length - 1 && p > keys[i + 1].at) i++;
   const a = keys[i], b = keys[Math.min(i + 1, keys.length - 1)];
   const u = a === b ? 0 : (b.easeFn || ease)(clamp((p - a.at) / (b.at - a.at)));
   const L = (k) => lerp(a[k] ?? 0, b[k] ?? 0, u);
-  const az = a.az + ((((b.az - a.az) % 360) + 540) % 360 - 180) * u;
+  const az = a.az + WRAP(b.az - a.az) * u;
   if (a.pos && b.pos) {
-    const pos = [lerp(a.pos[0], b.pos[0], u), lerp(a.pos[1], b.pos[1], u), lerp(a.pos[2], b.pos[2], u)];
-    const laz = (a.laz + ((((b.laz - a.laz) % 360) + 540) % 360 - 180) * u) * D2R;
-    const lel = lerp(a.lel, b.lel, u) * D2R;
-    const ldist = lerp(a.ldist, b.ldist, u);
+    const { V, M } = walkCurve(keys), A = V[i], B = V[Math.min(i + 1, keys.length - 1)];
+    const h = b.at - a.at, s = h ? clamp((p - a.at) / h) : 0, s2 = s * s, s3 = s2 * s;
+    const H = A.map((x, j) => (2 * s3 - 3 * s2 + 1) * x + (s3 - 2 * s2 + s) * h * M[i][j] + (-2 * s3 + 3 * s2) * B[j] + (s3 - s2) * h * M[Math.min(i + 1, keys.length - 1)][j]);
+    const pos = [H[0], H[1], H[2]], laz = H[3] * D2R, lel = H[4] * D2R, ldist = H[5], fov = Math.exp(H[6]);
     const t = [pos[0] + ldist * Math.cos(lel) * Math.cos(laz), pos[1] + ldist * Math.sin(lel), pos[2] + ldist * Math.cos(lel) * Math.sin(laz)];
-    const fov = Math.exp(lerp(Math.log(a.fov), Math.log(b.fov), u));
     return {
       pos, t, az, el: L('el'), fov,
       h: 2 * ldist * Math.tan(fov * D2R / 2), w: L('w'), sx: L('sx'), sy: L('sy'), roll: L('roll'),

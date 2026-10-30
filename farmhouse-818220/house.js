@@ -691,8 +691,9 @@ export async function build(labels) {
     [0.3, [91.5, EYE, 39], [100, 5, 38], 62],
     [0.4, [104.5, EYE, 38.2], [106, 4, 42.4], 62],
     [0.3, [106, EYE, 42.4], [96, 11, 42.4], 62],
-    [0.9, [95.8, EYE2, 42.4], [97, 14, 24], 62],
-    [0.3, [95, EYE2, 38], [97, 14, 20], 62],
+    [0.9, [95.8, EYE2, 42.4], [97, 14, 30], 62],
+    [0.2, [95, EYE2, 41.6], [97, 14, 24], 62],
+    [0.25, [95, EYE2, 38], [97, 14, 20], 62],
     [0.45, [97.5, EYE2, 33], [97.5, 13.5, 2], 66, 'bonus'],
   ];
   const HOLD = 0.35, PACE = 0.75, LEAVE = 0.9, END = 0.35;   // PACE scales every walking leg
@@ -710,7 +711,7 @@ export async function build(labels) {
   });
   const TOTAL = s + LEAVE + END;
   O = x => x * SC / TOTAL; const P = x => x / TOTAL;
-  const AX = { t: [50, 9, 57], az: -52, el: 27, fov: 1.5, h: 215, sx: -0.01, sy: 0.02, ph: { h: 320, sx: 0.2, sy: -0.16 } };
+  const AX = { t: [50, 9, 57], az: -52, el: 27, fov: 1.5, h: 215, sx: -0.01, sy: 0.02, ph: { h: 275, sx: 0.25, sy: -0.24 } };
   const OUT = { t: [50, 8, 57], az: -52, el: 27, fov: 1.5, h: 190, sx: 0.12, sy: -0.02, ph: { h: 400, sx: 0, sy: 0.06 } };
   const keys = [
     { at: 0, ...AX },
@@ -724,7 +725,8 @@ export async function build(labels) {
     { at: P(s + LEAVE), ...OUT, easeFn: ease },
     { at: 1.0, ...OUT },
   ];
-  keys[4].easeFn = t => ease(t);
+  // no dead stop on the way down to the porch: speed up off the axo, glide through, settle at eye level
+  keys[2].easeFn = easeIn; keys[3].easeFn = t => t; keys[4].easeFn = easeOut;
 
   const INFO = {
     great: ['GREAT ROOM // 28′-0″ × 22′-0″ · VAULT OFF 16′', 'The heart of the house', 'Vaulted ceiling  ·  fireplace  ·  glass doors to both porches'],
