@@ -23,8 +23,8 @@ const VOLS = [
   { x0: 58.5, z0: 48.5, x1: 77, z1: 84, h: 16 },     // kitchen and dining
   { x0: 77, z0: 49, x1: 106.5, z1: 82, h: 10 },      // bedroom wing
   { x0: 77, z0: 82, x1: 97, z1: 97, h: 10 },         // bedroom 2
-  { x0: 88.5, z0: 36, x1: 106.5, z1: 49, h: 11.5 },  // mud room, stair, bedroom 4
-  { x0: 85.5, z0: 0, x1: 109.5, z1: 36, h: 11.5 },   // three-car garage, bonus room above
+  { x0: 88.5, z0: 36, x1: 106.5, z1: 49, h: 13 },    // mud room, stair, bedroom 4
+  { x0: 85.5, z0: 0, x1: 109.5, z1: 36, h: 13 },     // three-car garage, bonus room above
 ];
 
 // rooms: [id, level, x0, z0, x1, z1, name, floor, open-plan group, flat ceiling]
@@ -56,10 +56,10 @@ export const ROOMS = [
   ['mud', 1, 88.5, 36, 94.5, 63.5, 'Mud room', 'stone', 'bh', 9],
   ['stair', 1, 94.5, 36, 106.5, 44.5, 'Stair', 'oak', null, 10],
   ['garage', 1, 85.5, 0, 109.5, 36, '3 car garage', 'concrete', null, 9],
-  ['bonus', 2, 89, 0, 106, 36, 'Bonus room', 'oak', 'bon'],
-  ['bland', 2, 94.5, 36, 106, 40, '', 'oak', 'bon'],
-  ['bland2', 2, 105.5, 40, 106, 44.5, '', 'oak', 'bon'],
-  ['bbath', 2, 89, 36, 94.5, 44.5, 'Bath', 'stone'],
+  ['bonus', 2, 89.5, 0, 105.5, 36, 'Bonus room', 'oak', 'bon'],
+  ['bland', 2, 94.5, 36, 105.5, 40, '', 'oak', 'bon'],
+  ['bland2', 2, 94.5, 40, 95.5, 44.5, '', 'oak', 'bon'],
+  ['bbath', 2, 89.5, 36, 94.5, 44.5, 'Bath', 'stone'],
 ].map(([id, lvl, x0, z0, x1, z1, name, floor, group, c]) => ({ id, lvl, x0, z0, x1, z1, name, floor, group, c }));
 
 // doors between rooms: [room, room, width], centered on the wall they share; open-plan groups need none
@@ -98,12 +98,12 @@ const OPEN = [
 const ROOFS = [
   { t: 'gable', r: 'x', x0: 29.5, z0: 59, x1: 58.5, z1: 81.5, e: 16.5, ends: [1, 1], o: { x1: 0 } },           // great room
   { t: 'gable', r: 'z', x0: 58.5, z0: 48.5, x1: 77, z1: 84, e: 16, ends: [1, 1], glass: 0, o: { x0: 0 } },     // kitchen and dining, glass gable to the front
-  { t: 'gable', r: 'z', x0: 0, z0: 62, x1: 17.5, z1: 114.5, e: 12, ends: [1, 1] },               // primary wing
+  { t: 'gable', r: 'z', x0: 0, z0: 62, x1: 17.5, z1: 114.5, e: 12, ends: [1, 1], o: { x1: 0 } },               // primary wing
   { t: 'gable', r: 'x', x0: -8, z0: 80, x1: 0, z1: 92.5, e: 10, ends: [1, 0], o: { x1: 0 } },                  // tub bay
   { t: 'gable', r: 'z', x0: 17.5, z0: 64, x1: 29.5, z1: 81.5, e: 10, ends: [1, 1], o: { x0: 0, x1: 0 } },             // gym and gallery
   { t: 'hip', x0: 77, z0: 49, x1: 106.5, z1: 82, e: 10, o: { x0: 0, z0: 0, z1: 0 } },                                        // bedroom wing
   { t: 'gable', r: 'z', x0: 77, z0: 82, x1: 97, z1: 97, e: 10, ends: [0, 1], o: { x0: 0, z0: 0 } },                    // bedroom 2
-  { t: 'gable', r: 'z', x0: 85.5, z0: 0, x1: 109.5, z1: 49, e: 11.5, ends: [1, 1] },             // garage and the bonus room
+  { t: 'gable', r: 'z', x0: 85.5, z0: 0, x1: 109.5, z1: 49, e: 13, ends: [1, 1] },               // garage and the bonus room
   { t: 'shed', x0: 29.5, z0: 52.5, x1: 58.5, z1: 59, low: 'z0', e: 10.5, o: { x1: 0 } },                       // front porch
   { t: 'shed', x0: 17.5, z0: 81.5, x1: 58.5, z1: 93.5, low: 'z1', e: 10.6 },                     // back porch
   { t: 'shed', x0: 58.5, z0: 84, x1: 77, z1: 93.5, low: 'z1', e: 10.4, o: { x1: 0 } },
@@ -179,8 +179,19 @@ function cutRect(a, b, y0, y1, holes) {
 /* ---------------- roof geometry ---------------- */
 
 // the top faces of each roof as flat polygons, the gable triangles under them, and the outline on the plan
+// every pitched roof sits a heel above the wall plates, so its deck clears the walls and their siding at the eaves
 function roofPlanes(R) {
-  const oh = R.oh ?? 1.5, rk = R.rk ?? 1.2;
+  const r = roofShape(R);
+  if (r.shed) return r;
+  const HEEL = 0.6;
+  r.planes = r.planes.map(P => P.map(([x, y, z]) => [x, y + HEEL, z]));
+  for (const gb of r.gables) gb.pts[2][1] += HEEL;
+  r.H += HEEL;
+  return r;
+}
+
+function roofShape(R) {
+  const oh = R.oh ?? 2, rk = R.rk ?? 2;
   const { x0, z0, x1, z1, e } = R, xm = (x0 + x1) / 2, zm = (z0 + z1) / 2;
   // how far the roof runs past each wall; 0 where the wall meets a taller room, so no eave pokes inside
   const O = (side, d) => R.o?.[side] ?? d;
@@ -381,7 +392,7 @@ export async function build(labels) {
     else LS.part.add('sheath', bx(r.x0, LVL2 - 0.12, r.z0, r.x1, LVL2, r.z1));
     if (r.lvl === 1 && r.c && r.id !== 'stair') LS.part.add('int', bx(r.x0, r.c, r.z0, r.x1, r.c + 0.06, r.z1));
   }
-  LS.part.add('int', bx(85.5, 9, 0, 89, 9.06, 36), bx(106, 9, 0, 109.5, 9.06, 36));
+  LS.part.add('int', bx(85.5, 9, 0, 89.5, 9.06, 36), bx(105.5, 9, 0, 109.5, 9.06, 36));
   const boards = [];
   for (const r of ROOMS.filter(q => q.floor === 'oak')) {
     const y = (r.lvl === 1 ? 0.12 : LVL2) + 0.01;
@@ -390,24 +401,32 @@ export async function build(labels) {
   segs(LC.g, boards, hatchMat);
 
   // ---- the bonus room over the garage: knee walls, the bath, a rail round the stair, a flat 9 ft ceiling
+  // the drywall follows the roof 1.8 ft under the deck, so the rafters stay above it: 5 ft knee walls, a 9 ft flat middle
+  const KX0 = 89.5, KX1 = 105.5, CX0 = 93.3, CX1 = 101.7, slope = x => Math.min(LVL2 + 9, x < 97.5 ? x - 74.3 : 120.7 - x);
   const B2 = [
-    ['x', 89, 0, 36, LVL2, 15], ['x', 106, 0, 44.5, LVL2, 15], ['x', 89, 36, 44.5, LVL2, 14.5],
-    ['z', 44.5, 89, 106, LVL2, 19], ['z', 36, 89, 94.5, LVL2, 19], ['x', 94.5, 36, 44.5, LVL2, 19],
+    ['x', KX0, 0, 44.5], ['x', KX1, 0, 44.5], ['x', 94.5, 36, 44.5],
   ];
-  for (const [axis, line, a, b, y0, y1] of B2) {
-    const holes = axis === 'x' && line === 94.5 ? [[36.5, 39.5, y0 - 1, y0 + 8]] : [];
-    for (const [u0, u1, v0, v1] of cutRect(a, b, y0, y1, holes)) LS.part.add('int', axis === 'x' ? bx(line - 0.22, v0, u0, line + 0.22, v1, u1) : bx(u0, v0, line - 0.22, u1, v1, line + 0.22));
+  for (const [axis, line, a, b] of B2) {
+    const y1 = slope(line), holes = line === 94.5 ? [[36.5, 39.5, LVL2 - 1, LVL2 + 7]] : [];
+    for (const [u0, u1, v0, v1] of cutRect(a, b, LVL2, y1, holes)) LS.part.add('int', bx(line - 0.22, v0, u0, line + 0.22, v1, u1));
     for (let u = a + 0.07; u < b; u += 4 / 3) {
       if (holes.some(h => u > h[0] - 0.2 && u < h[1] + 0.1)) continue;
-      LF2.part.add('lumber', axis === 'x' ? bx(line - 0.17, y0, u, line + 0.17, y1, u + 0.13) : bx(u, y0, line - 0.17, u + 0.13, y1, line + 0.17));
+      LF2.part.add('lumber', bx(line - 0.17, LVL2, u, line + 0.17, y1, u + 0.13));
     }
   }
-  LS.part.add('int', bx(93, 19, 0, 102, 19.06, 36));
-  LS.part.add('glass', bx(94.5, LVL2, 39.94, 105.5, LVL2 + 3.4, 40.06));
-  LS.part.add('frame', bx(94.5, LVL2 + 3.4, 39.88, 105.5, LVL2 + 3.55, 40.12));
+  // the end wall over the stair and the bath's front wall follow the ceiling's shape
+  LS.part.add('int', upright('z', 44.5, [[KX0, LVL2], [KX1, LVL2], [KX1, slope(KX1)], [CX1, LVL2 + 9], [CX0, LVL2 + 9], [KX0, slope(KX0)]], -0.22, 0.22));
+  LS.part.add('int', upright('z', 36, [[KX0, LVL2], [94.5, LVL2], [94.5, LVL2 + 9], [CX0, LVL2 + 9], [KX0, slope(KX0)]], -0.22, 0.22));
+  // sloped ceilings each side and the flat middle, the length of the bonus room and its stair
+  LS.part.add('int', slab([[KX0, slope(KX0), 0], [CX0, LVL2 + 9, 0], [CX0, LVL2 + 9, 44.5], [KX0, slope(KX0), 44.5]], 0.06).g);
+  LS.part.add('int', slab([[CX1, LVL2 + 9, 0], [KX1, slope(KX1), 0], [KX1, slope(KX1), 44.5], [CX1, LVL2 + 9, 44.5]], 0.06).g);
+  LS.part.add('int', bx(CX0, LVL2 + 9, 0, CX1, LVL2 + 9.06, 44.5));
+  // a glass rail along the open side of the stair
+  LS.part.add('glass', bx(95.5, LVL2, 39.94, KX1, LVL2 + 3.4, 40.06));
+  LS.part.add('frame', bx(95.5, LVL2 + 3.4, 39.88, KX1, LVL2 + 3.55, 40.12));
   // bonus floor joists, 16 in on center, over the garage and the mud room
   for (let x = 85.7; x < 109.4; x += 4 / 3) LF2.part.add('lumber', bx(x, 9.06, 0.1, x + 0.13, LVL2 - 0.12, 35.9));
-  for (let z = 36.2; z < 44.4; z += 4 / 3) LF2.part.add('lumber', bx(88.6, 9.06, z, 94.4, LVL2 - 0.12, z + 0.13), bx(94.6, 9.06, z, 106.4, LVL2 - 0.12, z + 0.13));
+  for (let z = 36.2; z < 44.4; z += 4 / 3) LF2.part.add('lumber', bx(88.6, 9.06, z, 94.4, LVL2 - 0.12, z + 0.13), bx(94.6, 9.06, z, 95.4, LVL2 - 0.12, z + 0.13));
   LF2.part.add('lumber', bx(85.5, 9.06, 0, 109.5, LVL2 - 0.12, 0.12), bx(85.5, 9.06, 35.88, 109.5, LVL2 - 0.12, 36));
 
   // ---- the roof: rafters at 24 in up each plane, the deck over them, shingle courses on the 12/12, seams on the porches
@@ -424,6 +443,8 @@ export async function build(labels) {
         LFR.part.add('lumber', beam(F.at(a, sp[0] + 0.1, -th - dep / 2), F.at(a, sp[1] - 0.1, -th - dep / 2), 0.15, dep));
         if (R.shed && Math.round(a) % 2 === 0) seams.push([...F.at(a, sp[0], 0.04).toArray(), ...F.at(a, sp[1], 0.04).toArray()]);
       }
+      // drywall under the rafters: a clean vault inside, a soffit under the eaves outside
+      if (!R.shed) { const { n } = slab(P, 0.1); LS.part.add('int', slab(P.map(q => V(...q).addScaledVector(n, -(th + dep + 0.03)).toArray()), 0.06).g); }
       if (!R.shed) {
         // shingle courses, level across the plane
         const bs = []; for (let a = F.a0; a <= F.a1; a += 0.25) { const sp = F.span(a); if (sp) bs.push(sp); }
@@ -567,13 +588,13 @@ export async function build(labels) {
     bx(87.7, 0.12, 69.6, 89.2, 7, 77.2), bx(91.3, 0.12, 69.6, 92.8, 7, 77.2), bx(106.6, -0.25, 29.5, 109.2, 3, 35.6));
   L2.part.add('top', bx(77.2, 3, 52.4, 79.7, 3.15, 58.7));
   // the stair up to the bonus room: thirteen oak risers along the north wall of the stair hall
-  for (let i = 0; i < 13; i++) { const y = (i + 1) * (LVL2 / 13), x0 = 95 + i * 0.8; L2.part.add('wood', bx(x0, y - 0.18, 40.6, x0 + 0.8, y, 44.2)); }
-  L2.part.add('dark', beam(V(95, 0.2, 40.5), V(105.4, 9.8, 40.5), 0.2, 0.9));
+  for (let i = 0; i < 13; i++) { const y = (i + 1) * (LVL2 / 13), x0 = 104.6 - i * 0.8; L2.part.add('wood', bx(x0, y - 0.18, 40.6, x0 + 0.8, y, 44.2)); }
+  L2.part.add('dark', beam(V(105.4, 0.2, 40.5), V(95, 9.8, 40.5), 0.2, 0.9));
   // the bonus room: a sofa, a media wall; its bath
   L2.part.add('soft', bx(93, LVL2, 9, 101, LVL2 + 0.04, 19), rb(93.5, LVL2, 17, 100.5, LVL2 + 1.5, 19.6), rb(93.5, LVL2 + 1.5, 19, 100.5, LVL2 + 2.9, 19.6));
   L2.part.add('wood', bx(94, LVL2, 1, 101, LVL2 + 1.8, 2.4), bx(96, LVL2 + 3, 0.5, 99.5, LVL2 + 5, 0.7));
-  L2.part.add('white', rb(89.3, LVL2, 41.5, 94.2, LVL2 + 2, 44.2, 0.4)); toilet(90.4, LVL2, 37.3, 1);
-  L2.part.add('stone', bx(89.3, LVL2, 38.6, 91.2, LVL2 + 3, 41.2));
+  L2.part.add('white', rb(89.8, LVL2, 41.5, 94.2, LVL2 + 2, 44.2, 0.4)); toilet(90.6, LVL2, 37.3, 1);
+  L2.part.add('stone', bx(89.8, LVL2, 38.6, 91.6, LVL2 + 3, 41.2));
 
   // 06 Windows and doors: each opening slides out from its own wall
   const L4 = layer('glazing', '06', 'Windows & doors', 'Black frames · glass to the gable peak', 5);
@@ -657,78 +678,22 @@ export async function build(labels) {
   // [screens from the last key, eye, look at, lens, room to stop in]; a stop holds the camera while its caption shows
   const WALK = [
     [0.6, [51.75, EYE, 55], [51.75, 6.5, 75], 58],
+    // the great room: the fireplace, then up into the vault, then round to the kitchen and the dining room
     [0.6, [52, EYE, 66], [30, 8, 70], 66, 'great'],
-    [0.4, [51, EYE, 78.5], [30, 5, 79.25], 62],
-    [0.5, [31, EYE, 79.25], [15, 5, 79.25], 62],
-    [0.5, [15.25, EYE, 79.5], [15.25, 5, 96], 62],
-    [0.5, [15.25, EYE, 93.5], [15.25, 6, 110], 62],
-    [0.4, [14, EYE, 100.5], [3, 5, 110], 66, 'primary'],
-    [0.35, [6.5, EYE, 99], [6.5, 4, 85], 62],
-    [0.4, [5.5, EYE, 93], [-5, 3, 85], 66, 'pbath'],
-    [0.35, [6.5, EYE, 80.5], [6.5, 4, 70], 62],
-    [0.3, [6.5, EYE, 75], [12, 4, 64], 66, 'closet'],
-    [0.35, [6.5, EYE, 81], [6.5, 5, 95], 62],
-    [0.4, [6.5, EYE, 98.5], [15, 5, 98.5], 62],
-    [0.3, [15.25, EYE, 98], [15.25, 5, 85], 62],
-    [0.55, [15.25, EYE, 79.5], [30, 5, 79.5], 62],
-    [0.3, [23.5, EYE, 79.25], [23.5, 4, 66], 62],
-    [0.35, [23.5, EYE, 74], [21, 4, 64], 66, 'gym'],
-    [0.35, [23.5, EYE, 79.25], [40, 5, 79.25], 62],
-    [0.6, [50, EYE, 79], [60, 5, 66], 62],
-    [0.5, [56.5, EYE, 62.5], [68, 8, 48.5], 62],
-    [0.35, [67.75, EYE, 61.5], [67.75, 9, 48.5], 64, 'dining'],
-    [0.4, [67.25, EYE, 65.5], [67.25, 5, 84], 64, 'kitchen'],
-    [0.45, [67.25, EYE, 79.5], [80, 5, 79.75], 62],
-    [0.4, [80.5, EYE, 79.75], [83.5, 4, 70], 62],
-    [0.25, [83.5, EYE, 78.5], [83.5, 4, 66], 62],
-    [0.3, [83.5, EYE, 74], [83.5, 4, 64], 66, 'pantry'],
-    [0.3, [83.5, EYE, 79.6], [86, 5, 90], 62],
-    [0.3, [85.5, EYE, 81], [85.5, 5, 92], 62],
-    [0.35, [86.5, EYE, 85.5], [93, 4, 92], 66, 'bed2'],
-    [0.3, [86.5, EYE, 89.5], [80, 4, 89.5], 62],
-    [0.3, [82.5, EYE, 89.5], [80, 3, 89.5], 62],
-    [0.25, [82.6, EYE, 85.2], [77.5, 2.5, 94], 76, 'bath2'],
-    [0.25, [82.5, EYE, 89.5], [86, 5, 89.5], 62],
-    [0.35, [86, EYE, 89], [85.5, 5, 80], 62],
-    [0.3, [85.5, EYE, 79.75], [95, 5, 79.75], 62],
-    [0.3, [90, EYE, 79.75], [100, 5, 76], 62],
-    [0.35, [94, EYE, 80.5], [104, 2.8, 73], 72, 'bed3'],
-    [0.3, [96.75, EYE, 71], [96.75, 4, 64], 62],
-    [0.3, [96.5, EYE, 68], [88.5, 2.5, 64.5], 76, 'bath3'],
-    [0.3, [90.25, EYE, 66.25], [90.25, 4, 77], 62],
-    [0.3, [90.25, EYE, 71.5], [90.25, 4, 77.5], 66, 'b3clos'],
-    [0.3, [90.25, EYE, 66.25], [97, 4, 66.25], 62],
-    [0.3, [96.75, EYE, 67], [96.75, 5, 75], 62],
-    [0.3, [95, EYE, 79.5], [86, 5, 79.75], 62],
-    [0.35, [75.5, EYE, 79.75], [75, 5, 62], 62],
-    [0.5, [75.5, EYE, 61.25], [90, 5, 61.25], 62],
-    [0.3, [82.75, EYE, 61.25], [82.75, 4, 50], 62],
-    [0.3, [82.75, EYE, 56.5], [82, 3.5, 49], 66, 'utility'],
-    [0.3, [82.75, EYE, 61.5], [92, 5, 61.5], 62],
-    [0.35, [91.5, EYE, 61], [91.5, 4.5, 40], 62],
-    [0.3, [91.5, EYE, 54], [91.5, 4, 38], 66, 'mud'],
-    [0.25, [91.5, EYE, 51.25], [100, 5, 51.25], 62],
-    [0.2, [96, EYE, 51.25], [100, 4.5, 56], 62],
-    [0.3, [96, EYE, 56.6], [104.5, 2.8, 50], 72, 'bed4'],
-    [0.3, [103.5, EYE, 56.5], [103.5, 4, 66], 62],
-    [0.25, [103.2, EYE, 59.4], [104.5, 2.5, 67.5], 78, 'bath4'],
-    [0.3, [103.5, EYE, 55.5], [96, 5, 51.25], 62],
-    [0.3, [96, EYE, 51.25], [88, 5, 51.25], 62],
-    [0.3, [91.5, EYE, 50], [91.5, 5, 38], 62],
-    [0.3, [92.5, EYE, 42.4], [106, 9, 42.4], 62, 'stair'],
-    [0.9, [104.6, EYE2 - 0.2, 42.4], [107, 14, 30], 62],
-    [0.3, [105.75, EYE2, 38.5], [96, 13.5, 30], 62],
-    [0.35, [100, EYE2, 37.5], [97.5, 13, 20], 62],
-    [0.4, [97.5, EYE2, 31], [97.5, 13.5, 2], 66, 'bonus'],
-    [0.35, [97, EYE2, 38], [90, 13.5, 38], 62],
-    [0.3, [92.5, EYE2, 38], [90, 12.5, 42], 66, 'bbath'],
-    [0.3, [97, EYE2, 38], [106, 15, 38], 62],
-    [0.3, [105.75, EYE2, 39.5], [104, 14, 44], 62],
-    [0.2, [105, EYE2 - 0.2, 42.4], [96, 9, 42.4], 62],
-    [0.9, [95.5, EYE + 0.4, 42.4], [88, 4, 42], 62],
-    [0.3, [91.5, EYE, 40], [91.5, 4, 30], 62],
-    [0.35, [91.5, EYE, 33], [96, 4, 20], 62],
-    [0.35, [96, EYE, 28], [92, 4, 6], 66, 'garage'],
+    [0.5, [54, EYE, 62], [36, 20, 68], 80, 'vault'],
+    [0.5, [53, EYE, 72], [68, 4, 76], 64, 'kitchen'],
+    [0.45, [55, EYE, 66], [68, 7, 52], 64, 'dining'],
+    // through the dining room and the mud room to the stair, and up to the bonus room
+    [0.5, [64, EYE, 61.25], [80, 5, 61.25], 62],
+    [0.4, [82, EYE, 61.25], [92, 5, 61], 62],
+    [0.25, [90.5, EYE, 60.5], [91.5, 5, 45], 62],
+    [0.35, [91.5, EYE, 52], [91.5, 5, 40], 62],
+    [0.3, [91.5, EYE, 39], [100, 5, 38], 62],
+    [0.4, [104.5, EYE, 38.2], [106, 4, 42.4], 62],
+    [0.3, [106, EYE, 42.4], [96, 11, 42.4], 62],
+    [0.9, [95.8, EYE2, 42.4], [97, 14, 24], 62],
+    [0.3, [95, EYE2, 38], [97, 14, 20], 62],
+    [0.45, [97.5, EYE2, 33], [97.5, 13.5, 2], 66, 'bonus'],
   ];
   const HOLD = 0.35, PACE = 0.75, LEAVE = 0.9, END = 0.35;   // PACE scales every walking leg
   const easeIn = t => t * t, easeOut = t => 1 - (1 - t) * (1 - t);
@@ -763,6 +728,7 @@ export async function build(labels) {
 
   const INFO = {
     great: ['GREAT ROOM // 28′-0″ × 22′-0″ · VAULT OFF 16′', 'The heart of the house', 'Vaulted ceiling  ·  fireplace  ·  glass doors to both porches'],
+    vault: ['GREAT ROOM // VAULT OFF 16′', 'Look up', 'A gabled vault, open to the ridge  ·  clerestory windows front and back'],
     primary: ['PRIMARY SUITE // 17′-0″ × 18′-0″ · VAULT OFF 12′', 'The primary suite', 'Its own wing, away from the other bedrooms  ·  doors to the primary porch'],
     pbath: ['PRIMARY BATH // 4:12 VAULT', 'The primary bath', 'Freestanding tub in its own bay  ·  long double vanity  ·  toilet rooms and shower'],
     closet: ['CLOSET // 17′-0″ × 15′-0″ · VAULT OFF 12′', 'A dressing room', 'Walk-in closet with a dresser island, through the bath'],
@@ -854,10 +820,10 @@ export async function build(labels) {
       stops: [
         { stop: 'axo', p: O(0.2), tag: 'AXO // STAGES 01-07', label: 'BUILD' },
         { stop: 'porch', p: O(0.66), tag: 'PORCH // FRONT DOOR', label: 'PORCH' },
-        { stop: 'primary', p: stopAt.primary, tag: 'PRIMARY SUITE', label: 'PRIMARY' },
-        { stop: 'kitchen', p: stopAt.kitchen, tag: 'KITCHEN // DINING', label: 'KITCHEN' },
+        { stop: 'great', p: stopAt.great, tag: 'GREAT ROOM', label: 'GREAT' },
+        { stop: 'kitchen', p: stopAt.kitchen, tag: 'KITCHEN', label: 'KITCHEN' },
+        { stop: 'dining', p: stopAt.dining, tag: 'DINING', label: 'DINING' },
         { stop: 'bonus', p: stopAt.bonus, tag: 'BONUS ROOM', label: 'BONUS' },
-        { stop: 'garage', p: stopAt.garage, tag: 'GARAGE // MUD ROOM', label: 'GARAGE' },
       ],
     },
     chrome: {
@@ -919,7 +885,7 @@ function drawPlan(P, RF) {
     rect(61.1, 67.5, 65.3, 76.5, 1.6); rect(69.2, 67.5, 73.3, 76.5, 1.6); rect(63, 53, 72.5, 58, 1.6); rect(59, 81.4, 76.6, 83.6, 1.2);
     rect(-6.5, 84, -2, 88.5, 1.4); rect(7.1, 81.5, 9.4, 93, 1.2); rect(29.75, 66, 31.2, 74, 1.4, '#d9d3c6');
     for (let i = 0; i <= 13; i++) line(95 + i * 0.8, 40.6, 95 + i * 0.8, 44.2, 0.9);
-    g.font = '400 18px "IBM Plex Mono"'; T('UP', X(97), Y(42.4));
+    g.font = '400 18px "IBM Plex Mono"'; T('UP', X(104), Y(42.4));
     [5.5, 16.5, 27.5].forEach(z => line(84, z, 84, z + 7.5, 1, [8, 6]));
     // room names and sizes, as the plan gives them
     const DIM = { primary: '17′-0″ × 18′-0″', closet: '17′-0″ × 15′-0″', gym: '12′-0″ × 13′-0″', great: '28′-0″ × 22′-0″', kitchen: '18′-0″ × 20′-4″', dining: '18′-0″ × 14′-0″', pantry: '8′-0″ × 13′-9″', bed2: '13′-0″ × 15′-0″', bed3: '13′-0″ × 12′-2″', bed4: '12′-0″ × 13′-0″', utility: '12′-0″ × 9′-8″', mud: '7′-3″ × 12′-3″', garage: '23′-0″ × 35′-4″' };
