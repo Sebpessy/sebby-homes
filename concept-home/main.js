@@ -1,7 +1,7 @@
 // Scroll, loader and drawing chrome for the concept home. The story section's scroll is the one
 // value from 0 to 1 that drives the model, the camera, the labels and the captions.
 // Adapted from "Flat to 3D" by Samnang Aing (MIT, see core.js).
-import { renderer, scene, camera, ctx, camAt, applyCam, resize, Labels, clamp, easeOut, win, DRAW } from './core.js';
+import { renderer, scene, camera, ctx, camAt, applyCam, resize, Labels, clamp, ease, easeOut, win, DRAW } from './core.js';
 
 const Q = new URLSearchParams(location.search);
 const FIXED = Q.has('p') ? parseFloat(Q.get('p')) : null;   // ?p=0.6 freezes the drawing at 60%
@@ -27,6 +27,11 @@ $('kicker').textContent = C.kicker; $('lede').textContent = C.lede;
 $('h1').innerHTML = C.h1.split('<br>').map(l => `<span class="ln"><span>${l}</span></span>`).join('');
 $('spec').innerHTML = C.spec.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('');
 $('hint').textContent = C.hint;
+// a big scroll cue in the middle of the bottom edge; it fades away over the first screen of scrolling
+const cue = document.createElement('div');
+cue.id = 'cue'; cue.setAttribute('aria-hidden', 'true');
+cue.innerHTML = `<span class="cue-mouse"><i></i></span><span class="cue-t">${C.cue || C.hint}</span><span class="cue-chev"><i></i><i></i></span>`;
+document.querySelector('.bottom').before(cue);
 addEventListener('resize', resize);
 
 // ---- the small plan in the corner: where the camera stands, and buttons to jump along the story
@@ -95,9 +100,12 @@ function step() {
   const hero = $('hero'), ho = st.hero ?? 1;
   hero.style.opacity = ho; hero.style.transform = `translateY(${(1 - ho) * -20}px)`;
   $('counter').innerHTML = st.counter || '';
+  const scrolled = Math.max(0, scrollY - story.offsetTop) / innerHeight;
+  const cueOp = win(T, 3.4, 4.2) * (1 - ease(clamp(scrolled / 0.9)));
+  cue.style.opacity = cueOp.toFixed(3); cue.style.transform = `translate(-50%, ${(cueOp - 1) * -24}px)`;
   const hint = st.hint ?? C.hint;
   if ($('hint').textContent !== hint) $('hint').textContent = hint;
-  document.querySelector('.hint-wrap').style.opacity = hint ? '1' : '0';
+  document.querySelector('.hint-wrap').style.opacity = hint && cueOp < 0.05 ? '1' : '0';
   const mode = cam.fov < 6 ? 'PARALLEL AXO' : cam.fov < 28 ? 'TRANSITION' : 'EYE-LEVEL PERSP';
   $('camReadout').innerHTML = `PROJ <b>${mode}</b> (${cam.fov.toFixed(1)}°) &nbsp;//&nbsp; SEQ <b>${String(Math.round(p * 100)).padStart(3, '0')}%</b>`;
   // the corner plan: the dot follows the camera once it is down at eye level
