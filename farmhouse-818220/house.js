@@ -673,7 +673,7 @@ export async function build(labels) {
   const dash = liveLine(dashMat);
   const corners = [[0, 62], [85.5, 0], [109.5, 0], [106.5, 82], [0, 114.5], [58.5, 48.5]];
 
-  // ---- camera: the long lens over the stack, then down to the front porch, then a walk through every room
+  // ---- camera: the long lens over the stack, then down to the front porch, then a walk through the main rooms
   const EYE2 = LVL2 + EYE, SC = 12;
   // [screens from the last key, eye, look at, lens, room to stop in]; a stop holds the camera while its caption shows
   const WALK = [
@@ -832,7 +832,7 @@ export async function build(labels) {
       kicker: 'Plan 818220JSS · Architectural Designs',
       loader: 'Plotting plan 818220JSS',
       h1: 'A transitional farmhouse,<br><em>layer by layer.</em>',
-      lede: 'Architectural Designs plan 818220JSS, modeled in 3D by Sebby Homes. Scroll to put it together in building order, then walk through every room.',
+      lede: 'Architectural Designs plan 818220JSS, modeled in 3D by Sebby Homes. Scroll to put it together in building order, then walk through the great room, kitchen, dining and bonus room.',
       spec: [['Plan', '818220JSS · Architectural Designs'], ['Size', '4,106 sq ft · 1 story'], ['Rooms', '4 bed · 4.5 bath · gym/office'], ['Garage', '3 cars · bonus room over']],
       hint: 'Scroll to build it',
     },
