@@ -384,7 +384,7 @@ export class Labels {
     const col = vis.filter(i => i.mode !== 'tag').sort((a, b) => (a.rank ?? a.ly) - (b.rank ?? b.ly) || a.ly - b.ly);
     const gap = ctx.phone ? 26 : 48;
     for (let k = 1; k < col.length; k++) col[k].ly = Math.max(col[k].ly, col[k - 1].ly + gap);
-    const over = col.length ? col[col.length - 1].ly - (H - (ctx.phone ? 125 : 250)) : 0;
+    const over = col.length ? col[col.length - 1].ly - (H - (ctx.phone ? 150 : 250)) : 0;
     if (over > 0) { col.forEach(i => i.ly -= over); for (let k = col.length - 2; k >= 0; k--) col[k].ly = Math.min(col[k].ly, col[k + 1].ly - gap); }
     for (const it of this.items) {
       const show = it.op > 0.01 && vis.includes(it);

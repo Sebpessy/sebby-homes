@@ -152,6 +152,10 @@ export async function build(labels) {
     top: { mat: toneMat('#f6f4f0', { mode: 0, scale: 0.5 }), w: 'mid' },
     dark: { mat: toneMat('#b9b4a9', { mode: 3, scale: 0.6 }), w: 'thin' },
     water: { mat: toneMat('#cfe2e4', { mode: 5, opacity: 0.9 }), edges: false },
+    lumber: { mat: toneMat('#efdcb6', { mode: 1, scale: 0.5 }), w: 'thin', thr: 40 },
+    sheath: { mat: toneMat('#e9dfc9', { mode: 2, scale: 0.4 }) },
+    limestone: { mat: toneMat('#e6e0d2', { mode: 2, scale: 0.35 }) },
+    cedar: { mat: toneMat('#e8cfa4', { mode: 1, scale: 0.45 }) },
   };
   const hatchMat = lineMat({ w: 0.6, color: '#8f897d', opacity: 0.9 });
   const dashMat = lineMat({ w: 0.9, color: INK, dashed: true, dash: 0.9, gap: 0.7, opacity: 0.75 });
@@ -195,16 +199,20 @@ export async function build(labels) {
   for (let z = 4; z < 54; z += 6) tendons.push([0.6, 0.01, z, z < 34 || z > 44 ? 65.4 : 65.4, 0.01, z]);
   segs(L1.g, tendons, hatchMat);
 
-  // 02 Level 1: walls, floors, the stair and the rooms you walk through
-  const L2 = layer('level1', '02', 'Level 1', '2,720 sq ft · 11 ft ceilings', 2);
-  // 03 Level 2: floor deck, walls, rails
-  const L3 = layer('level2', '03', 'Level 2', '1,660 sq ft · 9 ft ceilings', 3);
-  const lvlLayer = { 1: L2, 2: L3 };
+  // 02-04 Framing: level 1 walls, the level 2 floor and walls, then the roof joists
+  const LF1 = layer('frame1', '02', 'Level 1 framing', '2×6 studs at 16″ · 11 ft walls', 1);
+  const LF2 = layer('frame2', '03', 'Level 2 framing', 'Floor joists · 9 ft walls', 2);
+  const LFR = layer('roofframe', '04', 'Roof framing', 'Joists at 24″ · 2 ft overhangs', 3);
+  // 05 Sheathing and decking: the walls are wrapped, the floors and roof are decked
+  const LS = layer('sheath', '05', 'Sheathing & decking', 'Walls wrapped · floors and roof decked', 4);
+  // 07 Stone and siding, with the interior finishes: floors, the stair, kitchen and furniture
+  const LC = layer('clad', '07', 'Stone & siding', 'Limestone below · cedar above · finishes in', 6);
+  const L2 = LC, L3 = LC;
 
   const runs = wallRuns();
   for (const r of runs) {
     const t = r.kind === 'ext' ? 0.7 : r.kind === 'int' ? 0.45 : 0.12;
-    const Lr = lvlLayer[r.lvl];
+    const Lr = LS;
     let rects;
     if (r.kind === 'ext') {
       const holes = OPEN.filter(o => o[0] === r.axis && o[1] === r.line).map(o => [o[2], o[3], o[4], o[5]]);
@@ -224,16 +232,16 @@ export async function build(labels) {
   }
   // floors: oak and stone on level 1, a deck under each level 2 room
   for (const r of ROOMS) {
-    if (r.lvl === 1) L2.part.add(r.floor === 'concrete' ? 'concrete' : r.floor, bx(r.x0, 0, r.z0, r.x1, 0.12, r.z1));
-    else L3.part.add(r.floor === 'stone' ? 'stone' : 'oak', bx(r.x0, CEIL1, r.z0, r.x1, LVL2, r.z1));
+    if (r.lvl === 1) LC.part.add(r.floor === 'concrete' ? 'concrete' : r.floor, bx(r.x0, 0, r.z0, r.x1, 0.12, r.z1));
+    else LS.part.add('sheath', bx(r.x0, LVL2 - 0.12, r.z0, r.x1, LVL2, r.z1), bx(r.x0, CEIL1 - 0.06, r.z0, r.x1, CEIL1, r.z1));
   }
   const boards = [];
   for (const r of ROOMS.filter(q => q.floor === 'oak')) {
     const y = (r.lvl === 1 ? 0.12 : LVL2) + 0.01;
     for (let z = r.z0 + 0.8; z < r.z1; z += 0.8) boards.push([r.x0, y, z, r.x1, y, z]);
   }
-  segs(L2.g, boards.filter(b => b[1] < 1), hatchMat);
-  segs(L3.g, boards.filter(b => b[1] > 1), hatchMat);
+  segs(LC.g, boards.filter(b => b[1] < 1), hatchMat);
+  segs(LC.g, boards.filter(b => b[1] > 1), hatchMat);
 
   // the stair: floating oak treads on a steel stringer, rising toward the back of the house,
   // with a glass wine room tucked under its high end
@@ -279,7 +287,7 @@ export async function build(labels) {
     rb(18, LVL2, 2, 28, LVL2 + 1.5, 5), rb(18, LVL2, 5, 21, LVL2 + 1.5, 11));
 
   // 04 Glass and doors: each opening slides out from its own wall, then rides down with its level
-  const L4 = layer('glazing', '04', 'Glass & doors', 'Black steel windows, pivot entry', 2);
+  const L4 = layer('glazing', '06', 'Windows & doors', 'Black steel · 10 ft oak pivot door', 5);
   const subs = {};
   const sideFor = (axis, line, mid, lvl) => {
     const out = axis === 'z' ? (cellH(mid, line - 0.5) < cellH(mid, line + 0.5) ? -1 : 1) : (cellH(line - 0.5, mid) < cellH(line + 0.5, mid) ? -1 : 1);
@@ -317,18 +325,78 @@ export async function build(labels) {
   for (let x = 0.6; x < 3.8; x += 0.65) segs(pivot, [[x, 0.4, -0.21, x, 9.6, -0.21]], hatchMat);
   for (const L of [L4]) L.subs.push({ g: pivot, dir: V(0, 0, 0), lvl: 0, part: doorPart, isDoor: true });
 
-  // 05 Roof: flat planes with deep overhangs, the two-story porch and the patio cover
-  const L5 = layer('roof', '05', 'Roof', 'Flat planes, 2 ft overhangs', 4);
+  // roof framing: joists at 24 in on a rim, steel posts at the porch and patio; the roof deck goes on with the sheathing
   for (const [x0, z0, x1, z1, top] of ROOFS) {
-    L5.part.add('roof', bx(x0, top - 1.2, z0, x1, top, z1));
-    L5.part.add('frame', bx(x0 + 1.5, top, z0 + 1.5, x1 - 1.5, top + 0.05, z1 - 1.5));
+    LFR.part.add('lumber', bx(x0, top - 1.2, z0, x1, top - 0.3, z0 + 0.15), bx(x0, top - 1.2, z1 - 0.15, x1, top - 0.3, z1),
+      bx(x0, top - 1.2, z0, x0 + 0.15, top - 0.3, z1), bx(x1 - 0.15, top - 1.2, z0, x1, top - 0.3, z1));
+    for (let x = x0 + 2; x < x1 - 0.5; x += 2) LFR.part.add('lumber', bx(x - 0.07, top - 1.2, z0 + 0.15, x + 0.07, top - 0.3, z1 - 0.15));
+    LS.part.add('roof', bx(x0, top - 0.3, z0, x1, top, z1));
+    LS.part.add('int', bx(x0, top - 1.26, z0, x1, top - 1.2, z1));
+    LS.part.add('frame', bx(x0 + 1.5, top, z0 + 1.5, x1 - 1.5, top + 0.05, z1 - 1.5));
   }
-  for (const x of [34, 46]) L5.part.add('dark', bx(x - 0.3, 0, -5.3, x + 0.3, 20.8, -4.7));
-  L5.part.add('roof', bx(4, 10.2, 54, 33, 11, 68));
-  for (const x of [4.5, 18.75, 32.5]) L5.part.add('dark', bx(x - 0.3, 0, 67.2, x + 0.3, 10.2, 67.8));
+  for (const x of [34, 46]) LFR.part.add('dark', bx(x - 0.3, 0, -5.3, x + 0.3, 20.8, -4.7));
+  LFR.part.add('lumber', bx(4, 10.2, 54, 33, 10.8, 54.3), bx(4, 10.2, 67.7, 33, 10.8, 68));
+  for (let x = 5; x < 33; x += 2) LFR.part.add('lumber', bx(x - 0.07, 10.2, 54.3, x + 0.07, 10.8, 67.7));
+  LS.part.add('roof', bx(4, 10.8, 54, 33, 11, 68));
+  LS.part.add('int', bx(4, 10.14, 54, 33, 10.2, 68));
+  for (const x of [4.5, 18.75, 32.5]) LFR.part.add('dark', bx(x - 0.3, 0, 67.2, x + 0.3, 10.2, 67.8));
   const seams = [];
   for (const [x0, z0, x1, z1, top] of ROOFS) for (let x = x0 + 3; x < x1 - 1; x += 3) seams.push([x, top + 0.06, z0 + 1.5, x, top + 0.06, z1 - 1.5]);
-  segs(L5.g, seams, hatchMat);
+  segs(LS.g, seams, hatchMat);
+
+  // ---- framing: studs at 16 in along every wall run, plates, headers over the openings, cripples under the sills
+  const studs = { 1: [], 2: [] };
+  for (const r of runs) {
+    if (r.kind === 'rail') continue;
+    const F = r.lvl === 1 ? LF1 : LF2;
+    const d = r.kind === 'ext' ? 0.23 : 0.18, w = 0.07;
+    const B = (u0, v0, u1, v1, dd = d) => r.axis === 'x' ? bx(r.line - dd, v0, u0, r.line + dd, v1, u1) : bx(u0, v0, r.line - dd, u1, v1, r.line + dd);
+    let holes = [];
+    if (r.kind === 'ext') holes = OPEN.filter(o => o[0] === r.axis && o[1] === r.line).map(o => [o[2], o[3], o[4], o[5]]);
+    else {
+      const door = DOORS.find(([p, q]) => [p, q].sort().join('|') === r.tag);
+      if (door) { const ww = Math.min(door[2], r.b - r.a - 1), m = (r.a + r.b) / 2; holes = [[m - ww / 2, m + ww / 2, r.y0, r.y0 + 8]]; }
+    }
+    holes = holes.filter(([h0, h1, v0, v1]) => h1 > r.a && h0 < r.b && v1 > r.y0 && v0 < r.y1);
+    F.part.add('lumber', B(r.a, r.y0, r.b, r.y0 + 0.13), B(r.a, r.y1 - 0.26, r.b, r.y1));
+    for (let u = r.a + 0.07; u <= r.b; u += 4 / 3) {
+      const u0 = Math.min(u, r.b - w * 2), u1 = u0 + w * 2;
+      let spans = [[r.y0 + 0.13, r.y1 - 0.26]];
+      for (const [h0, h1, v0, v1] of holes) if (u1 > h0 && u0 < h1) spans = spans.flatMap(([a, b]) => [[a, Math.min(b, v0 - (v0 > r.y0 + 0.5 ? 0.13 : 0))], [Math.max(a, v1 + 0.9), b]]).filter(([a, b]) => b - a > 0.2);
+      for (const [a, b] of spans) F.part.add('lumber', B(u0, a, u1, b));
+    }
+    for (const [h0, h1, v0, v1] of holes) {
+      const a = Math.max(h0, r.a), b = Math.min(h1, r.b);
+      if (v1 + 0.9 < r.y1 - 0.26) F.part.add('lumber', B(a - 0.15, v1, b + 0.15, v1 + 0.9));
+      if (v0 > r.y0 + 0.5) F.part.add('lumber', B(a, v0 - 0.13, b, v0));
+      F.part.add('lumber', B(a - 0.15, r.y0 + 0.13, a, Math.min(v1, r.y1 - 0.26)), B(b, r.y0 + 0.13, b + 0.15, Math.min(v1, r.y1 - 0.26)));
+    }
+  }
+  // the level 2 floor: joists at 16 in under every level 2 room, on a rim
+  for (const r of ROOMS.filter(q => q.lvl === 2)) {
+    LF2.part.add('lumber', bx(r.x0, CEIL1, r.z0, r.x1, LVL2 - 0.12, r.z0 + 0.12), bx(r.x0, CEIL1, r.z1 - 0.12, r.x1, LVL2 - 0.12, r.z1));
+    for (let x = r.x0 + 0.1; x < r.x1; x += 4 / 3) LF2.part.add('lumber', bx(x, CEIL1, r.z0 + 0.12, Math.min(x + 0.13, r.x1), LVL2 - 0.12, r.z1 - 0.12));
+  }
+
+  // ---- stone and siding: limestone on the level 1 walls, cedar boards above, each a skin just outside the sheathing
+  const course = [];
+  for (const r of runs) {
+    if (r.kind !== 'ext') continue;
+    const mid = (r.a + r.b) / 2;
+    const out = r.axis === 'z' ? (cellH(mid, r.line - 0.5) < cellH(mid, r.line + 0.5) ? -1 : 1) : (cellH(r.line - 0.5, mid) < cellH(r.line + 0.5, mid) ? -1 : 1);
+    const o0 = out * 0.35, o1 = out * 0.55, lo = Math.min(o0, o1), hi = Math.max(o0, o1), oc = out * 0.56;
+    const holes = OPEN.filter(o => o[0] === r.axis && o[1] === r.line).map(o => [o[2], o[3], o[4], o[5]]);
+    const stone = r.lvl === 1;
+    for (const [u0, u1, v0, v1] of cutRect(r.a - 0.35, r.b + 0.35, r.y0, r.y1, holes)) {
+      LC.part.add(stone ? 'limestone' : 'cedar', r.axis === 'x' ? bx(r.line + lo, v0, u0, r.line + hi, v1, u1) : bx(u0, v0, r.line + lo, u1, v1, r.line + hi));
+      const P = (u, v) => r.axis === 'x' ? [r.line + oc, v, u] : [u, v, r.line + oc];
+      if (stone) for (let v = v0 + 0.9, k = 0; v < v1 - 0.2; v += 0.9, k++) {
+        course.push([...P(u0, v), ...P(u1, v)]);
+        for (let u = u0 + (k % 2 ? 1.1 : 0.4); u < u1 - 0.2; u += 2.2) course.push([...P(u, v - 0.9), ...P(u, v)]);
+      } else for (let u = u0 + 0.6; u < u1 - 0.1; u += 0.6) course.push([...P(u, v0), ...P(u, v1)]);
+    }
+  }
+  segs(LC.g, course, hatchMat);
 
   // the site, always on: pool and coping, an outdoor kitchen on the patio
   const site = new THREE.Group(); scene.add(site);
@@ -343,27 +411,32 @@ export async function build(labels) {
   doorPart.build();
 
   // ---- the stack: how far each level floats, and the order things land
-  const LIFT = { 1: 7, 2: 16, 3: 34, 4: 52 };
+  // ---- the build: each stage is lowered into place in construction order; windows slide in from outside
+  const DROP = 16;
   const PULL = { glazing: 11 };
-  const ORDER = ['slab', 'level1', 'level2', 'glazing', 'roof'];
-  const T0 = 0.05, STEP = 0.066, DUR = 0.075;
+  const ORDER = ['slab', 'frame1', 'frame2', 'roofframe', 'sheath', 'glazing', 'clad'];
+  const TOP = { slab: 0, frame1: CEIL1, frame2: CEIL2, roofframe: 22, sheath: 22, glazing: 20, clad: 12 };
+  const T0 = 0.04, STEP = 0.05, DUR = 0.055;
   const landAt = id => { const i = ORDER.indexOf(id); return [T0 + i * STEP, T0 + i * STEP + DUR]; };
 
   // ---- labels in a column right of the drawing, each on its layer's back right corner
   const anchor = {
     slab: [L1.g, V(66, -1, 54)],
-    level1: [L2.g, V(66, CEIL1, 54)],
-    level2: [L3.g, V(33, CEIL2, 44)],
-    glazing: [subs['x11'].g, V(66.3, 9, 50)],
-    roof: [L5.g, V(68, 12, 56)],
+    frame1: [LF1.g, V(66, 6, 54)],
+    frame2: [LF2.g, V(33, 17, 44)],
+    roofframe: [LFR.g, V(68, 11.5, 56)],
+    sheath: [LS.g, V(66, 9, 20)],
+    glazing: [subs['x11'].g, V(66.3, 6, 50)],
+    clad: [LC.g, V(66.6, 3, 6)],
   };
-  for (const L of layers) { const [obj, at] = anchor[L.id]; L.label = labels.add({ no: L.no, name: L.name, sub: L.sub, obj, at, rank: 10 - Number(L.no) }); }
+  const SHORT = { slab: 'Slab', frame1: 'L1 frame', frame2: 'L2 frame', roofframe: 'Roof frame', sheath: 'Sheathing', glazing: 'Windows', clad: 'Stone · siding' };
+  for (const L of layers) { const [obj, at] = anchor[L.id]; L.label = labels.add({ no: L.no, name: L.name, short: SHORT[L.id], sub: L.sub, obj, at, rank: 10 - Number(L.no) }); }
 
   const dash = liveLine(dashMat);
   const corners = [[0, 0], [66, 0], [66, 54], [0, 54]];
 
   // ---- camera: the long lens over the stack, then a dolly zoom down to the front porch
-  const AX = { t: [33, 30, 30], az: -52, el: 27, fov: 1.5, h: 140, sx: 0.0, sy: -0.07, ph: { h: 250, sx: 0, sy: -0.22 } };
+  const AX = { t: [33, 10, 27], az: -52, el: 27, fov: 1.5, h: 130, sx: -0.01, sy: -0.06, ph: { h: 210, sx: 0, sy: -0.16 } };
   const keys = [
     { at: 0, ...AX },
     { at: 0.40, ...AX },
@@ -396,36 +469,30 @@ export async function build(labels) {
   function update(p) {
     const land = {};
     for (const id of ORDER) { const [a, b] = landAt(id); land[id] = ease(win(p, a, b)); }
-    const lv = { 1: 1 - land.slab, 2: 1 - land.level1, 3: 1 - land.level2, 4: 1 - land.roof };
-    const lift = { 0: 0 }; let acc = 0, prev = 0;
-    for (const k of [1, 2, 3, 4]) { acc += (LIFT[k] - prev) * lv[k]; prev = LIFT[k]; lift[k] = acc; }
-    // glass on level 1 rides with the level 1 walls (level 2 in the stack), glass on level 2 with level 2
-    const ride = { 1: lift[2], 2: lift[3] };
     const cur = ORDER.reduce((c, id) => p >= landAt(id)[0] - 0.006 ? id : c, null);
     for (const L of layers) {
-      L.g.position.y = L.id === 'glazing' ? 0 : lift[L.level];
-      const pull = PULL[L.id] ? PULL[L.id] * (1 - land[L.id]) : 0;
-      for (const s of L.subs) if (!s.isDoor) { s.g.position.copy(s.dir).multiplyScalar(pull); s.g.position.y = ride[s.lvl]; }
-      const [, b] = landAt(L.id);
+      const [a, b] = landAt(L.id), u = land[L.id];
+      L.g.visible = p > a;
+      L.g.position.y = L.id === 'glazing' ? 0 : DROP * (1 - u);
+      const pull = PULL[L.id] ? PULL[L.id] * (1 - u) : 0;
+      for (const s of L.subs) if (!s.isDoor) s.g.position.copy(s.dir).multiplyScalar(pull);
       const on = L.id === cur && p < b + 0.012;
       for (const m of L.lines) m.color.set(on ? ACCENT : INK);
       L.label.on = on;
-      L.label.op = (p > b + 0.012 ? 0.5 : 1) * (1 - win(p, 0.40, 0.45));
+      L.label.op = (p < a ? (ctx.phone ? 0 : 0.22) : p > b + 0.012 ? 0.55 : 1) * (1 - win(p, 0.40, 0.45));
     }
     // the pivot door swings open as the camera reaches the porch
     pivot.rotation.y = -1.35 * ease(win(p, 0.6, 0.7));
 
-    // dotted lines from each floating level down to where it lands
+    // dotted lines from the stage being lowered down to where it lands
     const ls = [];
-    const y1 = lift[1], y2 = lift[2], y3 = lift[3], y4 = lift[4];
-    for (const [x, z] of corners) {
-      if (y1 > 0.2) ls.push([x, -3 + y1, z, x, -1, z]);
-      if (y2 - y1 > 0.2) ls.push([x, y2, z, x, y1, z]);
-      if (y3 - y2 > 0.2 && x < 40 && z < 50) ls.push([x === 66 ? 33 : x, LVL2 - 1 + y3, z === 54 ? 44 : z, x === 66 ? 33 : x, CEIL1 + y2, z === 54 ? 44 : z]);
-      if (y4 - y3 > 0.2) ls.push([x, 21 + y4 - 1.2 + 0.0, z, x, 21 + y3, z]);
+    for (const id of ORDER) {
+      const off = DROP * (1 - land[id]);
+      if (id === 'glazing' || off < 0.2 || p < landAt(id)[0]) continue;
+      for (const [x, z] of corners) ls.push([x, TOP[id] + off, z, x, TOP[id], z]);
     }
     const gp = PULL.glazing * (1 - land.glazing);
-    if (gp > 0.2) for (const [x, z, dx, dz] of [[40, 0, 0, -1], [40, 54, 0, 1], [66, 30, 1, 0], [0, 30, -1, 0]]) ls.push([x, ride[1] + 5, z, x + dx * gp, ride[1] + 5, z + dz * gp]);
+    if (gp > 0.2 && p > landAt('glazing')[0]) for (const [x, z, dx, dz] of [[40, 0, 0, -1], [40, 54, 0, 1], [66, 30, 1, 0], [0, 30, -1, 0]]) ls.push([x, 5, z, x + dx * gp, 5, z + dz * gp]);
     dash.set(ls);
 
     const landed = ORDER.filter(id => land[id] > 0.98).length;
@@ -437,7 +504,7 @@ export async function build(labels) {
     }
     return {
       hero: 1 - clamp((p - 0.39) / 0.05),
-      counter: p < 0.54 ? `Layer <b>${String(Math.min(5, landed + (p > T0 ? 1 : 0))).padStart(2, '0')}</b> / 05` : '',
+      counter: p < 0.54 ? `Stage <b>${String(Math.min(7, landed + (p > T0 ? 1 : 0))).padStart(2, '0')}</b> / 07` : '',
       hint: p < 0.42 ? 'Scroll to build it' : p < 0.62 ? 'Scroll to the front door' : p < 0.74 ? 'Scroll to walk in' : p > 0.985 ? 'Scroll to start yours' : '',
       cap, capOp, stop: activeStop,
     };
@@ -458,7 +525,7 @@ export async function build(labels) {
         { stop: 'kitchen', p: 0.94, tag: 'KITCHEN // DINING', x: 0, y: 34, w: 33, h: 20 },
       ],
       stops: [
-        { stop: 'axo', p: 0.2, tag: 'AXO // LAYERS 01-05', label: 'AXO' },
+        { stop: 'axo', p: 0.2, tag: 'AXO // STAGES 01-07', label: 'BUILD' },
         { stop: 'porch', p: 0.66, tag: 'PORCH // FRONT DOOR', label: 'PORCH' },
         { stop: 'foyer', p: 0.8, tag: 'FOYER // STAIR', label: 'FOYER' },
         { stop: 'family', p: 0.88, tag: 'FAMILY // POOL VIEW', label: 'FAMILY' },
