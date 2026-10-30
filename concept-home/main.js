@@ -16,7 +16,7 @@ await Promise.all([
 
 resize();
 const labels = new Labels();
-const { build } = await import('./house.js');
+const { build } = await import(document.body.dataset.house || './house.js');
 const S = await build(labels);
 if (S.screens) story.style.height = `${Math.round(S.screens * 100)}vh`;   // a screen of scroll for each step of the walk
 document.body.classList.add('drawn');
@@ -34,6 +34,9 @@ const cadMap = $('cad-map'), cmLbl = $('cm-lbl'), cmCone = $('cm-cone'), cmDot =
 const R = S.radar;
 $('cm-scale').textContent = R.scale;
 $('cm-svg').setAttribute('viewBox', R.viewBox);
+// a squarer plan needs a taller corner map
+if (R.svgH) cadMap.style.setProperty('--cm-h', `${R.svgH}px`);
+if (R.svgHPhone) cadMap.style.setProperty('--cm-hp', `${R.svgHPhone}px`);
 $('cm-plan').setAttribute('d', R.plan); $('cm-plan').setAttribute('stroke-width', R.strokeW);
 cmDot.setAttribute('r', R.dotR); cmCone.setAttribute('stroke-width', R.coneW);
 $('cm-zones').innerHTML = R.zones.map(z => `<rect class="cm-zone" data-lvl="${z.lvl || 1}" data-stop="${z.stop}" data-p="${z.p}" data-tag="${z.tag}" x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}"/>`).join('');
@@ -106,12 +109,12 @@ function step() {
   const sp = 0.42, rad = R.coneLen;
   cmCone.setAttribute('points', `${cx},${cz} ${cx + Math.cos(ang - sp) * rad},${cz + Math.sin(ang - sp) * rad} ${cx + Math.cos(ang + sp) * rad},${cz + Math.sin(ang + sp) * rad}`);
   // the corner plan shows the floor the camera is on
-  const lvl = String(persp && camera.position.y > 13 ? 2 : 1);
+  const lvl = String(persp && camera.position.y > (R.lvl2Y || 13) ? 2 : 1);
   if (R.plans && cadMap.dataset.lvl !== lvl) {
     cadMap.dataset.lvl = lvl; $('cm-plan').setAttribute('d', R.plans[lvl]);
     cadMap.querySelectorAll('.cm-zone').forEach(el => { el.style.display = el.dataset.lvl === lvl ? '' : 'none'; });
   }
-  cmLbl.textContent = hoverTag ? `JUMP // ${hoverTag}` : persp ? `${lvl === '2' ? '2ND' : '1ST'} FL · X ${camera.position.x.toFixed(0)}′ · Z ${camera.position.z.toFixed(0)}′` : `AXO // ${String(Math.round(p * 100)).padStart(3, '0')}%`;
+  cmLbl.textContent = hoverTag ? `JUMP // ${hoverTag}` : persp ? `${(R.lvlNames || { 1: '1ST FL', 2: '2ND FL' })[lvl]} · X ${camera.position.x.toFixed(0)}′ · Z ${camera.position.z.toFixed(0)}′` : `AXO // ${String(Math.round(p * 100)).padStart(3, '0')}%`;
   cadMap.querySelectorAll('[data-stop]').forEach(el => el.classList.toggle('active', el.dataset.stop === st.stop));
   const cap = $('caption'); cap.style.opacity = st.capOp || 0;
   if (st.cap && cap.dataset.k !== st.cap) { cap.dataset.k = st.cap; cap.innerHTML = st.cap; }
