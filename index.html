@@ -477,7 +477,17 @@ nav .links a.cta:hover{background:var(--gold);color:var(--black)}
 #plan3d{padding-top:0}
 #plan3d .plan3dCard{display:grid;grid-template-columns:7fr 5fr;gap:48px;align-items:center;border-top:1px solid rgba(201,162,75,.14);padding-top:64px}
 @media(max-width:860px){#plan3d .plan3dCard{grid-template-columns:1fr;gap:24px;padding-top:44px}}
-#plan3d .plan3dImg{display:block;border:1px solid var(--gold-dim);overflow:hidden}
+#plan3d .plan3dImg{position:relative;display:block;border:1px solid var(--gold-dim);overflow:hidden}
+/* a big "IN 3D" over the drawing, extruded from stacked layers and turning like an object */
+#plan3d .spin3d{position:absolute;top:5%;right:4%;z-index:1;perspective:900px;pointer-events:none;text-align:center}
+#plan3d .spin3d .in{display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:clamp(.62rem,1.1vw,.85rem);letter-spacing:.5em;margin-right:-.5em;color:#1d1c19}
+#plan3d .spin3d .obj{position:relative;display:block;transform-style:preserve-3d;animation:spin3d 7s cubic-bezier(.45,0,.55,1) infinite}
+#plan3d .spin3d .obj i{display:block;font-style:normal;font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(3rem,7vw,6rem);line-height:.9;letter-spacing:-.02em;color:#7A6330;transform:translateZ(calc(var(--z) * -1px))}
+#plan3d .spin3d .obj i+i{position:absolute;inset:0}
+#plan3d .spin3d .obj i.face{color:transparent;background:linear-gradient(160deg,#F4DE96 0%,#E5C76B 38%,#C9A24B 62%,#9C7424 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-stroke:1px rgba(29,28,25,.35)}
+#plan3d .spin3d .obj i.back{color:#C9A24B}
+@keyframes spin3d{0%{transform:rotateX(12deg) rotateY(-28deg)}50%{transform:rotateX(12deg) rotateY(332deg)}100%{transform:rotateX(12deg) rotateY(332deg)}}
+@media(prefers-reduced-motion:reduce){#plan3d .spin3d .obj{animation:none;transform:rotateX(12deg) rotateY(-28deg)}}
 #plan3d .plan3dImg img{display:block;width:100%;height:auto;aspect-ratio:40/21;object-fit:cover;transition:transform .8s ease}
 #plan3d .plan3dImg:hover img{transform:scale(1.03)}
 .viewAll{display:inline-block;margin-top:16px;border:1px solid var(--gold-dim);color:var(--gold);font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;transition:background .3s,color .3s}
@@ -1001,10 +1011,12 @@ nav .drop:hover .dropMenu,nav .drop:focus-within .dropMenu{opacity:1;visibility:
 <section id="plan3d">
   <div class="wrap">
     <div class="plan3dCard rv">
-      <a class="plan3dImg" href="farmhouse-818220/"><img src="assets/farmhouse-818220-og.jpg" width="1200" height="630" loading="lazy"
+      <a class="plan3dImg" href="farmhouse-818220/">
+        <span class="spin3d" aria-hidden="true"><span class="in">IN</span><span class="obj"><i class="back" style="--z:15">3D</i><i style="--z:14">3D</i><i style="--z:13">3D</i><i style="--z:12">3D</i><i style="--z:11">3D</i><i style="--z:10">3D</i><i style="--z:9">3D</i><i style="--z:8">3D</i><i style="--z:7">3D</i><i style="--z:6">3D</i><i style="--z:5">3D</i><i style="--z:4">3D</i><i style="--z:3">3D</i><i style="--z:2">3D</i><i style="--z:1">3D</i><i class="face" style="--z:0">3D</i></span></span>
+        <img src="assets/farmhouse-818220-og.jpg" width="1200" height="630" loading="lazy"
         alt="Exploded 3D drawing of farmhouse plan 818220JSS with the wall framing up and the roof trusses lifting into place"></a>
       <div>
-        <div class="eyebrow caps">In 3D · Plan 818220JSS</div>
+        <div class="eyebrow caps">Plan 818220JSS · In 3D</div>
         <hr class="rule">
         <h2>A farmhouse, <em>layer by layer.</em></h2>
         <p class="lede">We modeled Architectural Designs plan 818220JSS, a 4,106 sq ft one-story
